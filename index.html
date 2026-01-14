@@ -7,7 +7,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 /* --- RESET & FONTS --- */
@@ -63,6 +63,7 @@ html,body{
   align-items:center;
   justify-content:center;
   padding: 20px;
+  padding-bottom: 50px; /* Space for footer */
 }
 
 /* --- MAIN GLASS CARD --- */
@@ -217,11 +218,12 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
 }
 .progress-bg {
   width: 100%;
-  height: 4px;
+  height: 5px;
   background: rgba(255,255,255,0.2);
   border-radius: 10px;
   overflow: hidden;
   cursor: pointer;
+  position: relative;
 }
 .progress-fill {
   width: 0%;
@@ -229,13 +231,14 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
   background: #ff0000;
   transition: width 0.1s linear;
   box-shadow: 0 0 10px #ff0000;
+  pointer-events: none;
 }
 
 /* CONTROLS ROW */
 .controls-row {
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Keeps items spaced out */
+  justify-content: space-between;
   margin-top: 5px;
   gap: 15px;
 }
@@ -264,15 +267,14 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
   transform: scale(1.1);
 }
 
-/* --- NEW: LYRICS SECTION --- */
+/* LYRICS SECTION */
 .lyrics-mask {
-  flex: 1; /* Takes up available space */
+  flex: 1;
   height: 40px;
   display: flex;
   align-items: center;
   overflow: hidden;
   position: relative;
-  /* Fade out edges */
   mask-image: linear-gradient(90deg, transparent 0%, #000 10%, #000 90%, transparent 100%);
   -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 10%, #000 90%, transparent 100%);
 }
@@ -288,14 +290,8 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
   text-align: center;
   transition: opacity 0.4s ease, transform 0.4s ease;
 }
-.lyrics-fade-out {
-    opacity: 0;
-    transform: translateY(10px);
-}
-.lyrics-fade-in {
-    opacity: 1;
-    transform: translateY(0);
-}
+.lyrics-fade-out { opacity: 0; transform: translateY(10px); }
+.lyrics-fade-in { opacity: 1; transform: translateY(0); }
 
 /* Visualizer */
 .wave-row {
@@ -320,12 +316,30 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
 .bar:nth-child(4) { height: 80%; animation-duration: 0.7s; }
 @keyframes wave { 0%, 100% { height: 20%; opacity: 0.5; } 50% { height: 100%; opacity: 1; } }
 
-/* --- MOBILE RESPONSIVENESS --- */
+/* --- FOOTER STYLES --- */
+.footer {
+  position: fixed;
+  bottom: 15px;
+  width: 100%;
+  text-align: center;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.3);
+  letter-spacing: 1px;
+  z-index: 100;
+  pointer-events: none; /* Allows clicking through if needed */
+}
+.footer span {
+  color: #ff3333;
+  font-weight: 500;
+}
+
+/* MOBILE RESPONSIVENESS */
 @media(max-width: 800px){
   .profile-card { flex-direction: column; max-width: 400px; }
   .left-section { padding: 40px 20px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
   .right-section { height: 380px; }
   .cinematic-bg img { object-position: center 20%; }
+  .footer { bottom: 10px; font-size: 10px; }
 }
 </style>
 </head>
@@ -383,8 +397,9 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
         <div class="progress-container">
             <div class="time-info">
                 <span id="currTime">0:00</span>
-                <span id="durTime">0:00</span> </div>
-            <div class="progress-bg" onclick="setProgress(event)">
+                <span id="durTime">0:00</span> 
+            </div>
+            <div class="progress-bg" id="progressContainer">
                 <div class="progress-fill" id="progressBar"></div>
             </div>
         </div>
@@ -414,17 +429,22 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
   </div>
 </div>
 
+<div class="footer">
+  Developed by <span>Shaik Althaf</span> | &copy; 2026 All Rights Reserved
+</div>
+
 <script>
 const music = document.getElementById("music");
 const playBtn = document.querySelector(".play-btn-modern");
 const bars = document.querySelectorAll(".bar");
 const bgImg = document.getElementById("bg-img");
 const progressBar = document.getElementById("progressBar");
+const progressContainer = document.getElementById("progressContainer");
 const currTime = document.getElementById("currTime");
 const durTime = document.getElementById("durTime");
 const lyricsText = document.getElementById("lyrics-text");
 
-// LYRICS DATA (Time in seconds)
+// LYRICS DATA
 const lyricsData = [
     { time: 0, text: "♪ Music starting... ♪" },
     { time: 5, text: "Enna sona kyun Rab ne banaya" },
@@ -439,7 +459,7 @@ const lyricsData = [
     { time: 50, text: "Rab ne banaya... Rab ne banaya..." }
 ];
 
-// Update Total Duration when song loads
+// Set Duration
 music.onloadedmetadata = function() {
     let min = Math.floor(music.duration / 60);
     let sec = Math.floor(music.duration % 60);
@@ -447,7 +467,7 @@ music.onloadedmetadata = function() {
     durTime.innerText = min + ":" + sec;
 };
 
-// Update Progress Bar & Lyrics as song plays
+// Update Bar
 music.ontimeupdate = function() {
   if(music.duration){
       const percentage = (music.currentTime / music.duration) * 100;
@@ -458,62 +478,47 @@ music.ontimeupdate = function() {
       if(sec < 10) sec = "0" + sec;
       currTime.innerText = min + ":" + sec;
 
-      // UPDATE LYRICS
       updateLyrics(music.currentTime);
   }
 };
 
-let currentLyricIndex = -1;
+// CLICK TO SEEK
+progressContainer.addEventListener('click', function(e) {
+    const width = this.clientWidth;
+    const clickX = e.clientX - this.getBoundingClientRect().left;
+    const duration = music.duration;
+    music.currentTime = (clickX / width) * duration;
+});
 
+let currentLyricIndex = -1;
 function updateLyrics(currentTime) {
-    // Find the current active line
     let activeLine = lyricsData.filter(line => line.time <= currentTime);
-    
     if (activeLine.length > 0) {
         let latestLine = activeLine[activeLine.length - 1];
         let index = lyricsData.indexOf(latestLine);
 
-        // Only update if the line has changed
         if (index !== currentLyricIndex) {
-            lyricsText.classList.add("lyrics-fade-out"); // Fade out
-            
+            lyricsText.classList.add("lyrics-fade-out");
             setTimeout(() => {
                 lyricsText.innerText = latestLine.text;
                 lyricsText.classList.remove("lyrics-fade-out");
                 lyricsText.classList.add("lyrics-fade-in");
                 currentLyricIndex = index;
-            }, 300); // Wait for fade out
+            }, 300);
         }
     }
-}
-
-// Click on progress bar to skip
-function setProgress(e) {
-    const width = document.querySelector('.progress-bg').clientWidth;
-    const clickX = e.offsetX;
-    const duration = music.duration;
-    music.currentTime = (clickX / width) * duration;
 }
 
 function toggleMusic(){
   if(music.paused){
     music.play();
     playBtn.innerText = "❚❚";
-    
-    // Start Visualizer
     bars.forEach(bar => bar.style.animationPlayState = "running");
-    
-    // Zoom effect
     bgImg.style.transform = "scale(1.1)";
-    
   } else {
     music.pause();
     playBtn.innerText = "▶";
-    
-    // Stop Visualizer
     bars.forEach(bar => bar.style.animationPlayState = "paused");
-    
-    // Reset zoom
     bgImg.style.transform = "scale(1)";
   }
 }
