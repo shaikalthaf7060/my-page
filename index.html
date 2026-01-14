@@ -245,9 +245,10 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
 .time-info {
   display: flex;
   justify-content: space-between;
+  width: 100%;
   font-size: 11px;
   opacity: 0.7;
-  margin-bottom: 10px; /* Increased spacing between time and bar */
+  margin-bottom: 10px; /* Space between time and bar */
   font-weight: 500;
 }
 .progress-bg {
@@ -275,7 +276,6 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
   justify-content: space-between;
   margin-top: 5px;
   gap: 15px;
-  flex-wrap: nowrap; /* Prevent wrapping by default */
 }
 
 .play-btn-modern {
@@ -304,7 +304,7 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
 .play-btn-modern:active { transform: scale(0.95); }
 
 .lyrics-mask {
-  flex: 1; /* Smart Spacing: Takes up all available space */
+  flex: 1; 
   height: 40px;
   display: flex;
   align-items: center;
@@ -368,7 +368,6 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
     justify-content: flex-start;
   }
   
-  /* Quote Fix */
   .quote-widget {
       display: block !important;
       position: relative;
@@ -432,38 +431,55 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
   
   /* --- PERFECTED MOBILE SPACING --- */
   .music-content { 
-      /* Symmetrical Padding: 35px on both sides */
       padding: 30px 35px 40px 35px; 
       gap: 15px; 
   }
 
   .song-titles h2 { font-size: 22px; }
   
+  /* --- TIME & PROGRESS FIX --- */
+  .time-info {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
   /* --- CONTROLS SINGLE LINE FIX --- */
   .controls-row {
-      margin-top: 20px; /* Space from progress bar */
+      margin-top: 20px; 
       display: flex;
       flex-wrap: nowrap; /* Force single line */
       align-items: center;
       justify-content: space-between;
-      gap: 15px;
+      gap: 10px;
+      width: 100%;
   }
 
   .play-btn-modern { 
+      flex: 0 0 50px; /* Fixed size, never shrink */
       width: 50px; 
       height: 50px; 
       font-size: 18px;
-      flex-shrink: 0; /* Prevents button shrinking */
+  }
+
+  /* --- CRITICAL FIX: MIN-WIDTH: 0 --- */
+  /* This prevents lyrics from forcing other elements off screen */
+  .lyrics-mask {
+      flex: 1; /* Grow to fill space */
+      min-width: 0; /* Allow shrinking if needed */
+      margin: 0 5px;
+  }
+  
+  #lyrics-text {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
   }
 
   .wave-row {
-      flex-shrink: 0; /* Prevents wave shrinking */
-  }
-
-  .lyrics-mask {
-      /* Lyrics take center stage */
-      flex: 1;
-      margin: 0 5px;
+      flex: 0 0 40px; /* Fixed width, never shrink */
+      display: flex;
+      justify-content: flex-end;
   }
   
   .footer { margin-bottom: 10px; }
@@ -480,7 +496,7 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
   
   <div class="quote-widget">
       <div class="quote-text">"The music is not in the notes, but in the silence between."</div>
-      <div class="quote-author">- Minnu♡</div>
+      <div class="quote-author">- ♡</div>
   </div>
 
   <div class="profile-card">
@@ -570,7 +586,7 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
   </div>
 
   <div class="footer">
-    Developed by <span>Shaik Althaf</span> | &copy; 2026 All Rights Reserved
+    Developed by <span>Althaf</span> | &copy; 2026 All Rights Reserved
   </div>
 
 </div>
