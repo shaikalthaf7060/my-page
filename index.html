@@ -358,7 +358,7 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
 .footer span { color: #ff3333; font-weight: 500; }
 
 /* ========================================= */
-/* MOBILE OPTIMIZATIONS (FIXED) */
+/* MOBILE OPTIMIZATIONS */
 /* ========================================= */
 @media(max-width: 800px){
   .container {
@@ -425,26 +425,43 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
 
   .right-section {
     height: auto;
-    aspect-ratio: 1 / 0.85; /* Made slightly taller to fit controls better */
+    aspect-ratio: 1 / 0.85; 
   }
   
-  /* --- FIXED PLAYER PLACEMENT --- */
+  /* --- FIXED: SYMMETRICAL PADDING --- */
   .music-content { 
-      padding: 25px 25px 35px 25px; /* Added more bottom padding */
-      gap: 15px; /* Increased Gap */
+      padding: 30px 35px 40px 35px; 
+      gap: 15px; 
   }
   
+  /* --- FIXED: ARRANGE LYRICS AND WAVE FOR MOBILE --- */
   .controls-row {
-      margin-top: 15px; /* Push controls down from progress bar */
+      margin-top: 15px;
+      display: flex;
+      flex-wrap: wrap; /* Allows wrapping */
+      justify-content: space-between;
+      align-items: center;
   }
 
-  .song-titles h2 { font-size: 22px; }
-  
-  /* Made button slightly smaller for better mobile proportion */
+  /* 1. Button stays first */
   .play-btn-modern { 
+      order: 1;
       width: 50px; 
       height: 50px; 
       font-size: 18px; 
+  }
+
+  /* 2. Wave moves to second position (right) */
+  .wave-row {
+      order: 2;
+  }
+
+  /* 3. Lyrics move to new line at bottom */
+  .lyrics-mask {
+      order: 3;
+      flex: 0 0 100%; /* Take full width */
+      margin-top: 20px; /* Space from top */
+      justify-content: center; /* Center the text */
   }
   
   .footer { margin-bottom: 10px; }
