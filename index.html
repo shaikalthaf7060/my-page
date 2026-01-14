@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shaik Althaf</title>
+<title>_althuuz_</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,6 +16,7 @@
   padding:0;
   box-sizing:border-box;
   font-family: 'Poppins', sans-serif;
+  -webkit-tap-highlight-color: transparent;
 }
 html,body{
   height:100%;
@@ -28,7 +29,7 @@ html,body{
 .background{
   position:fixed;
   inset:0;
-  background:linear-gradient(135deg, #400000, #000, #800000);
+  background:linear-gradient(135deg, #2b0000, #000, #4d0000);
   background-size:400% 400%;
   animation:bgMove 12s infinite ease;
   z-index:-3;
@@ -37,15 +38,15 @@ html,body{
   position:fixed;
   inset:0;
   background:
-    radial-gradient(circle at 10% 20%, rgba(255,0,0,0.15), transparent 40%),
-    radial-gradient(circle at 90% 80%, rgba(255,50,50,0.1), transparent 45%);
+    radial-gradient(circle at 10% 20%, rgba(255,0,0,0.1), transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(255,50,50,0.08), transparent 45%);
   z-index:-2;
 }
 .grain-overlay {
   position: fixed;
   inset: 0;
   background-image: url("https://upload.wikimedia.org/wikipedia/commons/7/76/Noise_overlay_image.png");
-  opacity: 0.06;
+  opacity: 0.04;
   pointer-events: none;
   z-index: -1;
 }
@@ -56,30 +57,62 @@ html,body{
   100%{background-position:0% 50%}
 }
 
+/* --- TOP RIGHT QUOTE WIDGET --- */
+.quote-widget {
+    position: fixed;
+    top: 40px;
+    right: 40px;
+    max-width: 250px;
+    text-align: right;
+    z-index: 50;
+    pointer-events: none;
+    opacity: 0.8;
+}
+.quote-text {
+    font-size: 13px; /* Date size */
+    font-weight: 500;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.6;
+    letter-spacing: 0.5px;
+    margin-bottom: 5px;
+}
+.quote-author {
+    font-size: 11px;
+    color: #ff3333; /* Red accent */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+/* Hide on small mobile to save space */
+@media(max-width: 600px){ .quote-widget { display: none; } }
+
+
 /* --- LAYOUT CONTAINER --- */
 .container{
   min-height:100vh;
   display:flex;
-  flex-direction: column; /* UPDATED: Stacks card and footer vertically */
+  flex-direction: column;
   align-items:center;
-  justify-content:center; /* Keeps card centered vertically in available space */
+  justify-content:center;
   padding: 20px;
 }
 
 /* --- MAIN GLASS CARD --- */
 .profile-card{
-  background:rgba(20, 20, 20, 0.85);
-  backdrop-filter:blur(25px);
-  -webkit-backdrop-filter: blur(25px);
+  background:rgba(20, 20, 20, 0.75);
+  backdrop-filter:blur(30px);
+  -webkit-backdrop-filter: blur(30px);
   width:100%;
   max-width:900px;
   border-radius:24px;
-  box-shadow:0 0 60px rgba(255,0,0,0.25);
+  box-shadow:0 0 40px rgba(0,0,0,0.5);
   border: 1px solid rgba(255,255,255,0.08);
   overflow: hidden;
   display: flex;
-  margin-top: auto; /* UPDATED: These margins help center the card... */
-  margin-bottom: auto; /* ...while allowing the footer to sit at the bottom */
+  margin-top: auto;
+  margin-bottom: auto;
+  transition: transform 0.3s ease;
 }
 
 /* --- LEFT COLUMN: PROFILE --- */
@@ -91,6 +124,7 @@ html,body{
   align-items: center;
   border-right: 1px solid rgba(255,255,255,0.05);
   z-index: 2;
+  background: rgba(0,0,0,0.2);
 }
 
 .profile-wrapper{
@@ -118,31 +152,32 @@ html,body{
 }
 @keyframes spinBorder{ from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
 
-h1{ font-size:32px; font-weight: 700; letter-spacing: 1px; margin-bottom: 5px; }
-p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2px; text-transform: uppercase; }
+h1{ font-size:32px; font-weight: 700; letter-spacing: 1px; margin-bottom: 5px; text-align: center; }
+p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2px; text-transform: uppercase; text-align: center; }
 
 /* Links Styling */
-.links{ width: 100%; display: flex; flex-direction: column; gap: 15px; }
+.links{ width: 100%; display: flex; flex-direction: column; gap: 12px; }
 .links a{
   display:flex;
   align-items:center;
+  justify-content: flex-start;
   gap:15px;
   text-decoration:none;
   color:#ddd;
   font-size:15px;
   font-weight: 500;
-  padding:16px 20px;
-  border-radius:14px;
+  padding:14px 20px;
+  border-radius:12px;
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.05);
-  transition:all 0.3s ease;
+  transition:all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
+.links a:active { transform: scale(0.98); }
 .links a:hover{
   transform:translateX(6px);
   background: rgba(255,0,0,0.15);
   border-color: rgba(255,0,0,0.4);
   color: #fff;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 .links img{ width:22px; height:22px; filter:invert(0.9); transition: 0.3s; }
 .links a:hover img{ filter: invert(1); transform: scale(1.1); }
@@ -157,6 +192,7 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
   justify-content: flex-end;
   overflow: hidden;
   background: #000;
+  min-height: 400px;
 }
 
 .cinematic-bg {
@@ -171,7 +207,7 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.9;
+  opacity: 0.8;
   filter: grayscale(100%) contrast(1.1);
   transition: transform 10s ease;
 }
@@ -180,7 +216,7 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
   inset: 0;
   background: linear-gradient(to bottom, 
     rgba(0,0,0,0.1) 0%, 
-    rgba(0,0,0,0.4) 50%, 
+    rgba(0,0,0,0.5) 50%, 
     rgba(0,0,0,0.95) 90%,
     rgba(0,0,0,1) 100%
   );
@@ -203,25 +239,22 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
   align-items: flex-end;
 }
 .song-titles h2 { font-size: 28px; font-weight: 700; color: #fff; text-shadow: 0 4px 10px rgba(0,0,0,0.5); line-height: 1.2;}
-.song-titles span { font-size: 13px; font-weight: 400; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 1px; }
+.song-titles span { font-size: 12px; font-weight: 600; color: #ff3333; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 5px; }
 
 /* PROGRESS BAR */
-.progress-container {
-  width: 100%;
-  margin-top: 10px;
-}
+.progress-container { width: 100%; margin-top: 5px; }
 .time-info {
   display: flex;
   justify-content: space-between;
   font-size: 11px;
   opacity: 0.7;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   font-weight: 500;
 }
 .progress-bg {
   width: 100%;
-  height: 5px;
-  background: rgba(255,255,255,0.2);
+  height: 6px;
+  background: rgba(255,255,255,0.15);
   border-radius: 10px;
   overflow: hidden;
   cursor: pointer;
@@ -245,31 +278,31 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
   gap: 15px;
 }
 
-/* Play Button */
 .play-btn-modern {
-  width: 50px;
-  height: 50px;
+  width: 55px;
+  height: 55px;
   border-radius: 50%;
   background: rgba(255,255,255,0.1);
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(10px);
   border: 1px solid rgba(255,255,255,0.3);
   color: #fff;
-  font-size: 18px;
+  font-size: 20px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.3s;
   flex-shrink: 0;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
 }
 .play-btn-modern:hover {
   background: #ff0000;
   border-color: #ff0000;
   box-shadow: 0 0 25px rgba(255,0,0,0.6);
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
+.play-btn-modern:active { transform: scale(0.95); }
 
-/* LYRICS SECTION */
 .lyrics-mask {
   flex: 1;
   height: 40px;
@@ -283,7 +316,7 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
 
 #lyrics-text {
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.85);
   white-space: nowrap;
   font-weight: 500;
   font-style: italic;
@@ -295,21 +328,14 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
 .lyrics-fade-out { opacity: 0; transform: translateY(10px); }
 .lyrics-fade-in { opacity: 1; transform: translateY(0); }
 
-/* Visualizer */
-.wave-row {
-  display: flex;
-  align-items: flex-end;
-  gap: 6px;
-  height: 25px;
-  flex-shrink: 0;
-}
+.wave-row { display: flex; align-items: flex-end; gap: 5px; height: 25px; flex-shrink: 0; }
 .bar {
-  width: 5px;
+  width: 4px;
   background: #ff3333;
   border-radius: 4px;
   animation: wave 1s ease-in-out infinite;
   animation-play-state: paused;
-  box-shadow: 0 0 10px rgba(255,0,0,0.8);
+  box-shadow: 0 0 8px rgba(255,0,0,0.6);
 }
 .bar:nth-child(odd) { background: #fff; }
 .bar:nth-child(1) { height: 40%; animation-duration: 0.6s; }
@@ -319,7 +345,6 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
 @keyframes wave { 0%, 100% { height: 20%; opacity: 0.5; } 50% { height: 100%; opacity: 1; } }
 
 /* --- FOOTER STYLES --- */
-/* UPDATED: Removed fixed positioning, added margin-top: auto */
 .footer {
   position: relative;
   width: 100%;
@@ -329,20 +354,68 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
   letter-spacing: 1px;
   z-index: 100;
   padding-top: 20px;
-  margin-top: auto; /* This pushes the footer to the bottom of the flex container */
+  margin-top: auto;
 }
-.footer span {
-  color: #ff3333;
-  font-weight: 500;
-}
+.footer span { color: #ff3333; font-weight: 500; }
 
-/* MOBILE RESPONSIVENESS */
+/* ========================================= */
+/* MOBILE OPTIMIZATIONS */
+/* ========================================= */
 @media(max-width: 800px){
-  .profile-card { flex-direction: column; max-width: 400px; margin-top: 20px; margin-bottom: 20px; }
-  .left-section { padding: 40px 20px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
-  .right-section { height: 380px; }
-  .cinematic-bg img { object-position: center 20%; }
-  .footer { font-size: 10px; }
+  .container {
+    padding: 15px;
+    justify-content: flex-start;
+  }
+  .profile-card {
+    flex-direction: column;
+    max-width: 100%;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border-radius: 20px;
+  }
+
+  /* Compact Header */
+  .left-section {
+    padding: 30px 20px 25px 20px;
+    border-right: none;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .profile-wrapper { width: 100px; height: 100px; margin-bottom: 15px; }
+  h1 { font-size: 26px; }
+  p.subtitle { font-size: 12px; margin-bottom: 25px; }
+
+  .links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .links a {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 15px 10px;
+    font-size: 13px;
+    gap: 8px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.05);
+  }
+  
+  .links a:hover { transform: translateY(-3px); }
+
+  .right-section {
+    height: auto;
+    aspect-ratio: 1 / 0.8;
+  }
+  
+  .music-content { padding: 25px; gap: 10px; }
+  .song-titles h2 { font-size: 22px; }
+  .play-btn-modern { width: 48px; height: 48px; font-size: 16px; }
+  
+  .footer { margin-bottom: 10px; }
 }
 </style>
 </head>
@@ -352,6 +425,10 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
 <div class="background"></div>
 <div class="grain-overlay"></div> <div class="pattern-bg"></div>
 
+<div class="quote-widget">
+    <div class="quote-text">"The music is not in the notes, but in the silence between."</div>
+    <div class="quote-author">- Minnu♡</div>
+</div>
 <div class="container">
   
   <div class="profile-card">
@@ -368,6 +445,11 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
         <a href="https://www.instagram.com/_althuuz_" target="_blank">
           <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg"> Instagram
         </a>
+        
+        <a href="https://www.facebook.com/althaf.ravan" target="_blank">
+          <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg"> Facebook
+        </a>
+
         <a href="https://snapchat.com/t/JQ5pNLlI" target="_blank">
           <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/snapchat.svg"> Snapchat
         </a>
