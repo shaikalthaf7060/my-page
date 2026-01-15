@@ -245,10 +245,10 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
 .time-info {
   display: flex;
   justify-content: space-between;
-  width: 100%;
+  width: 100%; /* Force full width */
   font-size: 11px;
   opacity: 0.7;
-  margin-bottom: 10px; /* Space between time and bar */
+  margin-bottom: 10px;
   font-weight: 500;
 }
 .progress-bg {
@@ -286,7 +286,6 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255,255,255,0.3);
   color: #fff;
-  font-size: 20px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -303,31 +302,12 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
 }
 .play-btn-modern:active { transform: scale(0.95); }
 
-.lyrics-mask {
-  flex: 1; 
-  height: 40px;
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-  position: relative;
-  /* Fades on the sides of lyrics */
-  mask-image: linear-gradient(90deg, transparent 0%, #000 10%, #000 90%, transparent 100%);
-  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 10%, #000 90%, transparent 100%);
+/* SVG Icon Sizing */
+.play-btn-modern svg {
+    width: 22px;
+    height: 22px;
+    fill: currentColor;
 }
-
-#lyrics-text {
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.85);
-  white-space: nowrap;
-  font-weight: 500;
-  font-style: italic;
-  letter-spacing: 0.5px;
-  width: 100%;
-  text-align: center;
-  transition: opacity 0.4s ease, transform 0.4s ease;
-}
-.lyrics-fade-out { opacity: 0; transform: translateY(10px); }
-.lyrics-fade-in { opacity: 1; transform: translateY(0); }
 
 .wave-row { display: flex; align-items: flex-end; gap: 5px; height: 25px; flex-shrink: 0; }
 .bar {
@@ -360,7 +340,7 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
 .footer span { color: #ff3333; font-weight: 500; }
 
 /* ========================================= */
-/* MOBILE OPTIMIZATIONS (FIXED & ALIGNED) */
+/* MOBILE OPTIMIZATIONS */
 /* ========================================= */
 @media(max-width: 800px){
   .container {
@@ -429,55 +409,39 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
     aspect-ratio: 1 / 0.85; 
   }
   
-  /* --- PERFECTED MOBILE SPACING --- */
   .music-content { 
       padding: 30px 35px 40px 35px; 
       gap: 15px; 
+      width: 100%; 
   }
 
   .song-titles h2 { font-size: 22px; }
   
-  /* --- TIME & PROGRESS FIX --- */
   .time-info {
     width: 100%;
     display: flex;
     justify-content: space-between;
   }
 
-  /* --- CONTROLS SINGLE LINE FIX --- */
+  /* --- SIMPLIFIED CONTROLS FOR MOBILE --- */
   .controls-row {
       margin-top: 20px; 
       display: flex;
-      flex-wrap: nowrap; /* Force single line */
+      flex-wrap: nowrap; 
       align-items: center;
-      justify-content: space-between;
+      justify-content: space-between; /* Button Left, Wave Right */
       gap: 10px;
       width: 100%;
   }
 
   .play-btn-modern { 
-      flex: 0 0 50px; /* Fixed size, never shrink */
       width: 50px; 
       height: 50px; 
-      font-size: 18px;
-  }
-
-  /* --- CRITICAL FIX: MIN-WIDTH: 0 --- */
-  /* This prevents lyrics from forcing other elements off screen */
-  .lyrics-mask {
-      flex: 1; /* Grow to fill space */
-      min-width: 0; /* Allow shrinking if needed */
-      margin: 0 5px;
-  }
-  
-  #lyrics-text {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
   }
 
   .wave-row {
-      flex: 0 0 40px; /* Fixed width, never shrink */
+      flex: 0 0 40px; 
+      width: 40px;
       display: flex;
       justify-content: flex-end;
   }
@@ -496,7 +460,7 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
   
   <div class="quote-widget">
       <div class="quote-text">"The music is not in the notes, but in the silence between."</div>
-      <div class="quote-author">- ♡</div>
+      <div class="quote-author">-♡</div>
   </div>
 
   <div class="profile-card">
@@ -562,12 +526,12 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
         </div>
 
         <div class="controls-row">
-            <button class="play-btn-modern" onclick="toggleMusic()">▶</button>
+            <button class="play-btn-modern" onclick="toggleMusic()">
+                <svg viewBox="0 0 24 24" style="margin-left: 2px;">
+                    <path d="M8 5v14l11-7z"/>
+                </svg>
+            </button>
             
-            <div class="lyrics-mask">
-                <p id="lyrics-text">...</p>
-            </div>
-
             <div class="wave-row">
               <div class="bar"></div>
               <div class="bar"></div>
@@ -600,22 +564,10 @@ const progressBar = document.getElementById("progressBar");
 const progressContainer = document.getElementById("progressContainer");
 const currTime = document.getElementById("currTime");
 const durTime = document.getElementById("durTime");
-const lyricsText = document.getElementById("lyrics-text");
 
-// LYRICS DATA
-const lyricsData = [
-    { time: 0, text: "♪ Music starting... ♪" },
-    { time: 5, text: "Enna sona kyun Rab ne banaya" },
-    { time: 10, text: "Enna sona kyun Rab ne banaya" },
-    { time: 15, text: "Aavan javan te main yaara nu manavan" },
-    { time: 20, text: "Enna sona kyun Rab ne banaya" },
-    { time: 27, text: "Dil chaulhe vich paavan" },
-    { time: 30, text: "♪ ♪ ♪" },
-    { time: 35, text: "Kol hove te sekh lagda ae" },
-    { time: 40, text: "Door jaave te dil jalda ae" },
-    { time: 45, text: "Kehri agg naal Rab ne banaya" },
-    { time: 50, text: "Rab ne banaya... Rab ne banaya..." }
-];
+// SVG ICONS
+const playIcon = `<svg viewBox="0 0 24 24" style="margin-left: 2px;"><path d="M8 5v14l11-7z"/></svg>`;
+const pauseIcon = `<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
 
 // Set Duration
 music.onloadedmetadata = function() {
@@ -635,8 +587,6 @@ music.ontimeupdate = function() {
       let sec = Math.floor(music.currentTime % 60);
       if(sec < 10) sec = "0" + sec;
       currTime.innerText = min + ":" + sec;
-
-      updateLyrics(music.currentTime);
   }
 };
 
@@ -648,34 +598,15 @@ progressContainer.addEventListener('click', function(e) {
     music.currentTime = (clickX / width) * duration;
 });
 
-let currentLyricIndex = -1;
-function updateLyrics(currentTime) {
-    let activeLine = lyricsData.filter(line => line.time <= currentTime);
-    if (activeLine.length > 0) {
-        let latestLine = activeLine[activeLine.length - 1];
-        let index = lyricsData.indexOf(latestLine);
-
-        if (index !== currentLyricIndex) {
-            lyricsText.classList.add("lyrics-fade-out");
-            setTimeout(() => {
-                lyricsText.innerText = latestLine.text;
-                lyricsText.classList.remove("lyrics-fade-out");
-                lyricsText.classList.add("lyrics-fade-in");
-                currentLyricIndex = index;
-            }, 300);
-        }
-    }
-}
-
 function toggleMusic(){
   if(music.paused){
     music.play();
-    playBtn.innerText = "❚❚";
+    playBtn.innerHTML = pauseIcon; // Switch to SVG Pause
     bars.forEach(bar => bar.style.animationPlayState = "running");
     bgImg.style.transform = "scale(1.1)";
   } else {
     music.pause();
-    playBtn.innerText = "▶";
+    playBtn.innerHTML = playIcon; // Switch to SVG Play
     bars.forEach(bar => bar.style.animationPlayState = "paused");
     bgImg.style.transform = "scale(1)";
   }
