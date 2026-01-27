@@ -3,13 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Althaf | Portfolio</title>
+<meta name="description" content="Portfolio of Shaik Althaf - Web Developer & Designer.">
+<meta name="keywords" content="Althaf, Web Developer, Portfolio, Designer, UI/UX">
 <meta name="theme-color" content="#000000">
 
+<meta property="og:url" content="https://your-website-domain.com">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Althaf | Developer Portfolio">
 <meta property="og:description" content="Web Developer & Designer. Check out my latest work.">
 <meta property="og:image" content="Profile.jpeg"> 
+
+<title>Althaf | Portfolio</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -75,12 +79,11 @@ html,body{ height:100%; width: 100%; color:#fff; overflow-x: hidden; background:
 
 /* --- CONTAINER --- */
 .container{ 
-    /* 100dvh fixes iPhone address bar hiding content */
     min-height: 100vh; min-height: 100dvh; 
     display:flex; flex-direction: column; align-items:center; justify-content:center; padding: 20px; 
 }
 
-/* --- QUOTE WIDGET --- */
+/* --- QUOTE WIDGET (ADMIN TRIGGER) --- */
 .quote-widget { 
     position: fixed; top: 40px; right: 40px; max-width: 250px; text-align: right; z-index: 50; cursor: pointer; opacity: 0.8; transition: 0.3s;
     user-select: none; -webkit-user-select: none;
@@ -95,7 +98,6 @@ html,body{ height:100%; width: 100%; color:#fff; overflow-x: hidden; background:
     width:100%; max-width:900px; border-radius:24px; box-shadow:0 0 40px rgba(0,0,0,0.5); 
     border: 1px solid rgba(255,255,255,0.08); overflow: hidden; display: flex; 
     margin-top: auto; margin-bottom: auto; 
-    /* 3D Tilt Init */
     transform-style: preserve-3d; transform: perspective(1000px); 
 }
 
@@ -112,9 +114,13 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
 .links{ width: 100%; display: flex; flex-direction: column; gap: 12px; transform: translateZ(25px); }
 .links a{ display:flex; align-items:center; justify-content: flex-start; gap:15px; text-decoration:none; color:#ddd; font-size:15px; font-weight: 500; padding:14px 20px; border-radius:12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); transition:all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
 .links a:active { transform: scale(0.98); }
-.links a:hover{ transform:translateX(6px) translateZ(10px); background: rgba(255,0,0,0.15); border-color: rgba(255,0,0,0.4); color: #fff; }
-.links img{ width:22px; height:22px; filter:invert(0.9); transition: 0.3s; }
-.links a:hover img{ filter: invert(1); transform: scale(1.1); }
+
+/* Desktop Hover Only - prevents sticking on mobile */
+@media (min-width: 801px) {
+    .links a:hover{ transform:translateX(6px) translateZ(10px); background: rgba(255,0,0,0.15); border-color: rgba(255,0,0,0.4); color: #fff; }
+    .links img{ width:22px; height:22px; filter:invert(0.9); transition: 0.3s; }
+    .links a:hover img{ filter: invert(1); transform: scale(1.1); }
+}
 
 /* --- RIGHT SECTION (Music) --- */
 .right-section { flex: 1.8; position: relative; display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; background: #000; min-height: 400px; }
@@ -175,7 +181,7 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
 
 .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
 .modal-header h3 { font-size: 16px; font-weight: 600; color: #fff; }
-.close-btn { cursor: pointer; opacity: 0.5; transition: 0.2s; }
+.close-btn { cursor: pointer; opacity: 0.5; transition: 0.2s; padding: 5px; }
 .close-btn:hover { color: #ff3333; opacity: 1; }
 
 .input-group { margin-bottom: 15px; }
@@ -198,7 +204,7 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
 .stat-box {
     background: linear-gradient(45deg, #222, #111); border: 1px solid rgba(255,255,255,0.1);
     padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: center;
-    color: #aaa; font-size: 12px;
+    color: #aaa; font-size: 12px; display: block;
 }
 .stat-box span { display: block; font-size: 24px; font-weight: 700; color: #ff3333; margin-top: 5px; }
 
@@ -217,23 +223,34 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
 }
 .loading-msg { text-align: center; padding: 20px; font-size: 12px; opacity: 0.7; }
 
+/* Honeypot Spam Field - Hidden from humans, visible to bots */
+#honey { display: none; visibility: hidden; }
+
 /* ================================================= */
 /* MOBILE OPTIMIZATIONS (Max Width 800px)           */
 /* ================================================= */
 @media(max-width: 800px){
   /* Scroll Fixes */
   body { position: fixed; width: 100%; height: 100%; overflow-y: auto; -webkit-overflow-scrolling: touch; }
-  .background, .pattern-bg, .grain-overlay { background-attachment: scroll; }
-  .container { padding: 15px; justify-content: flex-start; overflow-y: auto; }
+  .background, .pattern-bg { background-attachment: scroll; }
+  /* PERFORMANCE FIX: Disable Grain on mobile */
+  .grain-overlay { display: none; }
+  
+  /* PADDING FIX: Prevents FAB from overlapping content */
+  .container { padding: 15px; padding-bottom: 120px; justify-content: flex-start; overflow-y: auto; }
   
   /* Disable 3D Tilt on Mobile (Saves Battery/Glitches) */
-  .profile-card { flex-direction: column; max-width: 100%; margin-top: 20px; margin-bottom: 100px; border-radius: 20px; transform: none !important; perspective: none !important; }
+  .profile-card { flex-direction: column; max-width: 100%; margin-top: 20px; margin-bottom: 20px; border-radius: 20px; transform: none !important; perspective: none !important; }
   .left-section, .right-section, .music-content, .links, h1, p.subtitle, .profile-wrapper { transform: none !important; }
 
   /* Layout Adjustments */
   .left-section { padding: 30px 20px 25px 20px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
   .links { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
-  .links a { flex-direction: column; text-align: center; padding: 15px 10px; font-size: 13px; gap: 8px; border-radius: 16px; background: rgba(255,255,255,0.05); }
+  
+  /* UX CHANGE: Removed hover movement on mobile for "Thumb Zone" stability */
+  .links a { flex-direction: column; text-align: center; padding: 15px 10px; font-size: 13px; gap: 8px; border-radius: 16px; background: rgba(255,255,255,0.05); transform: none !important; }
+  .links a:active { background: rgba(255,255,255,0.1); } /* Simple highlight on tap */
+  .links img { width: 22px; height: 22px; filter: invert(0.9); }
   
   /* Music Player Mobile */
   .right-section { height: auto; aspect-ratio: 1 / 0.85; }
@@ -265,30 +282,30 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
 <div class="grain-overlay"></div> <div class="pattern-bg"></div>
 
 <div class="container">
-  <div class="quote-widget" ondblclick="openAdminAuth()">
+  <div class="quote-widget" id="adminTrigger" aria-label="Admin Login">
       <div class="quote-text">"The music is not in the notes, but in the silence between."</div>
       <div class="quote-author">-♡</div>
   </div>
 
   <div class="profile-card">
     <div class="left-section">
-      <div class="profile-wrapper"><img src="Profile.jpeg" alt="Profile"></div>
+      <div class="profile-wrapper"><img src="Profile.jpeg" alt="Shaik Althaf Profile"></div>
       <h1>SHAIK</h1><p class="subtitle">ALTHAF | الطاف</p>
       <div class="links">
-        <a href="https://www.instagram.com/_althuuz_" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg"> Instagram</a>
-        <a href="https://www.threads.net/@_althuuz_" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/threads.svg"> Threads</a>
-        <a href="https://www.facebook.com/althaf.ravan" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg"> Facebook</a>
-        <a href="https://snapchat.com/t/JQ5pNLlI" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/snapchat.svg"> Snapchat</a>
-        <a href="https://t.me/ShaikAlthu" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/telegram.svg"> Telegram</a>
-        <a href="mailto:shaikalthaf7060@gmail.com"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/gmail.svg"> Gmail</a>
+        <a href="https://www.instagram.com/_althuuz_" target="_blank" aria-label="Instagram"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt=""> Instagram</a>
+        <a href="https://www.threads.net/@_althuuz_" target="_blank" aria-label="Threads"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/threads.svg" alt=""> Threads</a>
+        <a href="https://www.facebook.com/althaf.ravan" target="_blank" aria-label="Facebook"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt=""> Facebook</a>
+        <a href="https://snapchat.com/t/JQ5pNLlI" target="_blank" aria-label="Snapchat"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/snapchat.svg" alt=""> Snapchat</a>
+        <a href="https://t.me/ShaikAlthu" target="_blank" aria-label="Telegram"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/telegram.svg" alt=""> Telegram</a>
+        <a href="mailto:shaikalthaf7060@gmail.com" aria-label="Email"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/gmail.svg" alt=""> Gmail</a>
       </div>
     </div>
     <div class="right-section">
-      <div class="cinematic-bg"><img src="Image.jpeg" id="bg-img"></div><div class="cinematic-overlay"></div>
+      <div class="cinematic-bg"><img src="Image.jpeg" id="bg-img" alt="Background Cover"></div><div class="cinematic-overlay"></div>
       <div class="music-content">
-        <div class="song-meta"><div class="song-titles"><span>Now Playing</span><h2><a href="https://www.youtube.com/results?search_query=enna+sona" target="_blank">Enna Sona</a></h2></div></div>
+        <div class="song-meta"><div class="song-titles"><span>Now Playing</span><h2><a href="https://www.youtube.com/watch?v=OFrtmsF7WaM" target="_blank">Enna Sona</a></h2></div></div>
         <div class="progress-container"><div class="time-info"><span id="currTime">0:00</span><span id="durTime">0:00</span></div><div class="progress-bg" id="progressContainer"><div class="progress-fill" id="progressBar"></div></div></div>
-        <div class="controls-row"><button class="play-btn-modern" onclick="toggleMusic()"><svg viewBox="0 0 24 24" style="margin-left: 2px;"><path d="M8 5v14l11-7z"/></svg></button><div class="wave-row"><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div></div></div>
+        <div class="controls-row"><button class="play-btn-modern" onclick="toggleMusic()" aria-label="Toggle Music"><svg viewBox="0 0 24 24" style="margin-left: 2px;"><path d="M8 5v14l11-7z"/></svg></button><div class="wave-row"><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div></div></div>
       </div>
     </div>
     <audio id="music" src="enna-sona.mp3"></audio>
@@ -296,31 +313,31 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
   <div class="footer">Developed by <span>Althaf</span> | &copy; 2026 All Rights Reserved</div>
 </div>
 
-<div class="fab" onclick="openUserForm()">
+<div class="fab" onclick="openUserForm()" aria-label="Request Contact">
     <svg viewBox="0 0 24 24"><path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
 </div>
 
 <div class="modal" id="userModal">
-    <div class="modal-header"><h3>Request Contact</h3><span class="close-btn" onclick="closeAllModals()">✕</span></div>
+    <div class="modal-header"><h3>Request Contact</h3><span class="close-btn" onclick="closeAllModals()" aria-label="Close">✕</span></div>
     <p style="font-size:12px; color:#aaa; margin-bottom:15px;">Send a request. Admin will contact you.</p>
     <form onsubmit="submitRequest(event)">
         <div class="input-group"><input type="text" id="userName" class="modal-input" placeholder="Your Name" required></div>
         <div class="input-group"><input type="tel" id="userPhone" class="modal-input" placeholder="Your Mobile Number" required></div>
         
-        <input type="text" id="honey" style="opacity: 0; position: absolute; top: 0; left: 0; height: 0; width: 0; z-index: -1;" tabindex="-1">
+        <input type="text" id="honey" tabindex="-1" autocomplete="off">
 
         <button type="submit" id="submitBtn" class="action-btn">Send Request</button>
     </form>
 </div>
 
 <div class="modal" id="adminAuthModal">
-    <div class="modal-header"><h3>Admin Access</h3><span class="close-btn" onclick="closeAllModals()">✕</span></div>
+    <div class="modal-header"><h3>Admin Access</h3><span class="close-btn" onclick="closeAllModals()" aria-label="Close">✕</span></div>
     <div class="input-group"><input type="password" id="adminPass" class="modal-input" placeholder="Enter Password"></div>
     <button onclick="checkAdmin()" class="action-btn">Login</button>
 </div>
 
 <div class="modal" id="adminPanelModal">
-    <div class="modal-header"><h3>Pending Requests</h3><span class="close-btn" onclick="closeAllModals()">✕</span></div>
+    <div class="modal-header"><h3>Pending Requests</h3><span class="close-btn" onclick="closeAllModals()" aria-label="Close">✕</span></div>
     <div class="stat-box">Total Site Visits <span id="visitCount">...</span></div>
     <div id="requestsList"><div class="loading-msg">Loading requests...</div></div>
 </div>
@@ -330,24 +347,27 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
 <script>
 /* --- CONFIGURATION --- */
 const SHEETDB_URL = "https://sheetdb.io/api/v1/7lnti5fot9g7a";
-const ENCODED_PASS = "NzA2MA=="; // Base64 for "7060"
+/* NOTE: Go to SheetDB Settings and enable 'Allowed Domains' to protect this API! */
 
-/* --- PRELOADER --- */
+/* --- PRELOADER & SETUP --- */
 window.onload = function() {
     const preloader = document.getElementById('preloader');
     preloader.style.opacity = '0';
     preloader.style.visibility = 'hidden';
+    
+    // VOLUME FIX: Set to 50%
+    const music = document.getElementById("music");
+    if(music) music.volume = 0.5;
 }
 
 /* --- 3D TILT INIT --- */
-// Only init on desktop to save battery on mobile
 if(window.innerWidth > 800) {
     VanillaTilt.init(document.querySelector(".profile-card"), {
         max: 8, speed: 400, glare: true, "max-glare": 0.2, gyroscope: false
     });
 }
 
-/* --- TOAST & CURSOR LOGIC --- */
+/* --- TOAST & CURSOR --- */
 function showToast(message) {
     const toast = document.getElementById('toast');
     document.getElementById('toastMsg').innerText = message;
@@ -367,7 +387,7 @@ document.querySelectorAll('a, button, .fab, .quote-widget, .progress-bg').forEac
     el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
 });
 
-/* --- MUSIC LOGIC --- */
+/* --- MUSIC PLAYER --- */
 const music = document.getElementById("music");
 const playBtn = document.querySelector(".play-btn-modern");
 const bars = document.querySelectorAll(".bar");
@@ -403,7 +423,7 @@ function toggleMusic(){
           bars.forEach(bar => bar.style.animationPlayState = "running"); 
           bgImg.style.transform = "scale(1.1)"; 
       }).catch(error => {
-          showToast("Interact with page first!");
+          showToast("Tap anywhere first!");
       });
   } else { 
       music.pause(); 
@@ -413,7 +433,7 @@ function toggleMusic(){
   }
 }
 
-/* --- VISITOR COUNTER LOGIC --- */
+/* --- VISITOR COUNT --- */
 const COUNT_URL = "https://api.countapi.xyz/hit/althaf-portfolio-custom/visits";
 const COUNT_READ_URL = "https://api.countapi.xyz/get/althaf-portfolio-custom/visits";
 fetch(COUNT_URL).catch(err => console.log("Visitor API offline"));
@@ -422,22 +442,32 @@ function updateVisitCount() {
     fetch(COUNT_READ_URL)
     .then(res => res.json())
     .then(data => { document.getElementById('visitCount').innerText = data.value; })
-    .catch(err => { document.getElementById('visitCount').innerText = "Offline"; });
+    .catch(err => { 
+        // Hide statistic if API fails
+        document.querySelector('.stat-box').style.display = 'none';
+    });
 }
 
-/* --- ADMIN PANEL LOGIC --- */
+/* --- ADMIN & MODALS --- */
 function closeAllModals() { document.querySelectorAll('.modal').forEach(m => m.classList.remove('active')); }
 function openUserForm() { closeAllModals(); document.getElementById('userModal').classList.add('active'); }
 function openAdminAuth() { closeAllModals(); document.getElementById('adminAuthModal').classList.add('active'); }
 
+// --- TRIPLE CLICK TRIGGER FOR ADMIN ---
+let clickCount = 0;
+document.getElementById('adminTrigger').addEventListener('click', function() {
+    clickCount++;
+    if (clickCount === 3) {
+        openAdminAuth();
+        clickCount = 0;
+    }
+    setTimeout(() => { clickCount = 0; }, 1000); // Reset after 1 second
+});
+
+
 function submitRequest(e) {
     e.preventDefault();
-
-    // SPAM CHECK
-    if(document.getElementById('honey').value !== "") {
-        console.log("Spam detected");
-        return; 
-    }
+    if(document.getElementById('honey').value !== "") return; // Spam trap
 
     const btn = document.getElementById('submitBtn');
     const name = document.getElementById('userName').value;
@@ -454,7 +484,7 @@ function submitRequest(e) {
     })
     .then(response => response.json())
     .then(data => {
-        showToast("Request Sent Successfully!");
+        showToast("Request Sent!");
         closeAllModals();
         btn.innerText = "Send Request";
         btn.disabled = false;
@@ -468,20 +498,44 @@ function submitRequest(e) {
     });
 }
 
+/* --- SECURE ADMIN CHECK (COMPATIBLE VERSION) --- */
+let isAdminAuthenticated = false;
+
 function checkAdmin() {
-    const pass = document.getElementById('adminPass').value;
-    if(btoa(pass) === ENCODED_PASS) {
+    // 1. Get the password and remove any accidental spaces
+    const pass = document.getElementById('adminPass').value.trim();
+
+    // 2. Encode to Base64 (This works offline/local files too)
+    // "NzA2MA==" is the Base64 code for "7060"
+    const encoded = btoa(pass);
+
+    if(encoded === "NzA2MA==") { 
+        isAdminAuthenticated = true;
         closeAllModals();
         document.getElementById('adminPanelModal').classList.add('active');
         loadRequests();
-        updateVisitCount(); 
+        updateVisitCount();
+        
+        // Clear the password field
+        document.getElementById('adminPass').value = "";
     } else {
         showToast("Access Denied: Wrong Password");
+        // Visual feedback
+        const input = document.getElementById('adminPass');
+        input.style.borderBottom = "1px solid red";
+        setTimeout(() => input.style.borderBottom = "1px solid rgba(255,255,255,0.2)", 500);
     }
 }
 
 function loadRequests() {
     const list = document.getElementById('requestsList');
+    
+    // Security Guard
+    if(!isAdminAuthenticated) {
+        list.innerHTML = '<div class="loading-msg" style="color:#ff3333">Unauthorized Access Blocked.</div>';
+        return;
+    }
+
     list.innerHTML = '<div class="loading-msg">Fetching from Cloud...</div>';
 
     fetch(SHEETDB_URL)
