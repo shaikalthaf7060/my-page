@@ -7,12 +7,6 @@
 <meta name="keywords" content="Althaf, Web Developer, Portfolio, Designer, UI/UX">
 <meta name="theme-color" content="#000000">
 
-<meta property="og:url" content="https://your-website-domain.com">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Althaf | Developer Portfolio">
-<meta property="og:description" content="Web Developer & Designer. Check out my latest work.">
-<meta property="og:image" content="Profile.jpeg"> 
-
 <title>Althaf | Portfolio</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -115,7 +109,6 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
 .links a{ display:flex; align-items:center; justify-content: flex-start; gap:15px; text-decoration:none; color:#ddd; font-size:15px; font-weight: 500; padding:14px 20px; border-radius:12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); transition:all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
 .links a:active { transform: scale(0.98); }
 
-/* Desktop Hover Only - prevents sticking on mobile */
 @media (min-width: 801px) {
     .links a:hover{ transform:translateX(6px) translateZ(10px); background: rgba(255,0,0,0.15); border-color: rgba(255,0,0,0.4); color: #fff; }
     .links img{ width:22px; height:22px; filter:invert(0.9); transition: 0.3s; }
@@ -150,14 +143,65 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
 @keyframes wave { 0%, 100% { height: 20%; opacity: 0.5; } 50% { height: 100%; opacity: 1; } }
 
 /* FOOTER */
-.footer { position: relative; width: 100%; text-align: center; font-size: 11px; color: rgba(255, 255, 255, 0.3); letter-spacing: 1px; z-index: 100; padding-top: 20px; margin-top: auto; }
+.footer { position: relative; width: 100%; text-align: center; font-size: 11px; color: rgba(255, 255, 255, 0.3); letter-spacing: 1px; z-index: 100; padding-top: 20px; margin-bottom: 20px; margin-top: auto; }
 .footer span { color: #ff3333; font-weight: 500; }
 
 /* ========================================= */
-/* MODAL & ADMIN STYLES                     */
+/* NEW ATTRACTIVE FLOATING GAME BUTTON       */
+/* ========================================= */
+.floating-game-btn {
+    position: fixed; 
+    bottom: 30px; 
+    left: 30px;
+    background: rgba(15, 15, 15, 0.9); 
+    border: 1px solid #00e676; 
+    color: #00e676;
+    padding: 10px 20px; 
+    border-radius: 50px; 
+    display: flex; 
+    align-items: center; 
+    gap: 8px;
+    font-weight: 600; 
+    font-size: 13px; 
+    letter-spacing: 0.5px; 
+    cursor: pointer; 
+    z-index: 900;
+    backdrop-filter: blur(10px); 
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    -webkit-tap-highlight-color: transparent;
+    animation: floatAndPulse 3s ease-in-out infinite;
+}
+
+.floating-game-btn svg { width: 20px; height: 20px; fill: currentColor; }
+
+.floating-game-btn:hover { 
+    background: #00e676; 
+    color: #000; 
+    box-shadow: 0 10px 25px rgba(0, 230, 118, 0.6); 
+    transform: scale(1.05) translateY(-5px); 
+    animation: none; 
+}
+
+@keyframes floatAndPulse {
+    0% { 
+        box-shadow: 0 0 0 0 rgba(0, 230, 118, 0.5); 
+        transform: translateY(0px);
+    }
+    50% { 
+        box-shadow: 0 0 0 15px rgba(0, 230, 118, 0); 
+        transform: translateY(-12px); 
+    }
+    100% { 
+        box-shadow: 0 0 0 0 rgba(0, 230, 118, 0); 
+        transform: translateY(0px); 
+    }
+}
+
+/* ========================================= */
+/* CONTACT FAB & MODAL STYLES              */
 /* ========================================= */
 .fab {
-    position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px;
+    position: fixed; bottom: 30px; width: 60px; height: 60px; right: 30px;
     background: rgba(20,20,20,0.8); backdrop-filter: blur(10px);
     border: 1px solid rgba(255,0,0,0.4); border-radius: 50%;
     color: #fff; display: flex; align-items: center; justify-content: center;
@@ -168,20 +212,22 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
 .fab svg { width: 24px; height: 24px; fill: currentColor; }
 
 .modal {
-    position: fixed; bottom: 100px; right: 30px; width: 320px; max-height: 70vh;
+    position: fixed; bottom: 100px; right: 30px; width: 340px; max-height: 75vh;
     overflow-y: auto; background: rgba(15, 15, 15, 0.95); backdrop-filter: blur(20px);
     border: 1px solid rgba(255,255,255,0.1); border-left: 2px solid #ff3333;
     border-radius: 16px; padding: 25px; z-index: 899;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.6); opacity: 0;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.8); opacity: 0;
     transform: translateY(20px) scale(0.95); pointer-events: none;
     transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
     -webkit-overflow-scrolling: touch;
 }
 .modal.active { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
 
+#gameModal { right: auto; left: 30px; border-left-color: #00e676; }
+
 .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-.modal-header h3 { font-size: 16px; font-weight: 600; color: #fff; }
-.close-btn { cursor: pointer; opacity: 0.5; transition: 0.2s; padding: 5px; }
+.modal-header h3 { font-size: 16px; font-weight: 600; color: #fff; margin: 0; }
+.close-btn { cursor: pointer; opacity: 0.5; transition: 0.2s; padding: 5px; font-size: 16px;}
 .close-btn:hover { color: #ff3333; opacity: 1; }
 
 .input-group { margin-bottom: 15px; }
@@ -192,6 +238,8 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
     transition: 0.3s;
 }
 .modal-input:focus { border-bottom-color: #ff3333; background: rgba(255,255,255,0.1); }
+#gamePlayerName:focus { border-bottom-color: #00e676; }
+
 .action-btn {
     width: 100%; padding: 12px; background: #ff3333; color: #fff;
     border: none; border-radius: 8px; font-size: 14px; font-weight: 600;
@@ -199,71 +247,68 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
 }
 .action-btn:hover { background: #cc0000; }
 .action-btn:disabled { background: #555; cursor: not-allowed; }
+.btn-green { background: #00e676; color: #000; }
+.btn-green:hover { background: #00c853; }
+.btn-export { background: transparent; color: #4dabf7; border: 1px solid #4dabf7; padding: 4px 10px; border-radius: 4px; font-size: 11px; cursor: pointer; transition: 0.2s; margin-right: 10px; }
+.btn-export:hover { background: #4dabf7; color: #000; }
 
-/* Admin Stats Box */
-.stat-box {
-    background: linear-gradient(45deg, #222, #111); border: 1px solid rgba(255,255,255,0.1);
-    padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: center;
-    color: #aaa; font-size: 12px; display: block;
-}
+/* Admin Panel Additions */
+.stat-box { background: linear-gradient(45deg, #222, #111); border: 1px solid rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px; text-align: center; color: #aaa; font-size: 12px; display: block; }
 .stat-box span { display: block; font-size: 24px; font-weight: 700; color: #ff3333; margin-top: 5px; }
 
-/* Admin List */
-.req-item {
-    background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px;
-    margin-bottom: 10px; border-left: 2px solid #ff3333; animation: fadeIn 0.3s ease;
-}
-@keyframes fadeIn { from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
-.req-info { font-size: 12px; margin-bottom: 8px; color: #ddd; }
-.req-info b { color: #fff; display: block; font-size: 14px; }
-.approve-btn {
-    background: #25D366; color: #fff; border: none; padding: 10px;
-    border-radius: 4px; font-size: 12px; font-weight: 600; cursor: pointer;
-    width: 100%; display: flex; align-items: center; justify-content: center; gap: 5px;
-}
-.loading-msg { text-align: center; padding: 20px; font-size: 12px; opacity: 0.7; }
+.admin-tabs { display: flex; gap: 5px; margin-bottom: 15px; background: rgba(0,0,0,0.5); padding: 5px; border-radius: 8px; }
+.tab-btn { flex: 1; padding: 8px; background: transparent; border: none; color: #aaa; font-size: 12px; font-weight: 600; cursor: pointer; border-radius: 6px; transition: 0.2s; }
+.tab-btn.active { background: rgba(255,255,255,0.1); color: #fff; }
 
-/* Honeypot Spam Field - Hidden from humans, visible to bots */
+.tab-content { display: none; animation: fadeIn 0.3s ease; }
+.tab-content.active { display: block; }
+
+.analytics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+.stat-card { background: rgba(255,255,255,0.05); padding: 10px; border-radius: 6px; text-align: center; font-size: 11px; color: #aaa; }
+.stat-card b { display: block; font-size: 18px; color: #00e676; margin-top: 5px; }
+
+.req-item { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; margin-bottom: 10px; border-left: 2px solid #ff3333; position: relative; transition: opacity 0.3s; }
+.req-info { font-size: 12px; margin-bottom: 8px; color: #ddd; padding-right: 30px; }
+.req-info b { color: #fff; display: block; font-size: 14px; }
+.btn-row { display: flex; gap: 5px; }
+.approve-btn { flex: 1; background: #25D366; color: #fff; border: none; padding: 8px; border-radius: 4px; font-size: 12px; font-weight: 600; cursor: pointer; }
+.delete-btn { position: absolute; top: 12px; right: 12px; background: transparent; border: none; color: #ff3333; font-size: 16px; cursor: pointer; opacity: 0.5; transition: 0.2s; }
+.delete-btn:hover { opacity: 1; transform: scale(1.1); }
+.loading-msg { text-align: center; padding: 20px; font-size: 12px; opacity: 0.7; }
 #honey { display: none; visibility: hidden; }
 
+/* --- TIC-TAC-TOE STYLES --- */
+.tic-tac-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 12px; }
+.cell { background: #1a1a1a; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 700; color: #fff; cursor: pointer; border-radius: 8px; transition: 0.2s; user-select: none; }
+.cell:hover { background: #2a2a2a; }
+.cell.x-mark { color: #00e676; text-shadow: 0 0 10px rgba(0,230,118,0.5); }
+.cell.o-mark { color: #ff3333; text-shadow: 0 0 10px rgba(255,51,51,0.5); }
+
 /* ================================================= */
-/* MOBILE OPTIMIZATIONS (Max Width 800px)           */
+/* MOBILE OPTIMIZATIONS (Max Width 800px)          */
 /* ================================================= */
 @media(max-width: 800px){
-  /* Scroll Fixes */
   body { position: fixed; width: 100%; height: 100%; overflow-y: auto; -webkit-overflow-scrolling: touch; }
   .background, .pattern-bg { background-attachment: scroll; }
-  /* PERFORMANCE FIX: Disable Grain on mobile */
   .grain-overlay { display: none; }
-  
-  /* PADDING FIX: Prevents FAB from overlapping content */
   .container { padding: 15px; padding-bottom: 120px; justify-content: flex-start; overflow-y: auto; }
-  
-  /* Disable 3D Tilt on Mobile (Saves Battery/Glitches) */
   .profile-card { flex-direction: column; max-width: 100%; margin-top: 20px; margin-bottom: 20px; border-radius: 20px; transform: none !important; perspective: none !important; }
   .left-section, .right-section, .music-content, .links, h1, p.subtitle, .profile-wrapper { transform: none !important; }
-
-  /* Layout Adjustments */
   .left-section { padding: 30px 20px 25px 20px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
   .links { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
-  
-  /* UX CHANGE: Removed hover movement on mobile for "Thumb Zone" stability */
   .links a { flex-direction: column; text-align: center; padding: 15px 10px; font-size: 13px; gap: 8px; border-radius: 16px; background: rgba(255,255,255,0.05); transform: none !important; }
-  .links a:active { background: rgba(255,255,255,0.1); } /* Simple highlight on tap */
+  .links a:active { background: rgba(255,255,255,0.1); } 
   .links img { width: 22px; height: 22px; filter: invert(0.9); }
-  
-  /* Music Player Mobile */
   .right-section { height: auto; aspect-ratio: 1 / 0.85; }
   .music-content { padding: 30px 35px 40px 35px; gap: 15px; width: 100%; }
   .controls-row { margin-top: 20px; display: flex; flex-wrap: nowrap; justify-content: space-between; gap: 10px; width: 100%; }
   .play-btn-modern { width: 50px; height: 50px; }
   .wave-row { flex: 0 0 40px; width: 40px; justify-content: flex-end; }
   
-  /* Modal Centering (Thumb Zone) */
-  .modal { width: 90%; max-width: 350px; left: 50%; bottom: 100px; right: auto; transform: translateX(-50%) translateY(20px); }
+  .floating-game-btn { bottom: 25px; left: 20px; padding: 10px 15px; }
+  .modal { width: 90%; max-width: 380px; left: 50% !important; bottom: 100px; right: auto; transform: translateX(-50%) translateY(20px); }
   .modal.active { transform: translateX(-50%) translateY(0); }
   
-  /* Widget Repositioning */
   .quote-widget { display: block !important; position: relative; top: auto; right: auto; width: 100%; max-width: 100%; text-align: center; margin-bottom: 25px; margin-top: 10px; padding: 0 10px; }
 }
 </style>
@@ -292,12 +337,12 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
       <div class="profile-wrapper"><img src="Profile.jpeg" alt="Shaik Althaf Profile"></div>
       <h1>SHAIK</h1><p class="subtitle">ALTHAF | الطاف</p>
       <div class="links">
-        <a href="https://www.instagram.com/_althuuz_" target="_blank" aria-label="Instagram"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt=""> Instagram</a>
-        <a href="https://www.threads.net/@_althuuz_" target="_blank" aria-label="Threads"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/threads.svg" alt=""> Threads</a>
-        <a href="https://www.facebook.com/althaf.ravan" target="_blank" aria-label="Facebook"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt=""> Facebook</a>
-        <a href="https://snapchat.com/t/JQ5pNLlI" target="_blank" aria-label="Snapchat"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/snapchat.svg" alt=""> Snapchat</a>
-        <a href="https://t.me/ShaikAlthu" target="_blank" aria-label="Telegram"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/telegram.svg" alt=""> Telegram</a>
-        <a href="mailto:shaikalthaf7060@gmail.com" aria-label="Email"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/gmail.svg" alt=""> Gmail</a>
+        <a href="https://www.instagram.com/_althuuz_" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt=""> Instagram</a>
+        <a href="https://www.threads.net/@_althuuz_" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/threads.svg" alt=""> Threads</a>
+        <a href="https://www.facebook.com/althaf.ravan" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt=""> Facebook</a>
+        <a href="https://snapchat.com/t/JQ5pNLlI" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/snapchat.svg" alt=""> Snapchat</a>
+        <a href="https://t.me/ShaikAlthu" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/telegram.svg" alt=""> Telegram</a>
+        <a href="mailto:shaikalthaf7060@gmail.com"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/gmail.svg" alt=""> Gmail</a>
       </div>
     </div>
     <div class="right-section">
@@ -313,19 +358,52 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
   <div class="footer">Developed by <span>Althaf</span> | &copy; 2026 All Rights Reserved</div>
 </div>
 
-<div class="fab" onclick="openUserForm()" aria-label="Request Contact">
+<div class="floating-game-btn" onclick="openGameModal()" aria-label="Play Tic-Tac-Toe">
+    <svg viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+    <span>Play Mini-Game</span>
+</div>
+
+<div class="fab" onclick="openContactForm()" aria-label="Request Contact">
     <svg viewBox="0 0 24 24"><path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
 </div>
 
-<div class="modal" id="userModal">
+<div class="modal" id="gameModal">
+    <div class="modal-header"><h3>Mini Game</h3><span class="close-btn" onclick="closeAllModals()" aria-label="Close">✕</span></div>
+    
+    <div id="gameSetupView">
+        <p style="font-size:12px; color:#aaa; margin-bottom:15px;">Enter your name to play Tic-Tac-Toe against AI.</p>
+        <div class="input-group"><input type="text" id="gamePlayerName" class="modal-input" placeholder="Your Name" required></div>
+        <button onclick="startGame()" class="action-btn btn-green">Start Game</button>
+    </div>
+
+    <div id="gamePlayView" style="display:none;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:15px; font-size:14px; font-weight:600;">
+            <span id="playerScoreTxt" style="color:#00e676;">You: 0</span>
+            <span id="compScoreTxt" style="color:#ff3333;">Comp: 0</span>
+        </div>
+        
+        <div class="tic-tac-board">
+            <div class="cell" onclick="makeMove(0)"></div><div class="cell" onclick="makeMove(1)"></div><div class="cell" onclick="makeMove(2)"></div>
+            <div class="cell" onclick="makeMove(3)"></div><div class="cell" onclick="makeMove(4)"></div><div class="cell" onclick="makeMove(5)"></div>
+            <div class="cell" onclick="makeMove(6)"></div><div class="cell" onclick="makeMove(7)"></div><div class="cell" onclick="makeMove(8)"></div>
+        </div>
+
+        <div id="gameStatus" style="margin-top:15px; text-align:center; font-size:14px; font-weight:bold; color:#fff;">Your Turn (X)</div>
+        
+        <div style="display:flex; gap:10px; margin-top:20px;">
+             <button onclick="resetBoard()" class="action-btn" style="background:#444;">Play Again</button>
+             <button onclick="submitScore()" id="saveScoreBtn" class="action-btn btn-green">Save & Quit</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="contactModal">
     <div class="modal-header"><h3>Request Contact</h3><span class="close-btn" onclick="closeAllModals()" aria-label="Close">✕</span></div>
     <p style="font-size:12px; color:#aaa; margin-bottom:15px;">Send a request. Admin will contact you.</p>
     <form onsubmit="submitRequest(event)">
         <div class="input-group"><input type="text" id="userName" class="modal-input" placeholder="Your Name" required></div>
         <div class="input-group"><input type="tel" id="userPhone" class="modal-input" placeholder="Your Mobile Number" required></div>
-        
         <input type="text" id="honey" tabindex="-1" autocomplete="off">
-
         <button type="submit" id="submitBtn" class="action-btn">Send Request</button>
     </form>
 </div>
@@ -337,9 +415,28 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
 </div>
 
 <div class="modal" id="adminPanelModal">
-    <div class="modal-header"><h3>Pending Requests</h3><span class="close-btn" onclick="closeAllModals()" aria-label="Close">✕</span></div>
+    <div class="modal-header">
+        <h3>Admin Dashboard</h3>
+        <div>
+            <button class="btn-export" onclick="exportCSV()" aria-label="Export Data">⬇ CSV</button>
+            <span class="close-btn" onclick="closeAllModals()" aria-label="Close">✕</span>
+        </div>
+    </div>
     <div class="stat-box">Total Site Visits <span id="visitCount">...</span></div>
-    <div id="requestsList"><div class="loading-msg">Loading requests...</div></div>
+    
+    <div class="admin-tabs">
+        <button class="tab-btn active" id="tabMsgBtn" onclick="switchTab('msg')">📩 Messages</button>
+        <button class="tab-btn" id="tabGameBtn" onclick="switchTab('game')">🎮 Leaderboard</button>
+    </div>
+
+    <div id="msgView" class="tab-content active">
+        <div id="requestsList"><div class="loading-msg">Loading data...</div></div>
+    </div>
+
+    <div id="gameView" class="tab-content">
+        <div class="analytics-grid" id="analyticsBoard"></div>
+        <div id="gameLeaderboard"><div class="loading-msg">Loading data...</div></div>
+    </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.2/vanilla-tilt.min.js"></script>
@@ -347,27 +444,21 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
 <script>
 /* --- CONFIGURATION --- */
 const SHEETDB_URL = "https://sheetdb.io/api/v1/7lnti5fot9g7a";
-/* NOTE: Go to SheetDB Settings and enable 'Allowed Domains' to protect this API! */
+let globalAdminData = [];
 
 /* --- PRELOADER & SETUP --- */
 window.onload = function() {
     const preloader = document.getElementById('preloader');
     preloader.style.opacity = '0';
     preloader.style.visibility = 'hidden';
-    
-    // VOLUME FIX: Set to 50%
     const music = document.getElementById("music");
     if(music) music.volume = 0.5;
 }
 
-/* --- 3D TILT INIT --- */
 if(window.innerWidth > 800) {
-    VanillaTilt.init(document.querySelector(".profile-card"), {
-        max: 8, speed: 400, glare: true, "max-glare": 0.2, gyroscope: false
-    });
+    VanillaTilt.init(document.querySelector(".profile-card"), { max: 8, speed: 400, glare: true, "max-glare": 0.2, gyroscope: false });
 }
 
-/* --- TOAST & CURSOR --- */
 function showToast(message) {
     const toast = document.getElementById('toast');
     document.getElementById('toastMsg').innerText = message;
@@ -377,12 +468,9 @@ function showToast(message) {
 
 const cursor = document.getElementById('cursor');
 document.addEventListener('mousemove', (e) => {
-    if(window.innerWidth > 800) {
-        cursor.style.left = e.clientX + 'px';
-        cursor.style.top = e.clientY + 'px';
-    }
+    if(window.innerWidth > 800) { cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px'; }
 });
-document.querySelectorAll('a, button, .fab, .quote-widget, .progress-bg').forEach(el => {
+document.querySelectorAll('a, button, .fab, .floating-game-btn, .quote-widget, .progress-bg, .cell, .delete-btn').forEach(el => {
     el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
     el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
 });
@@ -393,7 +481,6 @@ const playBtn = document.querySelector(".play-btn-modern");
 const bars = document.querySelectorAll(".bar");
 const bgImg = document.getElementById("bg-img");
 const progressBar = document.getElementById("progressBar");
-const progressContainer = document.getElementById("progressContainer");
 const currTime = document.getElementById("currTime");
 const durTime = document.getElementById("durTime");
 const playIcon = `<svg viewBox="0 0 24 24" style="margin-left: 2px;"><path d="M8 5v14l11-7z"/></svg>`;
@@ -411,7 +498,7 @@ music.ontimeupdate = function() {
       if(sec < 10) sec = "0" + sec; currTime.innerText = min + ":" + sec;
   }
 };
-progressContainer.addEventListener('click', function(e) {
+document.getElementById("progressContainer").addEventListener('click', function(e) {
     const width = this.clientWidth; const clickX = e.clientX - this.getBoundingClientRect().left;
     music.currentTime = (clickX / width) * music.duration;
 });
@@ -419,155 +506,294 @@ progressContainer.addEventListener('click', function(e) {
 function toggleMusic(){
   if(music.paused){ 
       music.play().then(() => {
-          playBtn.innerHTML = pauseIcon; 
-          bars.forEach(bar => bar.style.animationPlayState = "running"); 
-          bgImg.style.transform = "scale(1.1)"; 
-      }).catch(error => {
-          showToast("Tap anywhere first!");
-      });
+          playBtn.innerHTML = pauseIcon; bars.forEach(bar => bar.style.animationPlayState = "running"); bgImg.style.transform = "scale(1.1)"; 
+      }).catch(error => { showToast("Tap anywhere first!"); });
   } else { 
-      music.pause(); 
-      playBtn.innerHTML = playIcon; 
-      bars.forEach(bar => bar.style.animationPlayState = "paused"); 
-      bgImg.style.transform = "scale(1)"; 
+      music.pause(); playBtn.innerHTML = playIcon; bars.forEach(bar => bar.style.animationPlayState = "paused"); bgImg.style.transform = "scale(1)"; 
   }
 }
 
-/* --- VISITOR COUNT --- */
-const COUNT_URL = "https://api.countapi.xyz/hit/althaf-portfolio-custom/visits";
-const COUNT_READ_URL = "https://api.countapi.xyz/get/althaf-portfolio-custom/visits";
-fetch(COUNT_URL).catch(err => console.log("Visitor API offline"));
-
 function updateVisitCount() {
-    fetch(COUNT_READ_URL)
+    fetch("https://api.countapi.xyz/get/althaf-portfolio-custom/visits")
     .then(res => res.json())
     .then(data => { document.getElementById('visitCount').innerText = data.value; })
-    .catch(err => { 
-        // Hide statistic if API fails
-        document.querySelector('.stat-box').style.display = 'none';
-    });
+    .catch(err => { document.querySelector('.stat-box').style.display = 'none'; });
 }
 
-/* --- ADMIN & MODALS --- */
+/* --- MODALS & FORMS --- */
 function closeAllModals() { document.querySelectorAll('.modal').forEach(m => m.classList.remove('active')); }
-function openUserForm() { closeAllModals(); document.getElementById('userModal').classList.add('active'); }
+function openContactForm() { closeAllModals(); document.getElementById('contactModal').classList.add('active'); }
 function openAdminAuth() { closeAllModals(); document.getElementById('adminAuthModal').classList.add('active'); }
 
-// --- TRIPLE CLICK TRIGGER FOR ADMIN ---
+/* --- DOUBLE TAP TRIGGER FOR ADMIN --- */
 let clickCount = 0;
+let clickTimer;
 document.getElementById('adminTrigger').addEventListener('click', function() {
     clickCount++;
-    if (clickCount === 3) {
-        openAdminAuth();
-        clickCount = 0;
+    if (clickCount === 2) { 
+        openAdminAuth(); 
+        clickCount = 0; 
+        clearTimeout(clickTimer); 
+    } else {
+        clickTimer = setTimeout(() => { clickCount = 0; }, 400); 
     }
-    setTimeout(() => { clickCount = 0; }, 1000); // Reset after 1 second
 });
-
 
 function submitRequest(e) {
     e.preventDefault();
-    if(document.getElementById('honey').value !== "") return; // Spam trap
-
+    if(document.getElementById('honey').value !== "") return;
     const btn = document.getElementById('submitBtn');
     const name = document.getElementById('userName').value;
     const phone = document.getElementById('userPhone').value;
     const date = new Date().toLocaleDateString();
+    const uniqueId = Date.now().toString();
 
-    btn.innerText = "Sending...";
-    btn.disabled = true;
-
+    btn.innerText = "Sending..."; btn.disabled = true;
     fetch(SHEETDB_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ data: { name: name, phone: phone, date: date, status: "Pending" } })
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ data: { id: uniqueId, name: name, phone: phone, date: date, status: "Pending" } })
     })
     .then(response => response.json())
     .then(data => {
-        showToast("Request Sent!");
-        closeAllModals();
-        btn.innerText = "Send Request";
-        btn.disabled = false;
-        document.getElementById('userName').value = "";
-        document.getElementById('userPhone').value = "";
-    })
-    .catch(error => {
-        showToast("Error! Check Internet.");
-        btn.innerText = "Send Request";
-        btn.disabled = false;
-    });
+        showToast("Request Sent!"); closeAllModals();
+        btn.innerText = "Send Request"; btn.disabled = false;
+        document.getElementById('userName').value = ""; document.getElementById('userPhone').value = "";
+    }).catch(error => { showToast("Error! Check Internet."); btn.innerText = "Send Request"; btn.disabled = false; });
 }
 
-/* --- SECURE ADMIN CHECK (COMPATIBLE VERSION) --- */
+/* --- TIC TAC TOE GAME LOGIC --- */
+let board = ["", "", "", "", "", "", "", "", ""];
+let currentPlayerName = ""; let scorePlayer = 0; let scoreComp = 0;
+let isPlayerTurn = true; let isGameOver = false;
+
+function openGameModal() {
+    closeAllModals(); document.getElementById('gameModal').classList.add('active');
+    document.getElementById('gameSetupView').style.display = 'block';
+    document.getElementById('gamePlayView').style.display = 'none';
+}
+
+function startGame() {
+    const inputName = document.getElementById('gamePlayerName').value.trim();
+    if(!inputName) { showToast("Please enter a name"); return; }
+    currentPlayerName = inputName; scorePlayer = 0; scoreComp = 0; updateScoreText();
+    document.getElementById('gameSetupView').style.display = 'none';
+    document.getElementById('gamePlayView').style.display = 'block';
+    resetBoard();
+}
+
+function updateScoreText() {
+    document.getElementById('playerScoreTxt').innerText = `${currentPlayerName}: ${scorePlayer}`;
+    document.getElementById('compScoreTxt').innerText = `Comp: ${scoreComp}`;
+}
+
+function resetBoard() {
+    board = ["", "", "", "", "", "", "", "", ""];
+    isPlayerTurn = true; isGameOver = false;
+    document.getElementById('gameStatus').innerText = "Your Turn (X)";
+    document.getElementById('gameStatus').style.color = "#fff";
+    document.querySelectorAll('.cell').forEach(cell => { cell.innerText = ""; cell.className = "cell"; });
+}
+
+function makeMove(index) {
+    if(isGameOver || !isPlayerTurn || board[index] !== "") return;
+    board[index] = "X"; updateCellDisplay(index, "X", "x-mark");
+    if(checkWin("X")) { endSession("You Win!", "player"); return; }
+    if(board.indexOf("") === -1) { endSession("Draw!", "draw"); return; }
+    isPlayerTurn = false;
+    document.getElementById('gameStatus').innerText = "Computer Thinking...";
+    document.getElementById('gameStatus').style.color = "#aaa";
+    setTimeout(computerMove, 500);
+}
+
+function computerMove() {
+    if(isGameOver) return;
+    let emptyIdx = [];
+    for(let i=0; i<9; i++) if(board[i] === "") emptyIdx.push(i);
+    if(emptyIdx.length > 0) {
+        let randIdx = emptyIdx[Math.floor(Math.random() * emptyIdx.length)];
+        board[randIdx] = "O"; updateCellDisplay(randIdx, "O", "o-mark");
+        if(checkWin("O")) { endSession("Computer Wins!", "comp"); return; }
+        if(board.indexOf("") === -1) { endSession("Draw!", "draw"); return; }
+    }
+    isPlayerTurn = true;
+    document.getElementById('gameStatus').innerText = "Your Turn (X)"; document.getElementById('gameStatus').style.color = "#fff";
+}
+
+function updateCellDisplay(index, mark, className) {
+    let cell = document.querySelectorAll('.cell')[index];
+    cell.innerText = mark; cell.classList.add(className);
+}
+
+const winCombos = [ [0,1,2],[3,4,5],[6,7,8], [0,3,6],[1,4,7],[2,5,8], [0,4,8],[2,4,6] ];
+function checkWin(mark) { return winCombos.some(combo => combo.every(idx => board[idx] === mark)); }
+
+function endSession(msg, winnerType) {
+    isGameOver = true; let statusEl = document.getElementById('gameStatus'); statusEl.innerText = msg;
+    if(winnerType === "player") { scorePlayer++; statusEl.style.color = "#00e676"; }
+    else if(winnerType === "comp") { scoreComp++; statusEl.style.color = "#ff3333"; }
+    else { statusEl.style.color = "#ffaa00"; }
+    updateScoreText();
+}
+
+function submitScore() {
+    const btn = document.getElementById('saveScoreBtn');
+    const date = new Date().toLocaleDateString();
+    const uniqueId = Date.now().toString(); 
+    
+    btn.innerText = "Saving..."; btn.disabled = true;
+    fetch(SHEETDB_URL, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ data: { id: uniqueId, name: currentPlayerName, phone: `Player: ${scorePlayer} | AI: ${scoreComp}`, date: date, status: "GameScore" } })
+    })
+    .then(res => res.json())
+    .then(data => { showToast("Score Saved!"); closeAllModals(); btn.innerText = "Save & Quit"; btn.disabled = false; })
+    .catch(err => { showToast("Error Saving Score."); btn.innerText = "Save & Quit"; btn.disabled = false; });
+}
+
+/* --- SECURE ADMIN PANEL & DASHBOARD --- */
 let isAdminAuthenticated = false;
 
+function secureHash(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        hash = ((hash << 5) - hash) + str.charCodeAt(i);
+        hash |= 0; 
+    }
+    return hash.toString();
+}
+
 function checkAdmin() {
-    // 1. Get the password and remove any accidental spaces
     const pass = document.getElementById('adminPass').value.trim();
-
-    // 2. Encode to Base64 (This works offline/local files too)
-    // "NzA2MA==" is the Base64 code for "7060"
-    const encoded = btoa(pass);
-
-    if(encoded === "NzA2MA==") { 
-        isAdminAuthenticated = true;
-        closeAllModals();
+    if(secureHash(pass) === "1686355") {  // 7060
+        isAdminAuthenticated = true; closeAllModals();
         document.getElementById('adminPanelModal').classList.add('active');
-        loadRequests();
-        updateVisitCount();
-        
-        // Clear the password field
+        loadRequests(); updateVisitCount();
         document.getElementById('adminPass').value = "";
     } else {
-        showToast("Access Denied: Wrong Password");
-        // Visual feedback
+        showToast("Access Denied");
         const input = document.getElementById('adminPass');
         input.style.borderBottom = "1px solid red";
         setTimeout(() => input.style.borderBottom = "1px solid rgba(255,255,255,0.2)", 500);
     }
 }
 
-function loadRequests() {
-    const list = document.getElementById('requestsList');
-    
-    // Security Guard
-    if(!isAdminAuthenticated) {
-        list.innerHTML = '<div class="loading-msg" style="color:#ff3333">Unauthorized Access Blocked.</div>';
-        return;
-    }
+function switchTab(tab) {
+    document.getElementById('tabMsgBtn').classList.remove('active');
+    document.getElementById('tabGameBtn').classList.remove('active');
+    document.getElementById('msgView').classList.remove('active');
+    document.getElementById('gameView').classList.remove('active');
 
-    list.innerHTML = '<div class="loading-msg">Fetching from Cloud...</div>';
+    if(tab === 'msg') {
+        document.getElementById('tabMsgBtn').classList.add('active');
+        document.getElementById('msgView').classList.add('active');
+    } else {
+        document.getElementById('tabGameBtn').classList.add('active');
+        document.getElementById('gameView').classList.add('active');
+    }
+}
+
+function loadRequests() {
+    const msgList = document.getElementById('requestsList');
+    const gameList = document.getElementById('gameLeaderboard');
+    const analyticsBoard = document.getElementById('analyticsBoard');
+    
+    if(!isAdminAuthenticated) { msgList.innerHTML = '<div style="color:red">Unauthorized</div>'; return; }
+
+    msgList.innerHTML = '<div class="loading-msg">Fetching from Cloud...</div>';
+    gameList.innerHTML = '<div class="loading-msg">Fetching Leaderboard...</div>';
 
     fetch(SHEETDB_URL)
     .then(response => response.json())
     .then(data => {
+        globalAdminData = data; 
+        let msgHtml = ''; let gameHtml = '';
+        let totalSessions = 0; let highestScore = 0;
+
         if(data.length === 0) {
-            list.innerHTML = '<div class="loading-msg">No pending requests</div>';
+            msgList.innerHTML = '<div class="loading-msg">No messages found.</div>';
+            gameList.innerHTML = '<div class="loading-msg">No games played yet.</div>';
             return;
         }
-        let html = '';
+
         data.reverse().forEach(req => {
-            html += `
-                <div class="req-item">
-                    <div class="req-info">
-                        <b>${req.name}</b>
-                        ${req.phone} <span style="opacity:0.5">(${req.date})</span>
+            const safeId = req.id || ""; 
+            const deleteBtnHtml = safeId ? `<button class="delete-btn" onclick="deleteRecord('${safeId}', this)" title="Delete">🗑</button>` : '';
+
+            if(req.status === "GameScore") {
+                totalSessions++;
+                const scoreMatch = req.phone.match(/Player: (\d+) \| AI: (\d+)/);
+                if(scoreMatch) {
+                    const pScore = parseInt(scoreMatch[1]);
+                    if(pScore > highestScore) highestScore = pScore;
+                }
+                gameHtml += `
+                    <div class="req-item" style="border-left-color: #00e676;">
+                        ${deleteBtnHtml}
+                        <div class="req-info">
+                            <b style="color:#00e676;">🎮 ${req.name}</b>
+                            ${req.phone} <span style="opacity:0.5">(${req.date})</span>
+                        </div>
                     </div>
-                    <button class="approve-btn" onclick="openChat('${req.phone}')">
-                        Open WhatsApp Chat
-                    </button>
-                </div>
-            `;
+                `;
+            } else {
+                msgHtml += `
+                    <div class="req-item">
+                        ${deleteBtnHtml}
+                        <div class="req-info">
+                            <b>${req.name}</b>
+                            ${req.phone} <span style="opacity:0.5">(${req.date})</span>
+                        </div>
+                        <div class="btn-row">
+                            <button class="approve-btn" onclick="openChat('${req.phone}')">WhatsApp</button>
+                        </div>
+                    </div>
+                `;
+            }
         });
-        list.innerHTML = html;
+
+        analyticsBoard.innerHTML = `
+            <div class="stat-card">Sessions Played <b>${totalSessions}</b></div>
+            <div class="stat-card">Highest Score <b>${highestScore}</b></div>
+        `;
+
+        msgList.innerHTML = msgHtml || '<div class="loading-msg">No new messages.</div>';
+        gameList.innerHTML = gameHtml || '<div class="loading-msg">No games played yet.</div>';
     })
-    .catch(error => {
-        list.innerHTML = '<div class="loading-msg">Error loading data.</div>';
-    });
+    .catch(error => { msgList.innerHTML = '<div class="loading-msg">Error loading data.</div>'; });
 }
 
-function openChat(userPhone) {
-    window.open(`https://wa.me/${userPhone}`, '_blank');
+function openChat(userPhone) { window.open(`https://wa.me/${userPhone}`, '_blank'); }
+
+function deleteRecord(id, btnElement) {
+    if(!confirm("Delete this record permanently?")) return;
+    btnElement.innerText = "⏳";
+    
+    fetch(`${SHEETDB_URL}/id/${id}`, { method: 'DELETE' })
+    .then(res => res.json())
+    .then(data => {
+        const itemBox = btnElement.closest('.req-item');
+        itemBox.style.opacity = '0';
+        setTimeout(() => itemBox.remove(), 300);
+        showToast("Record Deleted");
+    })
+    .catch(err => { showToast("Error Deleting"); btnElement.innerText = "🗑"; });
+}
+
+function exportCSV() {
+    if(globalAdminData.length === 0) { showToast("No data to export"); return; }
+    const headers = Object.keys(globalAdminData[0]).join(",");
+    const rows = globalAdminData.map(obj => {
+        return Object.values(obj).map(val => `"${String(val).replace(/"/g, '""')}"`).join(",");
+    }).join("\n");
+
+    const csvContent = "data:text/csv;charset=utf-8," + headers + "\n" + rows;
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `Althaf_Portfolio_Data_${new Date().toLocaleDateString()}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 }
 </script>
 
