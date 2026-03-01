@@ -13,6 +13,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+<script src="https://unpkg.com/otpauth@9.2.2/dist/otpauth.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
 <style>
 /* --- RESET & FONTS --- */
 *{ margin:0; padding:0; box-sizing:border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; outline: none; }
@@ -150,51 +153,19 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
 /* NEW ATTRACTIVE FLOATING GAME BUTTON       */
 /* ========================================= */
 .floating-game-btn {
-    position: fixed; 
-    bottom: 30px; 
-    left: 30px;
-    background: rgba(15, 15, 15, 0.9); 
-    border: 1px solid #00e676; 
-    color: #00e676;
-    padding: 10px 20px; 
-    border-radius: 50px; 
-    display: flex; 
-    align-items: center; 
-    gap: 8px;
-    font-weight: 600; 
-    font-size: 13px; 
-    letter-spacing: 0.5px; 
-    cursor: pointer; 
-    z-index: 900;
-    backdrop-filter: blur(10px); 
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    -webkit-tap-highlight-color: transparent;
-    animation: floatAndPulse 3s ease-in-out infinite;
+    position: fixed; bottom: 30px; left: 30px;
+    background: rgba(15, 15, 15, 0.9); border: 1px solid #00e676; color: #00e676;
+    padding: 10px 20px; border-radius: 50px; display: flex; align-items: center; gap: 8px;
+    font-weight: 600; font-size: 13px; letter-spacing: 0.5px; cursor: pointer; z-index: 900;
+    backdrop-filter: blur(10px); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    -webkit-tap-highlight-color: transparent; animation: floatAndPulse 3s ease-in-out infinite;
 }
-
 .floating-game-btn svg { width: 20px; height: 20px; fill: currentColor; }
-
-.floating-game-btn:hover { 
-    background: #00e676; 
-    color: #000; 
-    box-shadow: 0 10px 25px rgba(0, 230, 118, 0.6); 
-    transform: scale(1.05) translateY(-5px); 
-    animation: none; 
-}
-
+.floating-game-btn:hover { background: #00e676; color: #000; box-shadow: 0 10px 25px rgba(0, 230, 118, 0.6); transform: scale(1.05) translateY(-5px); animation: none; }
 @keyframes floatAndPulse {
-    0% { 
-        box-shadow: 0 0 0 0 rgba(0, 230, 118, 0.5); 
-        transform: translateY(0px);
-    }
-    50% { 
-        box-shadow: 0 0 0 15px rgba(0, 230, 118, 0); 
-        transform: translateY(-12px); 
-    }
-    100% { 
-        box-shadow: 0 0 0 0 rgba(0, 230, 118, 0); 
-        transform: translateY(0px); 
-    }
+    0% { box-shadow: 0 0 0 0 rgba(0, 230, 118, 0.5); transform: translateY(0px); }
+    50% { box-shadow: 0 0 0 15px rgba(0, 230, 118, 0); transform: translateY(-12px); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 230, 118, 0); transform: translateY(0px); }
 }
 
 /* ========================================= */
@@ -252,21 +223,31 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
 .btn-export { background: transparent; color: #4dabf7; border: 1px solid #4dabf7; padding: 4px 10px; border-radius: 4px; font-size: 11px; cursor: pointer; transition: 0.2s; margin-right: 10px; }
 .btn-export:hover { background: #4dabf7; color: #000; }
 
-/* Admin Panel Additions */
-.stat-box { background: linear-gradient(45deg, #222, #111); border: 1px solid rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px; text-align: center; color: #aaa; font-size: 12px; display: block; }
-.stat-box span { display: block; font-size: 24px; font-weight: 700; color: #ff3333; margin-top: 5px; }
+/* ========================================= */
+/* UPGRADED ADMIN PANEL STYLES               */
+/* ========================================= */
+.stat-box { 
+    background: linear-gradient(135deg, #1a0000 0%, #330000 100%); 
+    border: 1px solid rgba(255, 51, 51, 0.3); box-shadow: 0 4px 15px rgba(255, 51, 51, 0.15);
+    padding: 20px; border-radius: 12px; margin-bottom: 20px; text-align: center; color: #ccc; 
+    font-size: 12px; text-transform: uppercase; letter-spacing: 1px; position: relative; overflow: hidden;
+}
+.stat-box::before {
+    content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.08), transparent);
+    transform: skewX(-25deg); animation: shine 4s infinite;
+}
+@keyframes shine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
+.stat-box span { display: block; font-size: 34px; font-weight: 700; color: #00e676; margin-top: 5px; text-shadow: 0 0 15px rgba(0, 230, 118, 0.5); letter-spacing: 0; }
 
 .admin-tabs { display: flex; gap: 5px; margin-bottom: 15px; background: rgba(0,0,0,0.5); padding: 5px; border-radius: 8px; }
 .tab-btn { flex: 1; padding: 8px; background: transparent; border: none; color: #aaa; font-size: 12px; font-weight: 600; cursor: pointer; border-radius: 6px; transition: 0.2s; }
 .tab-btn.active { background: rgba(255,255,255,0.1); color: #fff; }
-
 .tab-content { display: none; animation: fadeIn 0.3s ease; }
 .tab-content.active { display: block; }
-
 .analytics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
 .stat-card { background: rgba(255,255,255,0.05); padding: 10px; border-radius: 6px; text-align: center; font-size: 11px; color: #aaa; }
 .stat-card b { display: block; font-size: 18px; color: #00e676; margin-top: 5px; }
-
 .req-item { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; margin-bottom: 10px; border-left: 2px solid #ff3333; position: relative; transition: opacity 0.3s; }
 .req-info { font-size: 12px; margin-bottom: 8px; color: #ddd; padding-right: 30px; }
 .req-info b { color: #fff; display: block; font-size: 14px; }
@@ -284,14 +265,19 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
 .cell.x-mark { color: #00e676; text-shadow: 0 0 10px rgba(0,230,118,0.5); }
 .cell.o-mark { color: #ff3333; text-shadow: 0 0 10px rgba(255,51,51,0.5); }
 
+/* --- QR CODE SPECIFIC STYLES --- */
+#qrcode img { display: block; margin: 0 auto; outline: 4px solid #fff; border-radius: 4px; }
+.setup-trigger-txt { font-size: 11px; text-align: center; margin-top: 20px; color: #666; cursor: pointer; transition: 0.3s; letter-spacing: 1px; text-transform: uppercase; font-weight: 500; }
+.setup-trigger-txt:hover { color: #00e676; text-shadow: 0 0 8px rgba(0,230,118,0.5); }
+
 /* ================================================= */
 /* MOBILE OPTIMIZATIONS (Max Width 800px)          */
 /* ================================================= */
 @media(max-width: 800px){
-  body { position: fixed; width: 100%; height: 100%; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  body { min-height: 100vh; -webkit-overflow-scrolling: touch; }
   .background, .pattern-bg { background-attachment: scroll; }
   .grain-overlay { display: none; }
-  .container { padding: 15px; padding-bottom: 120px; justify-content: flex-start; overflow-y: auto; }
+  .container { padding: 15px; padding-bottom: 120px; justify-content: flex-start; }
   .profile-card { flex-direction: column; max-width: 100%; margin-top: 20px; margin-bottom: 20px; border-radius: 20px; transform: none !important; perspective: none !important; }
   .left-section, .right-section, .music-content, .links, h1, p.subtitle, .profile-wrapper { transform: none !important; }
   .left-section { padding: 30px 20px 25px 20px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
@@ -337,18 +323,18 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
       <div class="profile-wrapper"><img src="Profile.jpeg" alt="Shaik Althaf Profile"></div>
       <h1>SHAIK</h1><p class="subtitle">ALTHAF | الطاف</p>
       <div class="links">
-        <a href="https://www.instagram.com/_althuuz_" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt=""> Instagram</a>
-        <a href="https://www.threads.net/@_althuuz_" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/threads.svg" alt=""> Threads</a>
-        <a href="https://www.facebook.com/althaf.ravan" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt=""> Facebook</a>
-        <a href="https://snapchat.com/t/JQ5pNLlI" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/snapchat.svg" alt=""> Snapchat</a>
-        <a href="https://t.me/ShaikAlthu" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/telegram.svg" alt=""> Telegram</a>
+        <a href="https://www.instagram.com/_althuuz_" target="_blank" rel="noopener noreferrer"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt=""> Instagram</a>
+        <a href="https://www.threads.net/@_althuuz_" target="_blank" rel="noopener noreferrer"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/threads.svg" alt=""> Threads</a>
+        <a href="https://www.facebook.com/althaf.ravan" target="_blank" rel="noopener noreferrer"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt=""> Facebook</a>
+        <a href="https://snapchat.com/t/JQ5pNLlI" target="_blank" rel="noopener noreferrer"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/snapchat.svg" alt=""> Snapchat</a>
+        <a href="https://t.me/ShaikAlthu" target="_blank" rel="noopener noreferrer"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/telegram.svg" alt=""> Telegram</a>
         <a href="mailto:shaikalthaf7060@gmail.com"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/gmail.svg" alt=""> Gmail</a>
       </div>
     </div>
     <div class="right-section">
       <div class="cinematic-bg"><img src="Image.jpeg" id="bg-img" alt="Background Cover"></div><div class="cinematic-overlay"></div>
       <div class="music-content">
-        <div class="song-meta"><div class="song-titles"><span>Now Playing</span><h2><a href="https://www.youtube.com/watch?v=OFrtmsF7WaM" target="_blank">Enna Sona</a></h2></div></div>
+        <div class="song-meta"><div class="song-titles"><span>Now Playing</span><h2><a href="https://www.youtube.com/watch?v=OFrtmsF7WaM" target="_blank" rel="noopener noreferrer">Enna Sona</a></h2></div></div>
         <div class="progress-container"><div class="time-info"><span id="currTime">0:00</span><span id="durTime">0:00</span></div><div class="progress-bg" id="progressContainer"><div class="progress-fill" id="progressBar"></div></div></div>
         <div class="controls-row"><button class="play-btn-modern" onclick="toggleMusic()" aria-label="Toggle Music"><svg viewBox="0 0 24 24" style="margin-left: 2px;"><path d="M8 5v14l11-7z"/></svg></button><div class="wave-row"><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div></div></div>
       </div>
@@ -369,27 +355,19 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
 
 <div class="modal" id="gameModal">
     <div class="modal-header"><h3>Mini Game</h3><span class="close-btn" onclick="closeAllModals()" aria-label="Close">✕</span></div>
-    
     <div id="gameSetupView">
         <p style="font-size:12px; color:#aaa; margin-bottom:15px;">Enter your name to play Tic-Tac-Toe against AI.</p>
         <div class="input-group"><input type="text" id="gamePlayerName" class="modal-input" placeholder="Your Name" required></div>
         <button onclick="startGame()" class="action-btn btn-green">Start Game</button>
     </div>
-
     <div id="gamePlayView" style="display:none;">
-        <div style="display:flex; justify-content:space-between; margin-bottom:15px; font-size:14px; font-weight:600;">
-            <span id="playerScoreTxt" style="color:#00e676;">You: 0</span>
-            <span id="compScoreTxt" style="color:#ff3333;">Comp: 0</span>
-        </div>
-        
+        <div style="display:flex; justify-content:space-between; margin-bottom:15px; font-size:14px; font-weight:600;"><span id="playerScoreTxt" style="color:#00e676;">You: 0</span><span id="compScoreTxt" style="color:#ff3333;">Comp: 0</span></div>
         <div class="tic-tac-board">
             <div class="cell" onclick="makeMove(0)"></div><div class="cell" onclick="makeMove(1)"></div><div class="cell" onclick="makeMove(2)"></div>
             <div class="cell" onclick="makeMove(3)"></div><div class="cell" onclick="makeMove(4)"></div><div class="cell" onclick="makeMove(5)"></div>
             <div class="cell" onclick="makeMove(6)"></div><div class="cell" onclick="makeMove(7)"></div><div class="cell" onclick="makeMove(8)"></div>
         </div>
-
         <div id="gameStatus" style="margin-top:15px; text-align:center; font-size:14px; font-weight:bold; color:#fff;">Your Turn (X)</div>
-        
         <div style="display:flex; gap:10px; margin-top:20px;">
              <button onclick="resetBoard()" class="action-btn" style="background:#444;">Play Again</button>
              <button onclick="submitScore()" id="saveScoreBtn" class="action-btn btn-green">Save & Quit</button>
@@ -409,9 +387,30 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
 </div>
 
 <div class="modal" id="adminAuthModal">
-    <div class="modal-header"><h3>Admin Access</h3><span class="close-btn" onclick="closeAllModals()" aria-label="Close">✕</span></div>
-    <div class="input-group"><input type="password" id="adminPass" class="modal-input" placeholder="Enter Password"></div>
-    <button onclick="checkAdmin()" class="action-btn">Login</button>
+    <div class="modal-header">
+        <h3 style="display: flex; align-items: center; gap: 8px;">
+            <svg viewBox="0 0 24 24" style="width:18px; height:18px; fill:#ff3333;"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6zm9 14H6V10h12v10zm-6-3c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/></svg> 
+            Secure Access
+        </h3>
+        <span class="close-btn" onclick="closeAllModals()" aria-label="Close">✕</span>
+    </div>
+
+    <div id="totpLoginView">
+        <p style="font-size:12px; color:#aaa; margin-bottom:15px; text-align:center;">Enter the dynamic 6-digit PIN from your Authenticator app.</p>
+        <div class="input-group" style="display:flex; justify-content:center;">
+            <input type="text" inputmode="numeric" id="adminPass" class="modal-input" placeholder="• • • • • •" maxlength="6" style="letter-spacing: 12px; text-align: center; font-size: 24px; font-weight: bold; width: 85%; padding: 15px 10px;">
+        </div>
+        <button onclick="checkAdmin()" class="action-btn" style="margin-top: 10px; padding: 14px;">Verify Device ID</button>
+        <p class="setup-trigger-txt" onclick="showTotpSetup()">Setup / Link New Device</p>
+    </div>
+
+    <div id="totpSetupView" style="display: none; text-align: center;">
+        <p style="font-size:12px; color:#aaa; margin-bottom:15px;">1. Open Google Authenticator or Authy.<br>2. Scan this QR code to securely link your device.</p>
+        
+        <div id="qrcode" style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; display: inline-block; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);"></div>
+        
+        <button onclick="hideTotpSetup()" class="action-btn btn-green">I have scanned it</button>
+    </div>
 </div>
 
 <div class="modal" id="adminPanelModal">
@@ -422,17 +421,16 @@ p.subtitle{ opacity:.6; font-size: 14px; margin-bottom: 30px; letter-spacing: 2p
             <span class="close-btn" onclick="closeAllModals()" aria-label="Close">✕</span>
         </div>
     </div>
-    <div class="stat-box">Total Site Visits <span id="visitCount">...</span></div>
-    
+    <div class="stat-box">
+        <svg viewBox="0 0 24 24" style="width:28px; height:28px; fill:#00e676; margin-bottom:8px;"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>
+        <br>Total Live Views
+        <span id="visitCount">Loading...</span>
+    </div>
     <div class="admin-tabs">
         <button class="tab-btn active" id="tabMsgBtn" onclick="switchTab('msg')">📩 Messages</button>
         <button class="tab-btn" id="tabGameBtn" onclick="switchTab('game')">🎮 Leaderboard</button>
     </div>
-
-    <div id="msgView" class="tab-content active">
-        <div id="requestsList"><div class="loading-msg">Loading data...</div></div>
-    </div>
-
+    <div id="msgView" class="tab-content active"><div id="requestsList"><div class="loading-msg">Loading data...</div></div></div>
     <div id="gameView" class="tab-content">
         <div class="analytics-grid" id="analyticsBoard"></div>
         <div id="gameLeaderboard"><div class="loading-msg">Loading data...</div></div>
@@ -447,77 +445,53 @@ const SHEETDB_URL = "https://sheetdb.io/api/v1/7lnti5fot9g7a";
 let globalAdminData = [];
 
 /* --- PRELOADER & SETUP --- */
-window.onload = function() {
+function removePreloader() {
     const preloader = document.getElementById('preloader');
-    preloader.style.opacity = '0';
-    preloader.style.visibility = 'hidden';
+    if(preloader) { preloader.style.opacity = '0'; setTimeout(() => { preloader.style.visibility = 'hidden'; }, 500); }
     const music = document.getElementById("music");
     if(music) music.volume = 0.5;
 }
+window.onload = removePreloader;
+setTimeout(removePreloader, 4000);
 
-if(window.innerWidth > 800) {
-    VanillaTilt.init(document.querySelector(".profile-card"), { max: 8, speed: 400, glare: true, "max-glare": 0.2, gyroscope: false });
-}
+if(window.innerWidth > 800) { VanillaTilt.init(document.querySelector(".profile-card"), { max: 8, speed: 400, glare: true, "max-glare": 0.2, gyroscope: false }); }
 
 function showToast(message) {
     const toast = document.getElementById('toast');
     document.getElementById('toastMsg').innerText = message;
-    toast.classList.add('active');
-    setTimeout(() => { toast.classList.remove('active'); }, 3000);
+    toast.classList.add('active'); setTimeout(() => { toast.classList.remove('active'); }, 3000);
 }
 
 const cursor = document.getElementById('cursor');
 document.addEventListener('mousemove', (e) => {
     if(window.innerWidth > 800) { cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px'; }
 });
-document.querySelectorAll('a, button, .fab, .floating-game-btn, .quote-widget, .progress-bg, .cell, .delete-btn').forEach(el => {
+document.querySelectorAll('a, button, .fab, .floating-game-btn, .quote-widget, .progress-bg, .cell, .delete-btn, .setup-trigger-txt').forEach(el => {
     el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
     el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
 });
 
 /* --- MUSIC PLAYER --- */
-const music = document.getElementById("music");
-const playBtn = document.querySelector(".play-btn-modern");
-const bars = document.querySelectorAll(".bar");
-const bgImg = document.getElementById("bg-img");
-const progressBar = document.getElementById("progressBar");
-const currTime = document.getElementById("currTime");
-const durTime = document.getElementById("durTime");
-const playIcon = `<svg viewBox="0 0 24 24" style="margin-left: 2px;"><path d="M8 5v14l11-7z"/></svg>`;
-const pauseIcon = `<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
+const music = document.getElementById("music"); const playBtn = document.querySelector(".play-btn-modern"); const bars = document.querySelectorAll(".bar"); const bgImg = document.getElementById("bg-img"); const progressBar = document.getElementById("progressBar"); const currTime = document.getElementById("currTime"); const durTime = document.getElementById("durTime");
+const playIcon = `<svg viewBox="0 0 24 24" style="margin-left: 2px;"><path d="M8 5v14l11-7z"/></svg>`; const pauseIcon = `<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
 
-music.onloadedmetadata = function() {
-    let min = Math.floor(music.duration / 60); let sec = Math.floor(music.duration % 60);
-    if(sec < 10) sec = "0" + sec; durTime.innerText = min + ":" + sec;
-};
-music.ontimeupdate = function() {
-  if(music.duration){
-      const percentage = (music.currentTime / music.duration) * 100;
-      progressBar.style.width = percentage + "%";
-      let min = Math.floor(music.currentTime / 60); let sec = Math.floor(music.currentTime % 60);
-      if(sec < 10) sec = "0" + sec; currTime.innerText = min + ":" + sec;
-  }
-};
-document.getElementById("progressContainer").addEventListener('click', function(e) {
-    const width = this.clientWidth; const clickX = e.clientX - this.getBoundingClientRect().left;
-    music.currentTime = (clickX / width) * music.duration;
-});
+music.onloadedmetadata = function() { let min = Math.floor(music.duration / 60); let sec = Math.floor(music.duration % 60); if(sec < 10) sec = "0" + sec; durTime.innerText = min + ":" + sec; };
+music.ontimeupdate = function() { if(music.duration){ const percentage = (music.currentTime / music.duration) * 100; progressBar.style.width = percentage + "%"; let min = Math.floor(music.currentTime / 60); let sec = Math.floor(music.currentTime % 60); if(sec < 10) sec = "0" + sec; currTime.innerText = min + ":" + sec; } };
+document.getElementById("progressContainer").addEventListener('click', function(e) { const width = this.clientWidth; const clickX = e.clientX - this.getBoundingClientRect().left; music.currentTime = (clickX / width) * music.duration; });
 
 function toggleMusic(){
-  if(music.paused){ 
-      music.play().then(() => {
-          playBtn.innerHTML = pauseIcon; bars.forEach(bar => bar.style.animationPlayState = "running"); bgImg.style.transform = "scale(1.1)"; 
-      }).catch(error => { showToast("Tap anywhere first!"); });
-  } else { 
-      music.pause(); playBtn.innerHTML = playIcon; bars.forEach(bar => bar.style.animationPlayState = "paused"); bgImg.style.transform = "scale(1)"; 
-  }
+  if(music.paused){ music.play().then(() => { playBtn.innerHTML = pauseIcon; bars.forEach(bar => bar.style.animationPlayState = "running"); bgImg.style.transform = "scale(1.1)"; }).catch(error => { showToast("Tap anywhere first!"); }); } 
+  else { music.pause(); playBtn.innerHTML = playIcon; bars.forEach(bar => bar.style.animationPlayState = "paused"); bgImg.style.transform = "scale(1)"; }
 }
 
+/* --- UPDATE VIEW COUNT FROM GOATCOUNTER --- */
 function updateVisitCount() {
-    fetch("https://api.countapi.xyz/get/althaf-portfolio-custom/visits")
+    const countDisplay = document.getElementById('visitCount');
+    countDisplay.innerText = "Loading...";
+    fetch("https://althaf-portfolio.goatcounter.com/counter//.json")
     .then(res => res.json())
-    .then(data => { document.getElementById('visitCount').innerText = data.value; })
-    .catch(err => { document.querySelector('.stat-box').style.display = 'none'; });
+    .then(data => { countDisplay.innerText = (data && data.count) ? data.count : "0"; })
+    .catch(err => { countDisplay.innerText = "N/A"; countDisplay.style.color = "#ff3333"; });
 }
 
 /* --- MODALS & FORMS --- */
@@ -526,240 +500,167 @@ function openContactForm() { closeAllModals(); document.getElementById('contactM
 function openAdminAuth() { closeAllModals(); document.getElementById('adminAuthModal').classList.add('active'); }
 
 /* --- DOUBLE TAP TRIGGER FOR ADMIN --- */
-let clickCount = 0;
-let clickTimer;
+let clickCount = 0; let clickTimer;
 document.getElementById('adminTrigger').addEventListener('click', function() {
-    clickCount++;
-    if (clickCount === 2) { 
-        openAdminAuth(); 
-        clickCount = 0; 
-        clearTimeout(clickTimer); 
-    } else {
-        clickTimer = setTimeout(() => { clickCount = 0; }, 400); 
-    }
+    clickCount++; if (clickCount === 2) { openAdminAuth(); clickCount = 0; clearTimeout(clickTimer); } 
+    else { clickTimer = setTimeout(() => { clickCount = 0; }, 400); }
 });
 
 function submitRequest(e) {
-    e.preventDefault();
-    if(document.getElementById('honey').value !== "") return;
-    const btn = document.getElementById('submitBtn');
-    const name = document.getElementById('userName').value;
-    const phone = document.getElementById('userPhone').value;
-    const date = new Date().toLocaleDateString();
+    e.preventDefault(); if(document.getElementById('honey').value !== "") return;
+    const btn = document.getElementById('submitBtn'); btn.innerText = "Sending..."; btn.disabled = true;
     const uniqueId = Date.now().toString();
-
-    btn.innerText = "Sending..."; btn.disabled = true;
     fetch(SHEETDB_URL, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ data: { id: uniqueId, name: name, phone: phone, date: date, status: "Pending" } })
-    })
-    .then(response => response.json())
-    .then(data => {
-        showToast("Request Sent!"); closeAllModals();
-        btn.innerText = "Send Request"; btn.disabled = false;
+        body: JSON.stringify({ data: { id: uniqueId, name: document.getElementById('userName').value, phone: document.getElementById('userPhone').value, date: new Date().toLocaleDateString(), status: "Pending" } })
+    }).then(res => res.json()).then(data => {
+        showToast("Request Sent!"); closeAllModals(); btn.innerText = "Send Request"; btn.disabled = false;
         document.getElementById('userName').value = ""; document.getElementById('userPhone').value = "";
     }).catch(error => { showToast("Error! Check Internet."); btn.innerText = "Send Request"; btn.disabled = false; });
 }
 
 /* --- TIC TAC TOE GAME LOGIC --- */
-let board = ["", "", "", "", "", "", "", "", ""];
-let currentPlayerName = ""; let scorePlayer = 0; let scoreComp = 0;
-let isPlayerTurn = true; let isGameOver = false;
-
-function openGameModal() {
-    closeAllModals(); document.getElementById('gameModal').classList.add('active');
-    document.getElementById('gameSetupView').style.display = 'block';
-    document.getElementById('gamePlayView').style.display = 'none';
-}
-
+let board = ["", "", "", "", "", "", "", "", ""]; let currentPlayerName = ""; let scorePlayer = 0; let scoreComp = 0; let isPlayerTurn = true; let isGameOver = false;
+function openGameModal() { closeAllModals(); document.getElementById('gameModal').classList.add('active'); document.getElementById('gameSetupView').style.display = 'block'; document.getElementById('gamePlayView').style.display = 'none'; }
 function startGame() {
-    const inputName = document.getElementById('gamePlayerName').value.trim();
-    if(!inputName) { showToast("Please enter a name"); return; }
+    const inputName = document.getElementById('gamePlayerName').value.trim(); if(!inputName) { showToast("Please enter a name"); return; }
     currentPlayerName = inputName; scorePlayer = 0; scoreComp = 0; updateScoreText();
-    document.getElementById('gameSetupView').style.display = 'none';
-    document.getElementById('gamePlayView').style.display = 'block';
-    resetBoard();
+    document.getElementById('gameSetupView').style.display = 'none'; document.getElementById('gamePlayView').style.display = 'block'; resetBoard();
 }
-
-function updateScoreText() {
-    document.getElementById('playerScoreTxt').innerText = `${currentPlayerName}: ${scorePlayer}`;
-    document.getElementById('compScoreTxt').innerText = `Comp: ${scoreComp}`;
-}
-
-function resetBoard() {
-    board = ["", "", "", "", "", "", "", "", ""];
-    isPlayerTurn = true; isGameOver = false;
-    document.getElementById('gameStatus').innerText = "Your Turn (X)";
-    document.getElementById('gameStatus').style.color = "#fff";
-    document.querySelectorAll('.cell').forEach(cell => { cell.innerText = ""; cell.className = "cell"; });
-}
-
+function updateScoreText() { document.getElementById('playerScoreTxt').innerText = `${currentPlayerName}: ${scorePlayer}`; document.getElementById('compScoreTxt').innerText = `Comp: ${scoreComp}`; }
+function resetBoard() { board = ["", "", "", "", "", "", "", "", ""]; isPlayerTurn = true; isGameOver = false; document.getElementById('gameStatus').innerText = "Your Turn (X)"; document.getElementById('gameStatus').style.color = "#fff"; document.querySelectorAll('.cell').forEach(cell => { cell.innerText = ""; cell.className = "cell"; }); }
 function makeMove(index) {
     if(isGameOver || !isPlayerTurn || board[index] !== "") return;
     board[index] = "X"; updateCellDisplay(index, "X", "x-mark");
     if(checkWin("X")) { endSession("You Win!", "player"); return; }
     if(board.indexOf("") === -1) { endSession("Draw!", "draw"); return; }
-    isPlayerTurn = false;
-    document.getElementById('gameStatus').innerText = "Computer Thinking...";
-    document.getElementById('gameStatus').style.color = "#aaa";
-    setTimeout(computerMove, 500);
+    isPlayerTurn = false; document.getElementById('gameStatus').innerText = "Computer Thinking..."; document.getElementById('gameStatus').style.color = "#aaa"; setTimeout(computerMove, 500);
 }
-
 function computerMove() {
     if(isGameOver) return;
-    let emptyIdx = [];
-    for(let i=0; i<9; i++) if(board[i] === "") emptyIdx.push(i);
+    let emptyIdx = []; for(let i=0; i<9; i++) if(board[i] === "") emptyIdx.push(i);
     if(emptyIdx.length > 0) {
-        let randIdx = emptyIdx[Math.floor(Math.random() * emptyIdx.length)];
-        board[randIdx] = "O"; updateCellDisplay(randIdx, "O", "o-mark");
+        let randIdx = emptyIdx[Math.floor(Math.random() * emptyIdx.length)]; board[randIdx] = "O"; updateCellDisplay(randIdx, "O", "o-mark");
         if(checkWin("O")) { endSession("Computer Wins!", "comp"); return; }
         if(board.indexOf("") === -1) { endSession("Draw!", "draw"); return; }
     }
-    isPlayerTurn = true;
-    document.getElementById('gameStatus').innerText = "Your Turn (X)"; document.getElementById('gameStatus').style.color = "#fff";
+    isPlayerTurn = true; document.getElementById('gameStatus').innerText = "Your Turn (X)"; document.getElementById('gameStatus').style.color = "#fff";
 }
-
-function updateCellDisplay(index, mark, className) {
-    let cell = document.querySelectorAll('.cell')[index];
-    cell.innerText = mark; cell.classList.add(className);
-}
-
+function updateCellDisplay(index, mark, className) { let cell = document.querySelectorAll('.cell')[index]; cell.innerText = mark; cell.classList.add(className); }
 const winCombos = [ [0,1,2],[3,4,5],[6,7,8], [0,3,6],[1,4,7],[2,5,8], [0,4,8],[2,4,6] ];
 function checkWin(mark) { return winCombos.some(combo => combo.every(idx => board[idx] === mark)); }
-
 function endSession(msg, winnerType) {
     isGameOver = true; let statusEl = document.getElementById('gameStatus'); statusEl.innerText = msg;
-    if(winnerType === "player") { scorePlayer++; statusEl.style.color = "#00e676"; }
-    else if(winnerType === "comp") { scoreComp++; statusEl.style.color = "#ff3333"; }
-    else { statusEl.style.color = "#ffaa00"; }
+    if(winnerType === "player") { scorePlayer++; statusEl.style.color = "#00e676"; } else if(winnerType === "comp") { scoreComp++; statusEl.style.color = "#ff3333"; } else { statusEl.style.color = "#ffaa00"; }
     updateScoreText();
 }
-
 function submitScore() {
-    const btn = document.getElementById('saveScoreBtn');
-    const date = new Date().toLocaleDateString();
-    const uniqueId = Date.now().toString(); 
-    
-    btn.innerText = "Saving..."; btn.disabled = true;
-    fetch(SHEETDB_URL, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ data: { id: uniqueId, name: currentPlayerName, phone: `Player: ${scorePlayer} | AI: ${scoreComp}`, date: date, status: "GameScore" } })
-    })
-    .then(res => res.json())
-    .then(data => { showToast("Score Saved!"); closeAllModals(); btn.innerText = "Save & Quit"; btn.disabled = false; })
-    .catch(err => { showToast("Error Saving Score."); btn.innerText = "Save & Quit"; btn.disabled = false; });
+    const btn = document.getElementById('saveScoreBtn'); btn.innerText = "Saving..."; btn.disabled = true;
+    fetch(SHEETDB_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ data: { id: Date.now().toString(), name: currentPlayerName, phone: `Player: ${scorePlayer} | AI: ${scoreComp}`, date: new Date().toLocaleDateString(), status: "GameScore" } })
+    }).then(res => res.json()).then(data => { showToast("Score Saved!"); closeAllModals(); btn.innerText = "Save & Quit"; btn.disabled = false; }).catch(err => { showToast("Error Saving Score."); btn.innerText = "Save & Quit"; btn.disabled = false; });
 }
 
-/* --- SECURE ADMIN PANEL & DASHBOARD --- */
+/* ==================================================================== */
+/* SECURE DYNAMIC TOTP AUTHENTICATION & DEVICE LINKING LOGIC            */
+/* ==================================================================== */
+
 let isAdminAuthenticated = false;
 
-function secureHash(str) {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-        hash = ((hash << 5) - hash) + str.charCodeAt(i);
-        hash |= 0; 
-    }
-    return hash.toString();
+// The Secret Key required to generate the dynamic 6-digit codes.
+const ADMIN_SECRET = "ALTHAFADMINSECRET222";
+
+// Initialize the TOTP logic
+const adminTotp = new OTPAuth.TOTP({
+    issuer: "Althaf Portfolio",
+    label: "AdminAccess",
+    algorithm: "SHA1",
+    digits: 6,
+    period: 30, // Changes every 30 seconds
+    secret: ADMIN_SECRET 
+});
+
+// Function to handle showing the QR Code setup view
+function showTotpSetup() {
+    document.getElementById('totpLoginView').style.display = 'none';
+    document.getElementById('totpSetupView').style.display = 'block';
+    
+    // Clear the div in case they click it multiple times
+    const qrContainer = document.getElementById("qrcode");
+    qrContainer.innerHTML = ""; 
+    
+    // Generate the Local QR Code
+    const authUri = adminTotp.toString();
+    new QRCode(qrContainer, {
+        text: authUri,
+        width: 160,
+        height: 160,
+        colorDark : "#000000",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.H
+    });
 }
 
+// Function to go back to the PIN input view
+function hideTotpSetup() {
+    document.getElementById('totpSetupView').style.display = 'none';
+    document.getElementById('totpLoginView').style.display = 'block';
+}
+
+// The core check that validates the dynamic 6-digit code inputted
 function checkAdmin() {
-    const pass = document.getElementById('adminPass').value.trim();
-    if(secureHash(pass) === "1686355") {  // 7060
-        isAdminAuthenticated = true; closeAllModals();
+    const inputCode = document.getElementById('adminPass').value.trim();
+    if(!inputCode) return;
+    
+    // Validate the inputted code against the current timestamp
+    // window: 1 allows a 30-second buffer in case the phone's clock is slightly off
+    const isValid = adminTotp.validate({ token: inputCode, window: 1 }) !== null;
+
+    if(isValid) {  
+        isAdminAuthenticated = true; 
+        closeAllModals();
         document.getElementById('adminPanelModal').classList.add('active');
-        loadRequests(); updateVisitCount();
+        loadRequests(); 
+        updateVisitCount(); 
         document.getElementById('adminPass').value = "";
     } else {
-        showToast("Access Denied");
+        showToast("Invalid Dynamic Code");
         const input = document.getElementById('adminPass');
         input.style.borderBottom = "1px solid red";
-        setTimeout(() => input.style.borderBottom = "1px solid rgba(255,255,255,0.2)", 500);
+        input.style.color = "#ff3333";
+        setTimeout(() => { 
+            input.style.borderBottom = "1px solid rgba(255,255,255,0.2)"; 
+            input.style.color = "#fff";
+        }, 800);
     }
 }
 
+/* --- ADMIN DASHBOARD DATA HANDLING --- */
 function switchTab(tab) {
-    document.getElementById('tabMsgBtn').classList.remove('active');
-    document.getElementById('tabGameBtn').classList.remove('active');
-    document.getElementById('msgView').classList.remove('active');
-    document.getElementById('gameView').classList.remove('active');
-
-    if(tab === 'msg') {
-        document.getElementById('tabMsgBtn').classList.add('active');
-        document.getElementById('msgView').classList.add('active');
-    } else {
-        document.getElementById('tabGameBtn').classList.add('active');
-        document.getElementById('gameView').classList.add('active');
-    }
+    document.getElementById('tabMsgBtn').classList.remove('active'); document.getElementById('tabGameBtn').classList.remove('active'); document.getElementById('msgView').classList.remove('active'); document.getElementById('gameView').classList.remove('active');
+    if(tab === 'msg') { document.getElementById('tabMsgBtn').classList.add('active'); document.getElementById('msgView').classList.add('active'); } 
+    else { document.getElementById('tabGameBtn').classList.add('active'); document.getElementById('gameView').classList.add('active'); }
 }
 
 function loadRequests() {
-    const msgList = document.getElementById('requestsList');
-    const gameList = document.getElementById('gameLeaderboard');
-    const analyticsBoard = document.getElementById('analyticsBoard');
-    
+    const msgList = document.getElementById('requestsList'); const gameList = document.getElementById('gameLeaderboard'); const analyticsBoard = document.getElementById('analyticsBoard');
     if(!isAdminAuthenticated) { msgList.innerHTML = '<div style="color:red">Unauthorized</div>'; return; }
+    msgList.innerHTML = '<div class="loading-msg">Fetching from Cloud...</div>'; gameList.innerHTML = '<div class="loading-msg">Fetching Leaderboard...</div>';
 
-    msgList.innerHTML = '<div class="loading-msg">Fetching from Cloud...</div>';
-    gameList.innerHTML = '<div class="loading-msg">Fetching Leaderboard...</div>';
-
-    fetch(SHEETDB_URL)
-    .then(response => response.json())
-    .then(data => {
-        globalAdminData = data; 
-        let msgHtml = ''; let gameHtml = '';
-        let totalSessions = 0; let highestScore = 0;
-
-        if(data.length === 0) {
-            msgList.innerHTML = '<div class="loading-msg">No messages found.</div>';
-            gameList.innerHTML = '<div class="loading-msg">No games played yet.</div>';
-            return;
-        }
-
+    fetch(SHEETDB_URL).then(res => res.json()).then(data => {
+        globalAdminData = data; let msgHtml = ''; let gameHtml = ''; let totalSessions = 0; let highestScore = 0;
+        if(data.length === 0) { msgList.innerHTML = '<div class="loading-msg">No messages found.</div>'; gameList.innerHTML = '<div class="loading-msg">No games played yet.</div>'; return; }
         data.reverse().forEach(req => {
-            const safeId = req.id || ""; 
-            const deleteBtnHtml = safeId ? `<button class="delete-btn" onclick="deleteRecord('${safeId}', this)" title="Delete">🗑</button>` : '';
-
+            const safeId = req.id || ""; const deleteBtnHtml = safeId ? `<button class="delete-btn" onclick="deleteRecord('${safeId}', this)" title="Delete">🗑</button>` : '';
             if(req.status === "GameScore") {
-                totalSessions++;
-                const scoreMatch = req.phone.match(/Player: (\d+) \| AI: (\d+)/);
-                if(scoreMatch) {
-                    const pScore = parseInt(scoreMatch[1]);
-                    if(pScore > highestScore) highestScore = pScore;
-                }
-                gameHtml += `
-                    <div class="req-item" style="border-left-color: #00e676;">
-                        ${deleteBtnHtml}
-                        <div class="req-info">
-                            <b style="color:#00e676;">🎮 ${req.name}</b>
-                            ${req.phone} <span style="opacity:0.5">(${req.date})</span>
-                        </div>
-                    </div>
-                `;
+                totalSessions++; const scoreMatch = req.phone.match(/Player: (\d+) \| AI: (\d+)/); if(scoreMatch) { const pScore = parseInt(scoreMatch[1]); if(pScore > highestScore) highestScore = pScore; }
+                gameHtml += `<div class="req-item" style="border-left-color: #00e676;">${deleteBtnHtml}<div class="req-info"><b style="color:#00e676;">🎮 ${req.name}</b>${req.phone} <span style="opacity:0.5">(${req.date})</span></div></div>`;
             } else {
-                msgHtml += `
-                    <div class="req-item">
-                        ${deleteBtnHtml}
-                        <div class="req-info">
-                            <b>${req.name}</b>
-                            ${req.phone} <span style="opacity:0.5">(${req.date})</span>
-                        </div>
-                        <div class="btn-row">
-                            <button class="approve-btn" onclick="openChat('${req.phone}')">WhatsApp</button>
-                        </div>
-                    </div>
-                `;
+                msgHtml += `<div class="req-item">${deleteBtnHtml}<div class="req-info"><b>${req.name}</b>${req.phone} <span style="opacity:0.5">(${req.date})</span></div><div class="btn-row"><button class="approve-btn" onclick="openChat('${req.phone}')">WhatsApp</button></div></div>`;
             }
         });
-
-        analyticsBoard.innerHTML = `
-            <div class="stat-card">Sessions Played <b>${totalSessions}</b></div>
-            <div class="stat-card">Highest Score <b>${highestScore}</b></div>
-        `;
-
-        msgList.innerHTML = msgHtml || '<div class="loading-msg">No new messages.</div>';
-        gameList.innerHTML = gameHtml || '<div class="loading-msg">No games played yet.</div>';
-    })
-    .catch(error => { msgList.innerHTML = '<div class="loading-msg">Error loading data.</div>'; });
+        analyticsBoard.innerHTML = `<div class="stat-card">Sessions Played <b>${totalSessions}</b></div><div class="stat-card">Highest Score <b>${highestScore}</b></div>`;
+        msgList.innerHTML = msgHtml || '<div class="loading-msg">No new messages.</div>'; gameList.innerHTML = gameHtml || '<div class="loading-msg">No games played yet.</div>';
+    }).catch(error => { msgList.innerHTML = '<div class="loading-msg">Error loading data.</div>'; });
 }
 
 function openChat(userPhone) { window.open(`https://wa.me/${userPhone}`, '_blank'); }
@@ -767,35 +668,20 @@ function openChat(userPhone) { window.open(`https://wa.me/${userPhone}`, '_blank
 function deleteRecord(id, btnElement) {
     if(!confirm("Delete this record permanently?")) return;
     btnElement.innerText = "⏳";
-    
-    fetch(`${SHEETDB_URL}/id/${id}`, { method: 'DELETE' })
-    .then(res => res.json())
-    .then(data => {
-        const itemBox = btnElement.closest('.req-item');
-        itemBox.style.opacity = '0';
-        setTimeout(() => itemBox.remove(), 300);
-        showToast("Record Deleted");
-    })
-    .catch(err => { showToast("Error Deleting"); btnElement.innerText = "🗑"; });
+    fetch(`${SHEETDB_URL}/id/${id}`, { method: 'DELETE' }).then(res => res.json()).then(data => {
+        const itemBox = btnElement.closest('.req-item'); itemBox.style.opacity = '0'; setTimeout(() => itemBox.remove(), 300); showToast("Record Deleted");
+    }).catch(err => { showToast("Error Deleting"); btnElement.innerText = "🗑"; });
 }
 
 function exportCSV() {
     if(globalAdminData.length === 0) { showToast("No data to export"); return; }
     const headers = Object.keys(globalAdminData[0]).join(",");
-    const rows = globalAdminData.map(obj => {
-        return Object.values(obj).map(val => `"${String(val).replace(/"/g, '""')}"`).join(",");
-    }).join("\n");
-
-    const csvContent = "data:text/csv;charset=utf-8," + headers + "\n" + rows;
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `Althaf_Portfolio_Data_${new Date().toLocaleDateString()}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    const rows = globalAdminData.map(obj => { return Object.values(obj).map(val => `"${String(val).replace(/"/g, '""')}"`).join(","); }).join("\n");
+    const link = document.createElement("a"); link.setAttribute("href", encodeURI("data:text/csv;charset=utf-8," + headers + "\n" + rows));
+    link.setAttribute("download", `Althaf_Portfolio_Data_${new Date().toLocaleDateString()}.csv`); document.body.appendChild(link); link.click(); document.body.removeChild(link);
 }
 </script>
 
+<script data-goatcounter="https://althaf-portfolio.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
