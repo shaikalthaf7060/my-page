@@ -33,17 +33,18 @@ export default function Character3D() {
 
     const scene = new THREE.Scene();
 
-    // Exact Camera settings from original site
+    // Camera calibrated for perfect head & desk framing
     const camera = new THREE.PerspectiveCamera(14.5, aspect, 0.1, 1000);
-    camera.position.set(0, 13.1, 24.7);
-    camera.zoom = 1.1;
+    camera.position.set(0, 14.2, 28.5);
+    camera.lookAt(0, 10.8, 0);
+    camera.zoom = 1.0;
     camera.updateProjectionMatrix();
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.0;
+    renderer.toneMappingExposure = 1.05;
     renderer.shadowMap.enabled = true;
     container.appendChild(renderer.domElement);
 
@@ -51,10 +52,10 @@ export default function Character3D() {
     new RGBELoader().setPath('/models/').load('char_enviorment.hdr?v=2', (texture) => {
       texture.mapping = THREE.EquirectangularReflectionMapping;
       scene.environment = texture;
-      scene.environmentIntensity = 0.65;
+      scene.environmentIntensity = 0.7;
     });
 
-    const dirLight = new THREE.DirectionalLight(0x5eead4, 1.2);
+    const dirLight = new THREE.DirectionalLight(0x5eead4, 1.4);
     dirLight.position.set(-0.47, -0.32, -1);
     dirLight.castShadow = true;
     scene.add(dirLight);
@@ -81,6 +82,9 @@ export default function Character3D() {
           blobUrl,
           (gltf) => {
             characterModel = gltf.scene;
+
+            // Lower model slightly for clean desk perspective
+            characterModel.position.set(0, -0.8, 0);
 
             characterModel.traverse((child) => {
               if (child.isMesh) {
@@ -110,7 +114,7 @@ export default function Character3D() {
             spineNode = characterModel.getObjectByName('spine006');
             scene.add(characterModel);
 
-            // Animations if available
+            // Play intro typing animation
             if (gltf.animations && gltf.animations.length > 0) {
               mixer = new THREE.AnimationMixer(characterModel);
               const intro = gltf.animations.find((a) => a.name === 'introAnimation') || gltf.animations[0];
@@ -125,23 +129,23 @@ export default function Character3D() {
           },
           undefined,
           (err) => {
-            console.error('Error parsing decrypted model:', err);
+            console.error('Error loading 3D character:', err);
           }
         );
       })
       .catch((err) => {
-        console.error('Failed to decrypt character model:', err);
+        console.error('Failed to decrypt 3D model:', err);
       });
 
-    // Mouse Tracking parallax
+    // Mouse Parallax
     let targetRotX = 0, targetRotY = 0;
     let currRotX = 0, currRotY = 0;
 
     const handleMouseMove = (e) => {
       const normX = (e.clientX / window.innerWidth) * 2 - 1;
       const normY = -(e.clientY / window.innerHeight) * 2 + 1;
-      targetRotY = normX * (Math.PI / 8);
-      targetRotX = -normY * (Math.PI / 12);
+      targetRotY = normX * (Math.PI / 10);
+      targetRotX = -normY * (Math.PI / 14);
     };
     window.addEventListener('mousemove', handleMouseMove);
 
@@ -160,8 +164,8 @@ export default function Character3D() {
         spineNode.rotation.y = currRotY;
         spineNode.rotation.x = currRotX;
       } else if (characterModel) {
-        characterModel.rotation.y = currRotY * 0.5;
-        characterModel.rotation.x = currRotX * 0.3;
+        characterModel.rotation.y = currRotY * 0.4;
+        characterModel.rotation.x = currRotX * 0.2;
       }
 
       renderer.render(scene, camera);

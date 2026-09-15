@@ -11,7 +11,6 @@ import WorkCarousel from './components/WorkCarousel.jsx';
 import TechStack3D from './components/TechStack3D.jsx';
 import CareerSection from './components/CareerSection.jsx';
 import ContactSection from './components/ContactSection.jsx';
-import MusicPlayer from './components/MusicPlayer.jsx';
 import MiniGameModal from './components/MiniGameModal.jsx';
 import { AdminAuthModal, AdminPanelModal } from './components/AdminModals.jsx';
 import ContactModal from './components/ContactModal.jsx';
@@ -36,14 +35,14 @@ export default function App() {
       
       <div className="main-body" style={{ opacity: loading ? 0 : 1, transition: 'opacity 0.6s ease' }}>
         <CustomCursor />
-        <Navbar onOpenContact={() => setContactOpen(true)} />
+        <Navbar />
         <SideIcons />
         
         {/* Ambient Glow Lights */}
         <div className="landing-circle1"></div>
         <div className="landing-circle2"></div>
 
-        {/* 3D Character Model (Fixed for desktop, inline for mobile) */}
+        {/* 3D Character Model (Fixed on desktop, responsive) */}
         {isDesktop && <Character3D />}
 
         <main className="container-main">
@@ -59,9 +58,6 @@ export default function App() {
           <ContactSection onAdminTrigger={() => setAuthOpen(true)} />
         </main>
 
-        {/* Music Dock */}
-        <MusicPlayer />
-
         {/* Floating Quick Action Group */}
         <div className="floating-action-group">
           <button 
@@ -70,7 +66,7 @@ export default function App() {
             title="Play Mini-Game"
             data-cursor="disable"
           >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
               <path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
             </svg>
           </button>
@@ -80,7 +76,7 @@ export default function App() {
             title="Contact Request"
             data-cursor="disable"
           >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
               <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
             </svg>
           </button>

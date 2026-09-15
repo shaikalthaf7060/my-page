@@ -14,7 +14,7 @@ export default function HeroSection({ children, onAdminTrigger }) {
   return (
     <section className="landing-section" id="landingDiv">
       <div className="landing-container">
-        {/* Left Typography */}
+        {/* Left Side: Name & Intro */}
         <div className="landing-intro">
           <h2>Hello! I'm</h2>
           <h1>
@@ -24,18 +24,18 @@ export default function HeroSection({ children, onAdminTrigger }) {
           </h1>
         </div>
 
-        {/* Right Dynamic Titles */}
+        {/* Right Side: Role & Specialization */}
         <div className="landing-info" onDoubleClick={onAdminTrigger} title="Double click for Admin">
           <h3>Web Developer &</h3>
           <h2 className="landing-info-h2">
-            <span style={{ color: 'var(--accentColor)', transition: 'all 0.4s ease' }}>
+            <span className="role-accent">
               {titles[currTitle]}
             </span>
           </h2>
         </div>
       </div>
 
-      {/* 3D Model / Avatar Container */}
+      {/* 3D Center Model */}
       {children}
     </section>
   );

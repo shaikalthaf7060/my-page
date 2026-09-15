@@ -31,7 +31,7 @@ body {
   height: auto;
   background-color: #050810;
   flex-grow: 1;
-  --cWidth: calc(100% - 40px);
+  --cWidth: calc(100% - 60px);
   --cMaxWidth: 1920px;
   max-width: 100vw;
   overflow-x: hidden;
@@ -39,7 +39,7 @@ body {
 
 @media screen and (min-width: 768px) {
   body {
-    --cWidth: 92%;
+    --cWidth: 90%;
   }
 }
 
@@ -261,7 +261,7 @@ a:hover {
   display: flex;
   justify-content: space-between;
   box-sizing: border-box;
-  padding: 20px 0;
+  padding: 25px 0;
   left: 50%;
   transform: translate(-50%);
   top: 0;
@@ -270,8 +270,8 @@ a:hover {
 
 .loader-title {
   font-weight: 700;
-  font-size: 14px;
-  letter-spacing: .2px;
+  font-size: 15px;
+  letter-spacing: .5px;
 }
 
 @keyframes blink {
@@ -429,7 +429,7 @@ a:hover {
 
 @media only screen and (min-width: 600px) {
   .cursor-main {
-    --size: 50px;
+    --size: 45px;
   }
 }
 
@@ -442,7 +442,7 @@ a:hover {
   width: var(--cWidth);
   justify-content: space-between;
   align-items: center;
-  padding: 25px 0;
+  padding: 30px 0;
   box-sizing: border-box;
   position: fixed;
   left: 50%;
@@ -459,13 +459,13 @@ a:hover {
   margin: 0;
   padding: 0;
   list-style: none;
-  gap: 30px;
+  gap: 36px;
 }
 
 .header ul li {
   margin-left: 0;
   letter-spacing: 1px;
-  color: #ccc;
+  color: #bbb;
   font-weight: 500;
   cursor: pointer;
 }
@@ -474,14 +474,14 @@ a:hover {
   font-size: 14px;
   letter-spacing: 0.5px;
   font-weight: 500;
-  color: #aaa;
+  color: #888;
   display: none;
 }
 
 .navbar-title {
   font-weight: 700;
   font-size: 16px;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
 }
 
 .hover-link {
@@ -510,7 +510,6 @@ a:hover {
 
 @media only screen and (min-width: 1400px) {
   .navbar-connect { display: block; }
-  .header ul { gap: 40px; }
 }
 
 /* ========================================= */
@@ -528,11 +527,11 @@ a:hover {
 
 .social-icons {
   position: absolute;
-  left: -20px;
-  bottom: 25px;
+  left: -15px;
+  bottom: 30px;
   display: none;
   flex-direction: column;
-  gap: 16px;
+  gap: 18px;
   z-index: 999;
   padding: 10px;
 }
@@ -554,7 +553,7 @@ a:hover {
   z-index: 99;
   display: flex;
   gap: 5px;
-  bottom: 30px;
+  bottom: 35px;
   right: 0;
   width: auto;
   text-wrap: nowrap;
@@ -562,7 +561,7 @@ a:hover {
   font-size: 15px;
   line-height: 15px;
   font-weight: 600;
-  color: #777;
+  color: #888;
   cursor: pointer;
   transition: .3s;
 }
@@ -600,9 +599,6 @@ div.resume-button span {
   height: 100%;
   position: relative;
   max-width: var(--cMaxWidth);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .landing-circle1 {
@@ -610,15 +606,15 @@ div.resume-button span {
   left: 0%;
   z-index: 1;
   position: fixed;
-  width: 320px;
-  height: 320px;
+  width: 350px;
+  height: 350px;
   background-color: #22d3ee;
   box-shadow: inset -50px 40px 50px #00b4b499;
-  filter: blur(80px);
+  filter: blur(90px);
   border-radius: 50%;
   animation: loadingCircle 6s linear infinite;
   pointer-events: none;
-  opacity: 0.6;
+  opacity: 0.55;
 }
 
 @keyframes loadingCircle {
@@ -632,15 +628,15 @@ div.resume-button span {
   transform: translate(50%, -50%);
   z-index: 1;
   position: fixed;
-  width: 320px;
-  height: 320px;
+  width: 350px;
+  height: 350px;
   background-color: #22d3ee;
   box-shadow: inset -50px 40px 50px #00b4b499;
-  filter: blur(80px);
+  filter: blur(90px);
   border-radius: 50%;
   animation: loadingCircle2 7s linear infinite;
   pointer-events: none;
-  opacity: 0.5;
+  opacity: 0.45;
 }
 
 @keyframes loadingCircle2 {
@@ -648,9 +644,12 @@ div.resume-button span {
 }
 
 .landing-intro {
-  position: relative;
+  position: absolute;
   z-index: 10;
-  max-width: 450px;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  max-width: 400px;
 }
 
 .landing-intro h2 {
@@ -662,18 +661,21 @@ div.resume-button span {
 }
 
 .landing-intro h1 {
-  margin: 8px 0 0;
+  margin: 10px 0 0;
   letter-spacing: 3px;
-  font-size: 56px;
-  line-height: 58px;
+  font-size: 54px;
+  line-height: 56px;
   font-weight: 700;
 }
 
 .landing-info {
-  position: relative;
+  position: absolute;
   z-index: 10;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
   text-align: left;
-  max-width: 450px;
+  max-width: 400px;
 }
 
 .landing-info h3 {
@@ -685,11 +687,16 @@ div.resume-button span {
 }
 
 .landing-info-h2 {
-  margin: 8px 0 0;
+  margin: 10px 0 0;
   font-size: 44px;
   line-height: 48px;
   font-weight: 700;
   letter-spacing: 2px;
+}
+
+.role-accent {
+  color: var(--accentColor);
+  transition: all 0.4s ease;
 }
 
 .character-model {
@@ -714,30 +721,33 @@ div.resume-button span {
 
 .character-rim {
   position: absolute;
-  width: 380px;
-  height: 380px;
+  width: 420px;
+  height: 420px;
   z-index: 1;
   background-color: #22d3ee;
   box-shadow: inset 66px 35px 85px #00b4b4a6;
-  filter: blur(60px);
+  filter: blur(70px);
   border-radius: 50%;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -40%);
-  opacity: 0.5;
+  transform: translate(-50%, -45%);
+  opacity: 0.55;
   pointer-events: none;
 }
 
 @media screen and (max-width: 1024px) {
-  .landing-container {
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 100px 0 80px;
-    align-items: flex-start;
+  .landing-intro {
+    top: 15%;
+    transform: none;
   }
   .landing-intro h1 { font-size: 38px; line-height: 40px; }
+  .landing-info {
+    top: auto;
+    bottom: 12%;
+    transform: none;
+  }
   .landing-info-h2 { font-size: 32px; line-height: 36px; }
-  .character-model { height: 75vh; top: 15vh; }
+  .character-model { height: 75vh; top: 12vh; }
 }
 
 /* ========================================= */
@@ -773,7 +783,7 @@ div.resume-button span {
 .about-me p {
   font-size: 30px;
   font-weight: 600;
-  line-height: 40px;
+  line-height: 42px;
   letter-spacing: 0.5px;
 }
 
@@ -1397,86 +1407,20 @@ a.contact-social:hover {
 }
 
 /* ========================================= */
-/* MUSIC BAR & MODALS                        */
+/* FLOATING ACTIONS & MODALS                 */
 /* ========================================= */
-.music-dock {
-  position: fixed;
-  bottom: 25px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(10, 14, 23, 0.85);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(94, 234, 212, 0.2);
-  border-radius: 50px;
-  padding: 8px 24px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  z-index: 999;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-}
-
-.music-dock-play {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--accentColor);
-  color: #000;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.music-dock-play:hover {
-  transform: scale(1.1);
-}
-
-.music-dock-title {
-  font-size: 13px;
-  font-weight: 500;
-  color: #eae5ec;
-}
-
-.music-waves {
-  display: flex;
-  align-items: flex-end;
-  gap: 3px;
-  height: 18px;
-}
-
-.music-bar {
-  width: 3px;
-  height: 100%;
-  background: var(--accentColor);
-  border-radius: 3px;
-  animation: waveAnim 1s ease-in-out infinite;
-  animation-play-state: paused;
-}
-
-.music-bar:nth-child(2) { animation-delay: 0.2s; }
-.music-bar:nth-child(3) { animation-delay: 0.4s; }
-.music-bar:nth-child(4) { animation-delay: 0.1s; }
-
-@keyframes waveAnim {
-  0%, 100% { height: 20%; }
-  50% { height: 100%; }
-}
-
 .floating-action-group {
   position: fixed;
-  bottom: 25px;
-  right: 25px;
+  bottom: 30px;
+  right: 30px;
   display: flex;
   gap: 12px;
   z-index: 999;
 }
 
 .floating-btn {
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: rgba(10, 14, 23, 0.85);
   backdrop-filter: blur(15px);
