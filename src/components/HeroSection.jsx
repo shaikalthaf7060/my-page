@@ -28,9 +28,9 @@ export default function HeroSection({ children, onAdminTrigger }) {
         <div className="landing-info" onDoubleClick={onAdminTrigger} title="Double click for Admin">
           <h3>Web Developer &</h3>
           <h2 className="landing-info-h2">
-            <div style={{ color: 'var(--accentColor)', transition: 'all 0.4s ease' }}>
+            <span style={{ color: 'var(--accentColor)', transition: 'all 0.4s ease' }}>
               {titles[currTitle]}
-            </div>
+            </span>
           </h2>
         </div>
       </div>

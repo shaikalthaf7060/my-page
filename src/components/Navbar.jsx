@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Navbar({ onOpenContact }) {
+export default function Navbar() {
   const navItems = [
     { label: 'About', href: '#about' },
     { label: 'What I Do', href: '#what-i-do' },
