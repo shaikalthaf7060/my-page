@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 export default function HeroSection({ children, onAdminTrigger }) {
-  const titles = ['UI/UX DESIGNER', 'FULL STACK DEV', 'CREATIVE CODER', 'WEB ARCHITECT'];
+  const titles = ['UI/UX DESIGNER', 'FULL STACK DEV', 'CREATIVE CODER', 'TECH ARCHITECT'];
   const [currTitle, setCurrTitle] = useState(0);
 
   useEffect(() => {
@@ -14,7 +14,7 @@ export default function HeroSection({ children, onAdminTrigger }) {
   return (
     <section className="landing-section" id="landingDiv">
       <div className="landing-container">
-        {/* Left Side: Name & Intro */}
+        {/* Left Side: Name */}
         <div className="landing-intro">
           <h2>Hello! I'm</h2>
           <h1>
@@ -24,7 +24,7 @@ export default function HeroSection({ children, onAdminTrigger }) {
           </h1>
         </div>
 
-        {/* Right Side: Role & Specialization */}
+        {/* Right Side: Role */}
         <div className="landing-info" onDoubleClick={onAdminTrigger} title="Double click for Admin">
           <h3>Web Developer &</h3>
           <h2 className="landing-info-h2">
@@ -35,7 +35,7 @@ export default function HeroSection({ children, onAdminTrigger }) {
         </div>
       </div>
 
-      {/* 3D Center Model */}
+      {/* 3D Center Standalone Person */}
       {children}
     </section>
   );

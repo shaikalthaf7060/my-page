@@ -2,29 +2,28 @@ import React from 'react';
 
 export default function Navbar() {
   const navItems = [
-    { label: 'About', href: '#about' },
-    { label: 'What I Do', href: '#what-i-do' },
-    { label: 'Work', href: '#work' },
-    { label: 'Skills', href: '#skills' },
-    { label: 'Career', href: '#career' },
-    { label: 'Contact', href: '#contact' },
+    { label: 'ABOUT', href: '#about' },
+    { label: 'WORK', href: '#work' },
+    { label: 'CONTACT', href: '#contact' },
   ];
 
   return (
     <header className="header">
       <a href="#" className="navbar-title" data-cursor="disable">
-        SHAIK ALTHAF
+        SA
       </a>
 
       <div className="navbar-connect">
         <a 
-          href="mailto:shaikalthaf7060@gmail.com" 
+          href="https://www.linkedin.com/in" 
+          target="_blank" 
+          rel="noreferrer" 
           className="hover-link"
           data-cursor="disable"
         >
           <div className="hover-in">
-            <span>shaikalthaf7060@gmail.com</span>
-            <div>shaikalthaf7060@gmail.com</div>
+            <span>linkedin.com/in/shaikalthaf</span>
+            <div>linkedin.com/in/shaikalthaf</div>
           </div>
         </a>
       </div>

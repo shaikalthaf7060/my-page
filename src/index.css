@@ -452,7 +452,7 @@ a:hover {
 }
 
 .header ul {
-  font-size: 14px;
+  font-size: 13px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -464,14 +464,14 @@ a:hover {
 
 .header ul li {
   margin-left: 0;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   color: #bbb;
   font-weight: 500;
   cursor: pointer;
 }
 
 .navbar-connect {
-  font-size: 14px;
+  font-size: 13px;
   letter-spacing: 0.5px;
   font-weight: 500;
   color: #888;
@@ -508,7 +508,7 @@ a:hover {
   color: var(--accentColor);
 }
 
-@media only screen and (min-width: 1400px) {
+@media only screen and (min-width: 1025px) {
   .navbar-connect { display: block; }
 }
 
@@ -590,7 +590,6 @@ div.resume-button span {
   position: relative;
   height: 100vh;
   min-height: 700px;
-  overflow: hidden;
 }
 
 .landing-container {
@@ -606,8 +605,8 @@ div.resume-button span {
   left: 0%;
   z-index: 1;
   position: fixed;
-  width: 350px;
-  height: 350px;
+  width: 380px;
+  height: 380px;
   background-color: #22d3ee;
   box-shadow: inset -50px 40px 50px #00b4b499;
   filter: blur(90px);
@@ -628,8 +627,8 @@ div.resume-button span {
   transform: translate(50%, -50%);
   z-index: 1;
   position: fixed;
-  width: 350px;
-  height: 350px;
+  width: 380px;
+  height: 380px;
   background-color: #22d3ee;
   box-shadow: inset -50px 40px 50px #00b4b499;
   filter: blur(90px);
@@ -645,41 +644,41 @@ div.resume-button span {
 
 .landing-intro {
   position: absolute;
-  z-index: 10;
+  z-index: 9;
   top: 50%;
-  left: 0;
+  left: auto;
+  right: 70%;
   transform: translateY(-50%);
-  max-width: 400px;
 }
 
 .landing-intro h2 {
   margin: 0;
   color: var(--accentColor);
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 300;
   letter-spacing: 2px;
 }
 
 .landing-intro h1 {
-  margin: 10px 0 0;
+  margin: 8px 0 0;
   letter-spacing: 3px;
-  font-size: 54px;
-  line-height: 56px;
+  font-size: 52px;
+  line-height: 52px;
   font-weight: 700;
 }
 
 .landing-info {
   position: absolute;
-  z-index: 10;
-  top: 50%;
-  right: 0;
+  z-index: 9;
+  top: 51%;
+  left: 70%;
+  right: auto;
   transform: translateY(-50%);
   text-align: left;
-  max-width: 400px;
 }
 
 .landing-info h3 {
-  font-size: 22px;
+  font-size: 20px;
   letter-spacing: 2px;
   font-weight: 300;
   color: var(--accentColor);
@@ -687,9 +686,9 @@ div.resume-button span {
 }
 
 .landing-info-h2 {
-  margin: 10px 0 0;
-  font-size: 44px;
-  line-height: 48px;
+  margin: 8px 0 0;
+  font-size: 42px;
+  line-height: 46px;
   font-weight: 700;
   letter-spacing: 2px;
 }
@@ -699,16 +698,18 @@ div.resume-button span {
   transition: all 0.4s ease;
 }
 
+/* 3D Character Model Container (Fixed for smooth scroll) */
 .character-model {
   height: 100vh;
-  position: absolute;
+  position: fixed;
+  bottom: 0;
   top: 0;
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
   max-width: 1920px;
-  z-index: 5;
-  pointer-events: none;
+  z-index: 11;
+  pointer-events: inherit;
   overflow: hidden;
 }
 
@@ -717,12 +718,13 @@ div.resume-button span {
   pointer-events: none;
   width: 100% !important;
   height: 100% !important;
+  z-index: 2;
 }
 
 .character-rim {
   position: absolute;
-  width: 420px;
-  height: 420px;
+  width: 440px;
+  height: 440px;
   z-index: 1;
   background-color: #22d3ee;
   box-shadow: inset 66px 35px 85px #00b4b4a6;
@@ -730,28 +732,32 @@ div.resume-button span {
   border-radius: 50%;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -45%);
-  opacity: 0.55;
+  transform: translate(-50%, -40%);
+  opacity: 0.6;
   pointer-events: none;
 }
 
+.character-hover {
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  top: 45%;
+  left: 50%;
+  z-index: 3;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+}
+
 @media screen and (max-width: 1024px) {
-  .landing-intro {
-    top: 15%;
-    transform: none;
-  }
-  .landing-intro h1 { font-size: 38px; line-height: 40px; }
-  .landing-info {
-    top: auto;
-    bottom: 12%;
-    transform: none;
-  }
+  .character-model { position: absolute; height: 80vh; top: 10vh; }
+  .landing-intro { top: 12%; left: 0; right: auto; transform: none; }
+  .landing-intro h1 { font-size: 36px; line-height: 38px; }
+  .landing-info { top: auto; bottom: 10%; left: 0; right: auto; transform: none; }
   .landing-info-h2 { font-size: 32px; line-height: 36px; }
-  .character-model { height: 75vh; top: 12vh; }
 }
 
 /* ========================================= */
-/* ABOUT SECTION                             */
+/* ABOUT SECTION (Matching Image 1)          */
 /* ========================================= */
 .about-section {
   display: flex;
@@ -759,37 +765,39 @@ div.resume-button span {
   justify-content: flex-end;
   position: relative;
   opacity: 1;
-  min-height: 80vh;
+  height: var(--vh);
+  min-height: 700px;
   width: var(--cWidth);
+  max-width: 1920px;
   margin: auto;
-  padding: 120px 0;
   z-index: 10;
 }
 
 .about-me {
-  width: 550px;
-  max-width: 100%;
+  width: 50%;
+  padding: 0;
 }
 
 .about-me h3 {
-  font-size: 22px;
+  font-size: 24px;
   text-transform: uppercase;
-  letter-spacing: 6px;
+  letter-spacing: 7px;
   font-weight: 400;
   color: var(--accentColor);
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .about-me p {
-  font-size: 30px;
+  font-size: 1.9vw;
   font-weight: 600;
-  line-height: 42px;
+  line-height: 2.4vw;
   letter-spacing: 0.5px;
 }
 
 @media only screen and (max-width: 1024px) {
-  .about-section { justify-content: flex-start; min-height: auto; }
-  .about-me p { font-size: 22px; line-height: 32px; }
+  .about-section { justify-content: flex-start; height: auto; padding: 100px 0; }
+  .about-me { width: 100%; }
+  .about-me p { font-size: 24px; line-height: 34px; }
 }
 
 /* ========================================= */
