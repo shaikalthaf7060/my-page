@@ -37,7 +37,7 @@ export default function Character3D() {
 
     const scene = new THREE.Scene();
 
-    // Exact Camera settings from original site
+    // Exact Camera settings: looking straight at face/chest at (0, 13.1, 0)
     const camera = new THREE.PerspectiveCamera(14.5, aspect, 0.1, 1000);
     camera.position.set(0, 13.1, 24.7);
     camera.zoom = 1.1;
@@ -89,6 +89,9 @@ export default function Character3D() {
           (gltf) => {
             characterModel = gltf.scene;
 
+            // Character is positioned at center (x: 0, y: 0, z: 0)
+            characterModel.position.set(0, 0, 0);
+
             // Traverse and configure materials
             characterModel.traverse((child) => {
               if (child.isMesh) {
@@ -108,13 +111,13 @@ export default function Character3D() {
               }
             });
 
-            // Hide the computer desk (Plane004) and screenlight initially so character is standalone!
+            // Hide the computer desk (Plane004) and screenlight so only the person is shown!
             characterModel.children.forEach((c) => {
               if (c.name === 'Plane004') {
                 c.children.forEach((l) => {
                   if (l.material) {
                     l.material.transparent = true;
-                    l.material.opacity = 0; // HIDE DESK & COMPUTER INITIALLY
+                    l.material.opacity = 0; // HIDE DESK & COMPUTER
                     if (l.material.name === 'Material.018') {
                       deskMaterial = l.material;
                       deskMaterial.color.set('#FFFFFF');
@@ -124,7 +127,7 @@ export default function Character3D() {
               }
               if (c.name === 'screenlight' && c.material) {
                 c.material.transparent = true;
-                c.material.opacity = 0; // HIDE SCREENLIGHT INITIALLY
+                c.material.opacity = 0; // HIDE SCREENLIGHT
                 c.material.emissive.set('#B0F5EA');
                 screenLight = c;
               }
@@ -177,11 +180,11 @@ export default function Character3D() {
         console.error('Failed to decrypt 3D model:', err);
       });
 
-    // GSAP ScrollTrigger Animations (matching Akash Malhotra's site!)
+    // GSAP ScrollTrigger Animations (Pure 3D coordinate animations without CSS transform glitches)
     function setupScrollTransitions(model, cam, deskMat, scrLight, spine) {
       if (window.innerWidth <= 1024) return;
 
-      // 1. Landing to About section transition: Model rotates and moves to the left!
+      // 1. Landing to About transition: Character moves from Center (x: 0) to Left (x: -3.8) and turns to face text!
       const landingTl = gsap.timeline({
         scrollTrigger: {
           trigger: '.landing-section',
@@ -193,14 +196,14 @@ export default function Character3D() {
       });
 
       landingTl
+        .fromTo(model.position, { x: 0 }, { x: -3.8, duration: 1 }, 0)
         .fromTo(model.rotation, { y: 0 }, { y: 0.7, duration: 1 }, 0)
         .to(cam.position, { z: 22 }, 0)
-        .fromTo('.character-model', { x: 0 }, { x: '-25%', duration: 1 }, 0)
-        .to('.landing-container', { opacity: 0, duration: 0.4 }, 0)
-        .to('.landing-container', { y: '40%', duration: 0.8 }, 0)
-        .fromTo('.about-me', { y: '-50%' }, { y: '0%' }, 0);
+        .to('.landing-intro', { opacity: 0, duration: 0.4 }, 0)
+        .to('.landing-info', { opacity: 0, duration: 0.4 }, 0)
+        .fromTo('.about-me', { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.8 }, 0.2);
 
-      // 2. About to What I Do transition: Desk appears and typing starts!
+      // 2. About to What I Do transition: Desk appears and typing starts
       const aboutTl = gsap.timeline({
         scrollTrigger: {
           trigger: '.about-section',
@@ -212,14 +215,13 @@ export default function Character3D() {
       });
 
       aboutTl
+        .to(model.position, { x: -2.0, duration: 4 }, 0)
         .to(cam.position, { z: 75, y: 8.4, duration: 6, ease: 'power3.inOut' }, 0)
-        .to('.about-section', { y: '30%', duration: 6 }, 0)
-        .to('.about-section', { opacity: 0, delay: 3, duration: 2 }, 0)
-        .fromTo('.character-model', { pointerEvents: 'inherit' }, { pointerEvents: 'none', x: '-12%', delay: 2, duration: 5 }, 0)
-        .to(model.rotation, { y: 0.92, x: 0.12, delay: 3, duration: 3 }, 0);
+        .to('.about-section', { opacity: 0, duration: 2 }, 0)
+        .to(model.rotation, { y: 0.92, x: 0.12, duration: 3 }, 0);
 
       if (spine) {
-        aboutTl.to(spine.rotation, { x: 0.6, delay: 2, duration: 3 }, 0);
+        aboutTl.to(spine.rotation, { x: 0.6, duration: 3 }, 0);
       }
 
       if (deskMat) {
@@ -230,7 +232,7 @@ export default function Character3D() {
         aboutTl.to(scrLight.material, { opacity: 1, duration: 0.8, delay: 4.5 }, 0);
       }
 
-      // 3. What I Do to Career/Work exit transition
+      // 3. Move character out when reaching Work section
       const whatTl = gsap.timeline({
         scrollTrigger: {
           trigger: '.whatIDO',
@@ -241,10 +243,10 @@ export default function Character3D() {
         },
       });
 
-      whatTl.fromTo('.character-model', { y: '0%' }, { y: '-100%', duration: 1 }, 0);
+      whatTl.to(model.position, { y: 20, duration: 4 }, 0);
     }
 
-    // Mouse Parallax (Interactive head following mouse)
+    // Mouse Parallax (Interactive head following cursor in real-time)
     let targetRotX = 0, targetRotY = 0;
     let currRotX = 0, currRotY = 0;
 
@@ -264,10 +266,10 @@ export default function Character3D() {
       const delta = clock.getDelta();
       if (mixer) mixer.update(delta);
 
-      currRotX += (targetRotX - currRotX) * 0.05;
-      currRotY += (targetRotY - currRotY) * 0.05;
+      currRotX += (targetRotX - currRotX) * 0.06;
+      currRotY += (targetRotY - currRotY) * 0.06;
 
-      if (spine006 && window.scrollY < 200) {
+      if (spine006 && window.scrollY < 300) {
         spine006.rotation.y = currRotY;
         spine006.rotation.x = currRotX;
       }
@@ -278,9 +280,8 @@ export default function Character3D() {
 
     const handleResize = () => {
       if (!container) return;
-      const r = container.getBoundingClientRect();
-      const w = r.width || window.innerWidth;
-      const h = r.height || window.innerHeight;
+      const w = window.innerWidth;
+      const h = window.innerHeight;
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
@@ -302,7 +303,7 @@ export default function Character3D() {
     <div className="character-model">
       <div className="character-rim" />
       <div ref={hoverRef} className="character-hover" />
-      <div ref={containerRef} style={{ width: '100%', height: '100%', position: 'relative' }} />
+      <div ref={containerRef} style={{ width: '100vw', height: '100vh', position: 'relative' }} />
     </div>
   );
 }

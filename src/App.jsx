@@ -36,13 +36,13 @@ export default function App() {
       <div className="main-body" style={{ opacity: loading ? 0 : 1, transition: 'opacity 0.6s ease' }}>
         <CustomCursor />
         <Navbar />
-        <SideIcons />
+        <SideIcons onOpenGame={() => setGameOpen(true)} onOpenContact={() => setContactOpen(true)} />
         
         {/* Ambient Glow Lights */}
         <div className="landing-circle1"></div>
         <div className="landing-circle2"></div>
 
-        {/* 3D Character Model (Fixed on desktop, responsive) */}
+        {/* 3D Character Model (Fixed full-screen canvas) */}
         {isDesktop && <Character3D />}
 
         <main className="container-main">
@@ -57,30 +57,6 @@ export default function App() {
           <CareerSection />
           <ContactSection onAdminTrigger={() => setAuthOpen(true)} />
         </main>
-
-        {/* Floating Quick Action Group */}
-        <div className="floating-action-group">
-          <button 
-            className="floating-btn" 
-            onClick={() => setGameOpen(true)} 
-            title="Play Mini-Game"
-            data-cursor="disable"
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
-            </svg>
-          </button>
-          <button 
-            className="floating-btn" 
-            onClick={() => setContactOpen(true)} 
-            title="Contact Request"
-            data-cursor="disable"
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-            </svg>
-          </button>
-        </div>
 
         {/* Modals */}
         {gameOpen && <MiniGameModal onClose={() => setGameOpen(false)} />}

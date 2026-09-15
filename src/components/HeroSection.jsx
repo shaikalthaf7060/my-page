@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 export default function HeroSection({ children, onAdminTrigger }) {
-  const titles = ['UI/UX DESIGNER', 'FULL STACK DEV', 'CREATIVE CODER', 'TECH ARCHITECT'];
+  const titles = ['FULL STACK DEV', 'UI/UX DESIGNER', 'CREATIVE CODER', 'TECH ARCHITECT'];
   const [currTitle, setCurrTitle] = useState(0);
 
   useEffect(() => {
