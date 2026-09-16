@@ -58,14 +58,14 @@ export default function Preloader({ onComplete }) {
 
       <div className="loading-marquee">
         <div className="loading-marquee-in">
-          <span>WEB DEVELOPER</span>
-          <span>UI/UX DESIGNER</span>
           <span>FULL STACK DEVELOPER</span>
-          <span>CREATIVE CODER</span>
+          <span>AI APPS BUILDER</span>
+          <span>SOFTWARE ENGINEER</span>
           <span>WEB DEVELOPER</span>
-          <span>UI/UX DESIGNER</span>
           <span>FULL STACK DEVELOPER</span>
-          <span>CREATIVE CODER</span>
+          <span>AI APPS BUILDER</span>
+          <span>SOFTWARE ENGINEER</span>
+          <span>WEB DEVELOPER</span>
         </div>
       </div>
 

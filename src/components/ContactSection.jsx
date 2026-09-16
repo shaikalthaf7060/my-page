@@ -14,11 +14,6 @@ export default function ContactSection({ onAdminTrigger }) {
                 shaikalthaf7060@gmail.com
               </a>
             </p>
-            <p>
-              <a href="tel:+919866969390" data-cursor="disable" style={{ color: '#8892a4', textDecoration: 'none' }}>
-                +91 98669 69390
-              </a>
-            </p>
             <p style={{ color: '#8892a4', fontSize: '0.9rem' }}>Nandyal, Andhra Pradesh, India</p>
 
             <h4 style={{ marginTop: '20px' }}>Education</h4>

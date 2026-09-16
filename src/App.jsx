@@ -11,17 +11,13 @@ import WorkCarousel from './components/WorkCarousel.jsx';
 import TechStack3D from './components/TechStack3D.jsx';
 import CareerSection from './components/CareerSection.jsx';
 import ContactSection from './components/ContactSection.jsx';
-import MiniGameModal from './components/MiniGameModal.jsx';
 import { AdminAuthModal, AdminPanelModal } from './components/AdminModals.jsx';
-import ContactModal from './components/ContactModal.jsx';
 
 export default function App() {
   const [loading, setLoading] = useState(true);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth > 1024);
-  const [gameOpen, setGameOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
   const [adminOpen, setAdminOpen] = useState(false);
-  const [contactOpen, setContactOpen] = useState(false);
 
   useEffect(() => {
     const handleResize = () => setIsDesktop(window.innerWidth > 1024);
@@ -36,7 +32,7 @@ export default function App() {
       <div className="main-body" style={{ opacity: loading ? 0 : 1, transition: 'opacity 0.6s ease' }}>
         <CustomCursor />
         <Navbar />
-        <SideIcons onOpenGame={() => setGameOpen(true)} onOpenContact={() => setContactOpen(true)} />
+        <SideIcons />
         
         {/* Ambient Glow Lights */}
         <div className="landing-circle1"></div>
@@ -58,8 +54,7 @@ export default function App() {
           <ContactSection onAdminTrigger={() => setAuthOpen(true)} />
         </main>
 
-        {/* Modals */}
-        {gameOpen && <MiniGameModal onClose={() => setGameOpen(false)} />}
+        {/* Admin Modals */}
         {authOpen && (
           <AdminAuthModal 
             onClose={() => setAuthOpen(false)} 
@@ -67,7 +62,6 @@ export default function App() {
           />
         )}
         {adminOpen && <AdminPanelModal onClose={() => setAdminOpen(false)} />}
-        {contactOpen && <ContactModal onClose={() => setContactOpen(false)} />}
       </div>
     </>
   );

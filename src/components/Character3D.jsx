@@ -55,19 +55,18 @@ export default function Character3D() {
     new RGBELoader().setPath('/models/').load('char_enviorment.hdr?v=2', (texture) => {
       texture.mapping = THREE.EquirectangularReflectionMapping;
       scene.environment = texture;
-      scene.environmentIntensity = 0.65;
+      scene.environmentIntensity = 0.64;
+      scene.environmentRotation.set(5.76, 85.85, 1);
     });
 
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
-    scene.add(ambientLight);
-
     const dirLight = new THREE.DirectionalLight(0x5eead4, 1.0);
-    dirLight.position.set(-2, 6, 6);
+    dirLight.position.set(-0.47, -0.32, -1);
     dirLight.castShadow = true;
     scene.add(dirLight);
 
-    const pointLight = new THREE.PointLight(0x38bdf8, 1.8, 100, 2);
-    pointLight.position.set(3, 13, 6);
+    const pointLight = new THREE.PointLight(0x22d3ee, 0, 100, 3);
+    pointLight.position.set(3, 12, 4);
+    pointLight.castShadow = true;
     scene.add(pointLight);
 
     let characterModel = null;
@@ -103,11 +102,11 @@ export default function Character3D() {
                 if (child.material) {
                   if (child.name === 'BODY.SHIRT') {
                     const mat = child.material.clone();
-                    mat.color = new THREE.Color('#8B4513');
+                    mat.color = new THREE.Color('#1e1e1e');
                     child.material = mat;
                   } else if (child.name === 'Pant') {
                     const mat = child.material.clone();
-                    mat.color = new THREE.Color('#000000');
+                    mat.color = new THREE.Color('#0d0d0d');
                     child.material = mat;
                   }
                 }
@@ -168,7 +167,7 @@ export default function Character3D() {
             }
 
             // Setup GSAP Interactive Scroll Transitions
-            setupScrollTransitions(characterModel, camera, deskMaterial, screenLight, spine005);
+            setupScrollTransitions(characterModel, camera, deskMaterial, screenLight, spine005, pointLight);
 
             URL.revokeObjectURL(blobUrl);
             dracoLoader.dispose();
@@ -183,11 +182,11 @@ export default function Character3D() {
         console.error('Failed to decrypt 3D model:', err);
       });
 
-    // GSAP ScrollTrigger Animations (Pure 3D coordinate animations without CSS transform glitches)
-    function setupScrollTransitions(model, cam, deskMat, scrLight, spine) {
+    // GSAP ScrollTrigger Animations
+    function setupScrollTransitions(model, cam, deskMat, scrLight, spine, ptLight) {
       if (window.innerWidth <= 1024) return;
 
-      // 1. Landing to About transition: Character moves from Center (x: 0) to Left (x: -3.8) and turns to face text!
+      // 1. Landing to About transition: Character moves from Center (x: 0) to Left (x: -3.8)
       const landingTl = gsap.timeline({
         scrollTrigger: {
           trigger: '.landing-section',
@@ -206,7 +205,7 @@ export default function Character3D() {
         .to('.landing-info', { opacity: 0, duration: 0.4 }, 0)
         .fromTo('.about-me', { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.8 }, 0.2);
 
-      // 2. About to What I Do transition: Desk appears and typing starts
+      // 2. About to What I Do transition: Desk appears, moves to left (x: -4.5) to give full room to cards on right!
       const aboutTl = gsap.timeline({
         scrollTrigger: {
           trigger: '.about-section',
@@ -218,7 +217,7 @@ export default function Character3D() {
       });
 
       aboutTl
-        .to(model.position, { x: -2.0, duration: 4 }, 0)
+        .to(model.position, { x: -4.5, duration: 4 }, 0)
         .to(cam.position, { z: 75, y: 8.4, duration: 6, ease: 'power3.inOut' }, 0)
         .to('.about-section', { opacity: 0, duration: 2 }, 0)
         .to(model.rotation, { y: 0.92, x: 0.12, duration: 3 }, 0);
@@ -235,6 +234,10 @@ export default function Character3D() {
         aboutTl.to(scrLight.material, { opacity: 1, duration: 0.8, delay: 4.5 }, 0);
       }
 
+      if (ptLight) {
+        aboutTl.to(ptLight, { intensity: 2.2, duration: 0.8, delay: 4.5 }, 0);
+      }
+
       // 3. Move character out when reaching Work section
       const whatTl = gsap.timeline({
         scrollTrigger: {
@@ -246,7 +249,10 @@ export default function Character3D() {
         },
       });
 
-      whatTl.to(model.position, { y: 20, duration: 4 }, 0);
+      whatTl.to(model.position, { y: 25, duration: 4 }, 0);
+      if (ptLight) {
+        whatTl.to(ptLight, { intensity: 0, duration: 1 }, 0);
+      }
     }
 
     // Mouse Parallax (Interactive head following cursor in real-time)
