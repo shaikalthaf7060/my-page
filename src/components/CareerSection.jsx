@@ -17,8 +17,8 @@ export default function CareerSection() {
     {
       role: 'B.Tech in Computer Science & Engineering',
       company: 'Santhiram Engineering College, Nandyal',
-      time: '2022–26',
-      desc: 'Final Year CSE Undergraduate (CGPA: 7.7). Specialized in Data Structures & Algorithms, Full-Stack Web Development, Database Management Systems, and Applied AI.'
+      time: '2024–2027',
+      desc: 'CSE Undergraduate (CGPA: 7.7). Specialized in Data Structures & Algorithms, Full-Stack Web Development, Database Management Systems, and Applied AI.'
     },
     {
       role: 'Diploma in Civil Engineering',

@@ -17,7 +17,7 @@ export default function ContactSection({ onAdminTrigger }) {
             <p style={{ color: '#8892a4', fontSize: '0.9rem' }}>Nandyal, Andhra Pradesh, India</p>
 
             <h4 style={{ marginTop: '20px' }}>Education</h4>
-            <p>B.Tech Computer Science & Engineering (2022–2026)</p>
+            <p>B.Tech Computer Science & Engineering (2024–2027)</p>
             <p style={{ color: '#8892a4', fontSize: '0.85rem' }}>Santhiram Engineering College</p>
           </div>
 

@@ -37,10 +37,13 @@ export default function Character3D() {
 
     const scene = new THREE.Scene();
 
-    // Exact Camera settings: looking straight at face/chest at (0, 13.1, 0)
+    const isMobile = window.innerWidth <= 1024;
+
+    // Camera settings: looking straight at face/chest
+    // Mobile is adjusted so the head and upper torso frame naturally below hero titles
     const camera = new THREE.PerspectiveCamera(14.5, aspect, 0.1, 1000);
-    camera.position.set(0, 13.1, 24.7);
-    camera.zoom = 1.1;
+    camera.position.set(0, isMobile ? 13.8 : 13.1, isMobile ? 25.8 : 24.7);
+    camera.zoom = isMobile ? 0.94 : 1.1;
     camera.updateProjectionMatrix();
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
@@ -267,17 +270,31 @@ export default function Character3D() {
       }
     }
 
-    // Mouse Parallax (Interactive head following cursor in real-time)
+    // Mouse & Touch Parallax (Interactive head following cursor or touch in real-time)
     let targetRotX = 0, targetRotY = 0;
     let currRotX = 0, currRotY = 0;
+    let lastInteractTime = Date.now();
+    const BASE_HEAD_PITCH = -0.28; // Upright forward gaze facing the user directly
 
     const handleMouseMove = (e) => {
+      lastInteractTime = Date.now();
       const normX = (e.clientX / window.innerWidth) * 2 - 1;
       const normY = -(e.clientY / window.innerHeight) * 2 + 1;
       targetRotY = normX * (Math.PI / 10);
       targetRotX = -normY * (Math.PI / 16);
     };
     window.addEventListener('mousemove', handleMouseMove);
+
+    const handleTouchMove = (e) => {
+      if (!e.touches || e.touches.length === 0) return;
+      lastInteractTime = Date.now();
+      const touch = e.touches[0];
+      const normX = (touch.clientX / window.innerWidth) * 2 - 1;
+      const normY = -(touch.clientY / window.innerHeight) * 2 + 1;
+      targetRotY = normX * (Math.PI / 8);
+      targetRotX = -normY * (Math.PI / 14);
+    };
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
 
     const clock = new THREE.Clock();
     let animId;
@@ -287,12 +304,19 @@ export default function Character3D() {
       const delta = clock.getDelta();
       if (mixer) mixer.update(delta);
 
+      // Subtle living idle sway when no recent touch/mouse interaction
+      if (Date.now() - lastInteractTime > 1500) {
+        const t = clock.getElapsedTime();
+        targetRotY = Math.sin(t * 0.7) * 0.05;
+        targetRotX = Math.cos(t * 0.5) * 0.03;
+      }
+
       currRotX += (targetRotX - currRotX) * 0.06;
       currRotY += (targetRotY - currRotY) * 0.06;
 
       if (spine006 && window.scrollY < 300) {
         spine006.rotation.y = currRotY;
-        spine006.rotation.x = currRotX;
+        spine006.rotation.x = BASE_HEAD_PITCH + currRotX;
       }
 
       renderer.render(scene, camera);
@@ -301,9 +325,12 @@ export default function Character3D() {
 
     const handleResize = () => {
       if (!container) return;
-      const w = window.innerWidth;
-      const h = window.innerHeight;
+      const w = container.clientWidth || window.innerWidth;
+      const h = container.clientHeight || window.innerHeight;
+      const mobile = window.innerWidth <= 1024;
       camera.aspect = w / h;
+      camera.position.set(0, mobile ? 13.8 : 13.1, mobile ? 25.8 : 24.7);
+      camera.zoom = mobile ? 0.94 : 1.1;
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
     };
@@ -311,6 +338,7 @@ export default function Character3D() {
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('resize', handleResize);
       cancelAnimationFrame(animId);
       ScrollTrigger.getAll().forEach((t) => t.kill());
@@ -324,7 +352,7 @@ export default function Character3D() {
     <div className="character-model">
       <div className="character-rim" />
       <div ref={hoverRef} className="character-hover" />
-      <div ref={containerRef} style={{ width: '100vw', height: '100vh', position: 'relative' }} />
+      <div ref={containerRef} style={{ width: '100%', height: '100%', position: 'relative' }} />
     </div>
   );
 }
