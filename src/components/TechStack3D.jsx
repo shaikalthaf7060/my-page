@@ -117,20 +117,22 @@ export default function TechStack3D() {
       });
     }
 
-    // 7. Glowing Lilac Pointer Ball (matching media_1789538141138.png!)
+    // 7. Glowing Lilac Pointer Ball
     const pointerVisual = new THREE.Mesh(
-      new THREE.SphereGeometry(0.36, 24, 24),
-      new THREE.MeshBasicMaterial({ color: 0xd8b4fe })
+      new THREE.SphereGeometry(0.4, 24, 24),
+      new THREE.MeshBasicMaterial({ color: 0xd8b4fe, transparent: true, opacity: 0.85 })
     );
     pointerVisual.position.set(0, -100, 0);
     scene.add(pointerVisual);
 
-    const pointerGlow = new THREE.PointLight(0xc084fc, 2.8, 10);
+    const pointerGlow = new THREE.PointLight(0xc084fc, 2.5, 12);
     pointerVisual.add(pointerGlow);
 
     const pointerTarget = new THREE.Vector3(0, -100, 0);
     const pointerPos = new THREE.Vector3(0, -100, 0);
-    const pointerRadius = 1.7; // Physics collision radius
+    const prevPointerPos = new THREE.Vector3(0, -100, 0);
+    const pointerVel = new THREE.Vector3();
+    const pointerRadius = 2.4; // Generous interactive collision radius
 
     // 8. Mouse & Touch Pointer Tracking
     const raycaster = new THREE.Raycaster();
@@ -155,12 +157,19 @@ export default function TechStack3D() {
       }
     };
 
+    const onTouchStart = (e) => {
+      if (e.touches && e.touches[0]) {
+        updatePointerPos(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    };
+
     const onPointerLeave = () => {
       pointerTarget.set(0, -100, 0);
     };
 
     container.addEventListener('pointermove', onPointerMove);
     container.addEventListener('pointerleave', onPointerLeave);
+    container.addEventListener('touchstart', onTouchStart, { passive: true });
     container.addEventListener('touchmove', onTouchMove, { passive: true });
     container.addEventListener('touchend', onPointerLeave);
 
@@ -172,53 +181,74 @@ export default function TechStack3D() {
       const dt = Math.min((now - lastTime) / 1000, 0.035);
       lastTime = now;
 
-      // Move pointer toward target smoothly
-      pointerPos.lerp(pointerTarget, 0.16);
-      pointerVisual.position.copy(pointerPos);
+      // Smooth pointer tracking
+      const isPointerInScene = pointerTarget.y > -50;
+      if (isPointerInScene) {
+        pointerPos.lerp(pointerTarget, 0.28);
+        pointerVisual.position.copy(pointerPos);
+      } else {
+        pointerPos.lerp(pointerTarget, 0.12);
+        pointerVisual.position.copy(pointerPos);
+      }
+
+      // Pointer velocity (for momentum flicking)
+      pointerVel.subVectors(pointerPos, prevPointerPos);
+      prevPointerPos.copy(pointerPos);
 
       // Center attraction pull & containment
       for (let i = 0; i < spheres.length; i++) {
         const s = spheres[i];
 
-        // Smooth elliptical center pull (positioned cleanly below heading)
-        const pullX = -s.pos.x * 20 * s.scale;
-        const pullY = -(s.pos.y + 0.6) * 42 * s.scale;
-        const pullZ = -s.pos.z * 20 * s.scale;
+        // Gentle, buoyant spring return toward center
+        const targetY = -0.6;
+        const pullStrength = 7.5;
+        s.vel.x += (-s.pos.x * pullStrength) * dt;
+        s.vel.y += (-(s.pos.y - targetY) * pullStrength * 1.25) * dt;
+        s.vel.z += (-s.pos.z * pullStrength) * dt;
 
-        s.vel.x += pullX * dt;
-        s.vel.y += pullY * dt;
-        s.vel.z += pullZ * dt;
+        // Dynamic Pointer collision: scatter & push wherever hovered!
+        if (isPointerInScene) {
+          const dx = s.pos.x - pointerPos.x;
+          const dy = s.pos.y - pointerPos.y;
+          const dz = s.pos.z - pointerPos.z;
+          const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+          const pushRadius = s.radius + pointerRadius;
 
-        // Pointer collision
-        const distToPointer = s.pos.distanceTo(pointerPos);
-        const minPointerDist = s.radius + pointerRadius;
-        if (distToPointer < minPointerDist && distToPointer > 0.001) {
-          const overlap = minPointerDist - distToPointer;
-          const nx = (s.pos.x - pointerPos.x) / distToPointer;
-          const ny = (s.pos.y - pointerPos.y) / distToPointer;
-          const nz = (s.pos.z - pointerPos.z) / distToPointer;
+          if (dist < pushRadius && dist > 0.001) {
+            const overlap = pushRadius - dist;
+            const normDist = dist / pushRadius;
+            const nx = dx / dist;
+            const ny = dy / dist;
+            const nz = dz / dist;
 
-          s.pos.x += nx * overlap * 0.7;
-          s.pos.y += ny * overlap * 0.7;
-          s.pos.z += nz * overlap * 0.7;
+            // Direct displacement away from cursor:
+            s.pos.x += nx * overlap * 0.4;
+            s.pos.y += ny * overlap * 0.4;
+            s.pos.z += nz * overlap * 0.4;
 
-          s.vel.x += nx * (overlap * 16 + 3);
-          s.vel.y += ny * (overlap * 16 + 3);
-          s.vel.z += nz * (overlap * 16 + 3);
+            // Fluid repulsion impulse:
+            const pushForce = (1 - normDist) * 38 + 10;
+            s.vel.x += nx * pushForce * dt * 60;
+            s.vel.y += ny * pushForce * dt * 60;
+            s.vel.z += nz * pushForce * dt * 25;
+
+            // Momentum transfer from cursor flick/swirl:
+            s.vel.x += pointerVel.x * 24;
+            s.vel.y += pointerVel.y * 24;
+          }
         }
 
-        // Strict containment: spheres never drift far from center
-        const radialDist = Math.sqrt(s.pos.x * s.pos.x + s.pos.y * s.pos.y * 1.4 + s.pos.z * s.pos.z);
-        if (radialDist > 4.2) {
-          const factor = 4.2 / radialDist;
-          s.pos.x *= factor;
-          s.pos.y *= factor;
-          s.pos.z *= factor;
-          s.vel.multiplyScalar(0.7);
+        // Soft elastic containment: allows wide free movement across canvas
+        const radialDist = Math.sqrt(s.pos.x * s.pos.x + (s.pos.y - targetY) * (s.pos.y - targetY) * 1.2 + s.pos.z * s.pos.z);
+        if (radialDist > 7.5) {
+          const overflow = radialDist - 7.5;
+          s.vel.x -= (s.pos.x / radialDist) * overflow * 16 * dt;
+          s.vel.y -= ((s.pos.y - targetY) / radialDist) * overflow * 16 * dt;
+          s.vel.z -= (s.pos.z / radialDist) * overflow * 16 * dt;
         }
       }
 
-      // Sphere-to-Sphere collisions (gentle soft nestling)
+      // Sphere-to-Sphere collisions (bouncy, lively interaction)
       for (let i = 0; i < spheres.length; i++) {
         for (let j = i + 1; j < spheres.length; j++) {
           const s1 = spheres[i];
@@ -246,14 +276,14 @@ export default function TechStack3D() {
             s2.pos.y -= ny * sep;
             s2.pos.z -= nz * sep;
 
-            // Damped bounce
+            // Lively bounce
             const rvx = s1.vel.x - s2.vel.x;
             const rvy = s1.vel.y - s2.vel.y;
             const rvz = s1.vel.z - s2.vel.z;
             const velAlongNormal = rvx * nx + rvy * ny + rvz * nz;
 
             if (velAlongNormal < 0) {
-              const restitution = 0.18; // low restitution keeps cluster neat and cohesive
+              const restitution = 0.55; // lively bouncy collisions
               const impulse = -(1 + restitution) * velAlongNormal * 0.5;
               s1.vel.x += nx * impulse;
               s1.vel.y += ny * impulse;
@@ -267,8 +297,8 @@ export default function TechStack3D() {
         }
       }
 
-      // Critical damping & integration
-      const damping = Math.pow(0.86, dt * 60);
+      // Smooth floating damping & integration
+      const damping = Math.pow(0.92, dt * 60);
       for (let i = 0; i < spheres.length; i++) {
         const s = spheres[i];
         s.vel.multiplyScalar(damping);
@@ -278,7 +308,7 @@ export default function TechStack3D() {
         s.pos.z += s.vel.z * dt;
 
         s.mesh.rotation.y += s.rotVel.y * dt;
-        // Keep spheres strictly upright so logos are never inverted or tilted sideways
+        // Maintain upright orientation for legible logos
         s.mesh.rotation.x *= Math.pow(0.85, dt * 60);
         s.mesh.rotation.z *= Math.pow(0.85, dt * 60);
       }
@@ -306,6 +336,9 @@ export default function TechStack3D() {
       cancelAnimationFrame(animId);
       container.removeEventListener('pointermove', onPointerMove);
       container.removeEventListener('pointerleave', onPointerLeave);
+      container.removeEventListener('touchstart', onTouchStart);
+      container.removeEventListener('touchmove', onTouchMove);
+      container.removeEventListener('touchend', onPointerLeave);
       resizeObserver.disconnect();
       renderer.dispose();
       sphereGeometry.dispose();

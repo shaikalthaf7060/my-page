@@ -46,8 +46,27 @@ export default function WorkCarousel() {
     }
   ];
 
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
+
   const prevSlide = () => setSlide((prev) => (prev === 0 ? projects.length - 1 : prev - 1));
   const nextSlide = () => setSlide((prev) => (prev === projects.length - 1 ? 0 : prev + 1));
+
+  const onTouchStart = (e) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    if (distance > 45) nextSlide();
+    if (distance < -45) prevSlide();
+  };
 
   return (
     <section className="work-section" id="work">
@@ -62,7 +81,12 @@ export default function WorkCarousel() {
             ›
           </button>
 
-          <div className="carousel-track-container">
+          <div 
+            className="carousel-track-container"
+            onTouchStart={onTouchStart}
+            onTouchMove={onTouchMove}
+            onTouchEnd={onTouchEnd}
+          >
             <div className="carousel-track" style={{ transform: `translateX(-${slide * 100}%)` }}>
               {projects.map((proj, idx) => (
                 <div key={idx} className="carousel-slide">

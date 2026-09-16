@@ -1054,15 +1054,19 @@ a:hover {
 .carousel-content {
   display: flex;
   align-items: center;
-  gap: 60px;
+  gap: 40px;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .carousel-info {
-  flex: 1;
+  flex: 0 0 38%;
+  max-width: 38%;
+  min-width: 0;
   display: flex;
-  gap: 30px;
+  gap: 24px;
   align-items: flex-start;
+  box-sizing: border-box;
 }
 
 .carousel-number h3 {
@@ -1112,10 +1116,13 @@ a:hover {
 }
 
 .carousel-image-wrapper {
-  flex: 1;
+  flex: 0 0 58%;
+  max-width: 58%;
+  min-width: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  box-sizing: border-box;
 }
 
 .carousel-arrow {
@@ -1180,35 +1187,42 @@ a:hover {
 .work-image {
   display: flex;
   width: 100%;
+  max-width: 100%;
   justify-content: center;
+  box-sizing: border-box;
 }
 
 .work-image-in {
   position: relative;
   width: 100%;
-  border-radius: 10px;
+  max-width: 100%;
+  border-radius: 12px;
   overflow: hidden;
-  background: #111218;
+  background: #0c1018;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   display: block;
-  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+  box-sizing: border-box;
 }
 
 .work-image-in:hover {
   transform: translateY(-5px);
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), 0 0 0 1px var(--accentColor);
+  border-color: var(--accentColor);
 }
 
 .work-image img {
   width: 100%;
+  max-width: 100%;
   height: auto;
-  max-height: 420px;
-  object-fit: contain; /* Full website picture is 100% visible, never cut off! */
-  border-radius: 8px;
+  max-height: 440px;
+  object-fit: contain; /* Complete website is 100% visible, NEVER cut off! */
+  border-radius: 10px;
   display: block;
-  background: #090a0f;
+  background: #06090f;
   image-rendering: -webkit-optimize-contrast;
+  box-sizing: border-box;
 }
 
 .work-link {
@@ -1522,7 +1536,7 @@ a.contact-social:hover {
   .section-container {
     width: 100% !important;
     max-width: 92% !important;
-    padding: 0 10px;
+    padding: 0;
     box-sizing: border-box;
   }
 
@@ -1535,26 +1549,93 @@ a.contact-social:hover {
     display: none !important;
   }
   .header ul {
-    gap: 20px;
+    gap: 16px;
   }
   .header ul li a {
     font-size: 13px;
-    letter-spacing: 1.2px;
+    letter-spacing: 1px;
+    font-weight: 500;
+  }
+
+  /* Hero Section & 3D Character on Mobile */
+  .landing-section {
+    position: relative;
+    overflow: hidden;
+    min-height: 85vh;
+    min-height: 85dvh;
+    padding: 90px 0 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+  }
+
+  .landing-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    z-index: 5;
+  }
+
+  .landing-intro {
+    position: relative;
+    top: auto;
+    left: auto;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .landing-intro h1 {
+    font-size: 48px;
+    line-height: 50px;
+  }
+
+  .landing-info {
+    position: relative;
+    bottom: auto;
+    right: auto;
+    left: auto;
+    transform: none;
+    text-align: center;
+    margin-top: 15px;
+  }
+
+  .character-model {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 100% !important;
+    height: 380px !important;
+    max-height: 55vh !important;
+    pointer-events: none !important;
+    z-index: 1 !important;
+  }
+
+  .character-model canvas {
+    position: absolute !important;
+    width: 100% !important;
+    height: 100% !important;
   }
 
   /* About Section */
   .about-section {
-    padding: 70px 0;
+    padding: 60px 0;
     height: auto;
     min-height: auto;
   }
   .about-me {
     width: 100%;
     padding: 0;
+    opacity: 1 !important;
+    transform: none !important;
   }
   .about-me p {
-    font-size: 20px;
-    line-height: 1.6;
+    font-size: 18px;
+    line-height: 1.65;
   }
 
   /* What I Do Section */
@@ -1562,16 +1643,21 @@ a.contact-social:hover {
     flex-direction: column;
     height: auto;
     padding: 50px 0;
+    gap: 30px;
   }
   .what-box {
     width: 100%;
     max-width: 100%;
     margin: 0;
   }
+  .what-box:first-child {
+    padding-left: 0;
+    text-align: center;
+  }
   .what-box h2 {
     font-size: 42px;
     line-height: 44px;
-    margin: 30px 0 20px;
+    margin: 20px 0 10px;
   }
   .what-box-in {
     width: 100%;
@@ -1580,29 +1666,39 @@ a.contact-social:hover {
   }
   .what-content {
     width: 100%;
-    padding: 24px 18px;
+    padding: 22px 18px;
     box-sizing: border-box;
   }
 
   /* Work Carousel */
   .work-section {
-    padding: 60px 0;
+    padding: 50px 0;
   }
   .work-section h2 {
-    font-size: 42px;
-    margin-bottom: 30px;
+    font-size: 38px;
+    margin-bottom: 25px;
+    text-align: center;
+  }
+  .carousel-wrapper {
+    padding: 0 10px;
+    box-sizing: border-box;
+  }
+  .carousel-slide {
+    padding: 20px 0;
   }
   .carousel-content {
     flex-direction: column;
-    gap: 25px;
+    gap: 20px;
+    width: 100%;
   }
   .carousel-info {
     width: 100%;
+    max-width: 100%;
     flex: none;
-    gap: 15px;
+    gap: 12px;
   }
   .carousel-number h3 {
-    font-size: 38px;
+    font-size: 32px;
   }
   .carousel-details h4 {
     font-size: 22px;
@@ -1612,45 +1708,52 @@ a.contact-social:hover {
   }
   .carousel-image-wrapper {
     width: 100%;
+    max-width: 100%;
     flex: none;
   }
   .work-image img {
     max-height: 260px;
     width: 100%;
-    object-fit: contain;
+    object-fit: contain; /* Complete website preview, never sliced! */
   }
   .carousel-arrow {
     width: 38px;
     height: 38px;
     font-size: 18px;
+    background: rgba(13, 19, 31, 0.85);
+    border: 1px solid rgba(94, 234, 212, 0.35);
   }
-  .carousel-arrow-left { left: -6px; }
-  .carousel-arrow-right { right: -6px; }
+  .carousel-arrow-left { left: 4px; }
+  .carousel-arrow-right { right: 4px; }
 
   /* Tech Stack */
   .techstack {
-    height: 70vh;
-    min-height: 480px;
+    height: 65vh;
+    min-height: 440px;
     margin: 20px auto;
   }
   .techstack h2 {
     font-size: 34px;
-    top: 40px;
+    top: 30px;
     letter-spacing: 2px;
   }
 
   /* Career Section */
   .career-section {
-    padding: 60px 0;
+    padding: 50px 0;
+  }
+  .career-container {
+    padding: 0 10px;
   }
   .career-section h2 {
-    font-size: 40px;
-    margin-bottom: 40px;
+    font-size: 36px;
+    line-height: 38px;
+    margin-bottom: 30px;
   }
   .career-info-box {
     flex-direction: column;
-    gap: 10px;
-    margin-bottom: 40px;
+    gap: 8px;
+    margin-bottom: 30px;
   }
   .career-timeline {
     left: 0%;
@@ -1660,22 +1763,39 @@ a.contact-social:hover {
     padding-left: 20px;
     box-sizing: border-box;
   }
+  .career-info-in {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .career-info-in h4 {
+    font-size: 20px;
+    line-height: 22px;
+  }
+  .career-info-in h3 {
+    font-size: 24px;
+    line-height: 24px;
+  }
+  .career-info-box p {
+    font-size: 14px;
+    line-height: 1.5;
+  }
 
   /* Contact Section */
   .contact-section {
-    margin-top: 40px;
+    margin-top: 30px;
     padding-bottom: 60px;
   }
   .contact-section h3 {
-    font-size: 40px;
-    margin-bottom: 30px;
+    font-size: 34px;
+    margin-bottom: 25px;
   }
   .contact-flex {
     flex-direction: column;
-    gap: 30px;
+    gap: 25px;
   }
   .contact-box h2 {
-    font-size: 20px;
+    font-size: 18px;
   }
 
   /* Social Icons and Resume */
@@ -1687,8 +1807,13 @@ a.contact-social:hover {
     bottom: 16px;
     right: 16px;
     font-size: 13px;
-    letter-spacing: 1px;
-    z-index: 999;
+    letter-spacing: 1.5px;
+    padding: 10px 18px;
+    background: rgba(13, 19, 31, 0.9);
+    border: 1px solid rgba(94, 234, 212, 0.4);
+    border-radius: 30px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), 0 0 12px rgba(94, 234, 212, 0.2);
+    z-index: 9999;
   }
 }
 
