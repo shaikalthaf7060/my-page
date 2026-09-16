@@ -33,9 +33,12 @@ export default function HeroSection({ children, onAdminTrigger }) {
         <div className="landing-info" onDoubleClick={onAdminTrigger} title="Double click for Admin">
           <h3>Aspiring & Passionate</h3>
           <h2 className="landing-info-h2">
-            <span className="role-accent">
-              {titles[currTitle]}
-            </span>
+            <div className="landing-h2-1">Software</div>
+            <div className="landing-h2-2">Developer</div>
+          </h2>
+          <h2>
+            <div className="landing-h2-info">Developer</div>
+            <div className="landing-h2-info-1">Software</div>
           </h2>
         </div>
       </div>

@@ -74,27 +74,31 @@ export default function TechStack3D() {
       });
     });
 
-    // 6. Spheres Setup (30 spheres matching Akash's site)
+    // 6. Spheres Setup (30 spheres forming a neat, cohesive cluster matching reference image)
     const sphereGeometry = new THREE.SphereGeometry(1, 32, 32);
-    const scales = [0.7, 1.0, 0.8, 1.0, 1.0];
+    const scales = [0.75, 1.0, 0.85, 1.0, 0.9];
     const spheres = [];
     const sphereCount = 30;
 
     for (let i = 0; i < sphereCount; i++) {
-      const scale = scales[Math.floor(Math.random() * scales.length)];
-      const mat = materials[Math.floor(Math.random() * materials.length)];
+      const scale = scales[i % scales.length];
+      const mat = materials[i % materials.length];
       const mesh = new THREE.Mesh(sphereGeometry, mat);
       mesh.scale.set(scale, scale, scale);
 
-      // Distribute randomly around center
-      const spreadX = (Math.random() - 0.5) * 14;
-      const spreadY = (Math.random() - 0.5) * 8;
-      const spreadZ = (Math.random() - 0.5) * 8;
+      // Neat golden-spiral ellipsoidal cluster around (0, 0, 0)
+      const phi = Math.acos(-1 + (2 * i) / sphereCount);
+      const theta = Math.sqrt(sphereCount * Math.PI) * phi;
+      const r = 1.2 + (i % 6) * 0.4;
+      const spreadX = r * Math.cos(theta) * Math.sin(phi) * 1.35;
+      const spreadY = r * Math.sin(theta) * Math.sin(phi) * 0.95;
+      const spreadZ = r * Math.cos(phi) * 0.85;
+
       mesh.position.set(spreadX, spreadY, spreadZ);
       mesh.rotation.set(
-        Math.random() * Math.PI * 2,
-        Math.random() * Math.PI * 2,
-        Math.random() * Math.PI * 2
+        (i * 0.7) % (Math.PI * 2),
+        (i * 1.1) % (Math.PI * 2),
+        (i * 0.4) % (Math.PI * 2)
       );
 
       scene.add(mesh);
@@ -102,49 +106,53 @@ export default function TechStack3D() {
       spheres.push({
         mesh,
         scale,
-        radius: scale * 0.96,
+        radius: scale * 0.95,
         pos: mesh.position,
-        vel: new THREE.Vector3(
-          (Math.random() - 0.5) * 0.2,
-          (Math.random() - 0.5) * 0.2,
-          (Math.random() - 0.5) * 0.2
-        ),
+        vel: new THREE.Vector3(0, 0, 0),
         rotVel: new THREE.Vector3(
-          (Math.random() - 0.5) * 0.4,
-          (Math.random() - 0.5) * 0.4,
-          (Math.random() - 0.5) * 0.4
+          (Math.random() - 0.5) * 0.25,
+          (Math.random() - 0.5) * 0.25,
+          (Math.random() - 0.5) * 0.25
         )
       });
     }
 
-    // 7. Glowing Pointer Ball (matches pink/purple glowing orb from reference image!)
+    // 7. Glowing Lilac Pointer Ball (matching media_1789538141138.png!)
     const pointerVisual = new THREE.Mesh(
-      new THREE.SphereGeometry(0.4, 24, 24),
-      new THREE.MeshBasicMaterial({ color: 0xd946ef })
+      new THREE.SphereGeometry(0.36, 24, 24),
+      new THREE.MeshBasicMaterial({ color: 0xd8b4fe })
     );
     pointerVisual.position.set(0, -100, 0);
     scene.add(pointerVisual);
 
-    const pointerGlow = new THREE.PointLight(0xe879f9, 3, 10);
+    const pointerGlow = new THREE.PointLight(0xc084fc, 2.8, 10);
     pointerVisual.add(pointerGlow);
 
     const pointerTarget = new THREE.Vector3(0, -100, 0);
     const pointerPos = new THREE.Vector3(0, -100, 0);
-    const pointerRadius = 1.8; // Physics collision radius
+    const pointerRadius = 1.7; // Physics collision radius
 
-    // 8. Mouse / Pointer Tracking
+    // 8. Mouse & Touch Pointer Tracking
     const raycaster = new THREE.Raycaster();
     const planeZ = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
     const mousePlanePos = new THREE.Vector3();
 
-    const onPointerMove = (e) => {
+    const updatePointerPos = (clientX, clientY) => {
       const rect = container.getBoundingClientRect();
-      const normX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-      const normY = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
+      const normX = ((clientX - rect.left) / rect.width) * 2 - 1;
+      const normY = -(((clientY - rect.top) / rect.height) * 2 - 1);
 
       raycaster.setFromCamera(new THREE.Vector2(normX, normY), camera);
       raycaster.ray.intersectPlane(planeZ, mousePlanePos);
       pointerTarget.copy(mousePlanePos);
+    };
+
+    const onPointerMove = (e) => updatePointerPos(e.clientX, e.clientY);
+
+    const onTouchMove = (e) => {
+      if (e.touches && e.touches[0]) {
+        updatePointerPos(e.touches[0].clientX, e.touches[0].clientY);
+      }
     };
 
     const onPointerLeave = () => {
@@ -153,27 +161,29 @@ export default function TechStack3D() {
 
     window.addEventListener('pointermove', onPointerMove);
     container.addEventListener('pointerleave', onPointerLeave);
+    container.addEventListener('touchmove', onTouchMove, { passive: true });
+    container.addEventListener('touchend', onPointerLeave);
 
     // 9. Physics Simulation & Render Loop
     let lastTime = performance.now();
     let animId = null;
 
     const tick = (now) => {
-      const dt = Math.min((now - lastTime) / 1000, 0.04);
+      const dt = Math.min((now - lastTime) / 1000, 0.035);
       lastTime = now;
 
-      // Move pointer toward target
-      pointerPos.lerp(pointerTarget, 0.15);
+      // Move pointer toward target smoothly
+      pointerPos.lerp(pointerTarget, 0.16);
       pointerVisual.position.copy(pointerPos);
 
-      // Center attraction pull
+      // Center attraction pull & containment
       for (let i = 0; i < spheres.length; i++) {
         const s = spheres[i];
 
-        // Stronger Y pull gives the elliptical cluster matching reference image
-        const pullX = -s.pos.x * 24 * s.scale;
-        const pullY = -s.pos.y * 60 * s.scale;
-        const pullZ = -s.pos.z * 24 * s.scale;
+        // Smooth elliptical center pull
+        const pullX = -s.pos.x * 20 * s.scale;
+        const pullY = -s.pos.y * 42 * s.scale;
+        const pullZ = -s.pos.z * 20 * s.scale;
 
         s.vel.x += pullX * dt;
         s.vel.y += pullY * dt;
@@ -192,13 +202,23 @@ export default function TechStack3D() {
           s.pos.y += ny * overlap * 0.7;
           s.pos.z += nz * overlap * 0.7;
 
-          s.vel.x += nx * (overlap * 20 + 4);
-          s.vel.y += ny * (overlap * 20 + 4);
-          s.vel.z += nz * (overlap * 20 + 4);
+          s.vel.x += nx * (overlap * 16 + 3);
+          s.vel.y += ny * (overlap * 16 + 3);
+          s.vel.z += nz * (overlap * 16 + 3);
+        }
+
+        // Strict containment: spheres never drift far from center
+        const radialDist = Math.sqrt(s.pos.x * s.pos.x + s.pos.y * s.pos.y * 1.4 + s.pos.z * s.pos.z);
+        if (radialDist > 4.2) {
+          const factor = 4.2 / radialDist;
+          s.pos.x *= factor;
+          s.pos.y *= factor;
+          s.pos.z *= factor;
+          s.vel.multiplyScalar(0.7);
         }
       }
 
-      // Sphere-to-Sphere collisions
+      // Sphere-to-Sphere collisions (gentle soft nestling)
       for (let i = 0; i < spheres.length; i++) {
         for (let j = i + 1; j < spheres.length; j++) {
           const s1 = spheres[i];
@@ -226,14 +246,14 @@ export default function TechStack3D() {
             s2.pos.y -= ny * sep;
             s2.pos.z -= nz * sep;
 
-            // Relative velocity & bounce
+            // Damped bounce
             const rvx = s1.vel.x - s2.vel.x;
             const rvy = s1.vel.y - s2.vel.y;
             const rvz = s1.vel.z - s2.vel.z;
             const velAlongNormal = rvx * nx + rvy * ny + rvz * nz;
 
             if (velAlongNormal < 0) {
-              const restitution = 0.45;
+              const restitution = 0.18; // low restitution keeps cluster neat and cohesive
               const impulse = -(1 + restitution) * velAlongNormal * 0.5;
               s1.vel.x += nx * impulse;
               s1.vel.y += ny * impulse;
@@ -247,8 +267,8 @@ export default function TechStack3D() {
         }
       }
 
-      // Integration, friction damping & mesh updates
-      const damping = Math.pow(0.92, dt * 60);
+      // Critical damping & integration
+      const damping = Math.pow(0.86, dt * 60);
       for (let i = 0; i < spheres.length; i++) {
         const s = spheres[i];
         s.vel.multiplyScalar(damping);

@@ -4,8 +4,6 @@ export default function Navbar() {
   const navItems = [
     { label: 'ABOUT', href: '#about' },
     { label: 'WORK', href: '#work' },
-    { label: 'SKILLS', href: '#skills' },
-    { label: 'CAREER', href: '#career' },
     { label: 'CONTACT', href: '#contact' },
   ];
 

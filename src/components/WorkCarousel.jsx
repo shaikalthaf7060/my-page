@@ -91,18 +91,12 @@ export default function WorkCarousel() {
                           data-cursor="disable"
                           title={`Visit ${proj.title}`}
                         >
-                          <div className="browser-mockup-header">
-                            <span className="dot dot-red"></span>
-                            <span className="dot dot-yellow"></span>
-                            <span className="dot dot-green"></span>
-                            <span className="browser-url-bar">{proj.displayUrl}</span>
-                          </div>
-                          <div className="browser-mockup-body">
-                            <img src={proj.image} alt={proj.title} loading="eager" />
-                          </div>
                           <div className="work-link">
-                            ↗
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M6 6v2h8.59L5 17.59 6.41 19 16 9.41V18h2V6z" />
+                            </svg>
                           </div>
+                          <img src={proj.image} alt={proj.title} loading="eager" />
                         </a>
                       </div>
                     </div>
