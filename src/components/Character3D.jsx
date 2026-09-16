@@ -59,12 +59,24 @@ export default function Character3D() {
       scene.environmentRotation.set(5.76, 85.85, 1);
     });
 
-    const dirLight = new THREE.DirectionalLight(0x5eead4, 1.0);
+    // Neutral backlight / rim light (neutral cool white)
+    const dirLight = new THREE.DirectionalLight(0xffffff, 0.75);
     dirLight.position.set(-0.47, -0.32, -1);
     dirLight.castShadow = true;
     scene.add(dirLight);
 
-    const pointLight = new THREE.PointLight(0x22d3ee, 0, 100, 3);
+    // Front Key Light for natural, healthy face skin illumination without any green cast
+    const keyLight = new THREE.DirectionalLight(0xfff7ed, 1.3);
+    keyLight.position.set(0, 12, 22);
+    scene.add(keyLight);
+
+    // Soft warm fill light for gentle contours
+    const fillLight = new THREE.DirectionalLight(0xfef2f2, 0.6);
+    fillLight.position.set(-5, 4, 15);
+    scene.add(fillLight);
+
+    // Subtle warm ambient point light (replacing harsh cyan 0x22d3ee)
+    const pointLight = new THREE.PointLight(0xffedd5, 0.3, 100, 3);
     pointLight.position.set(3, 12, 4);
     pointLight.castShadow = true;
     scene.add(pointLight);
@@ -235,7 +247,7 @@ export default function Character3D() {
       }
 
       if (ptLight) {
-        aboutTl.to(ptLight, { intensity: 2.2, duration: 0.8, delay: 4.5 }, 0);
+        aboutTl.to(ptLight, { intensity: 0.8, duration: 0.8, delay: 4.5 }, 0);
       }
 
       // 3. Move character out when reaching Work section

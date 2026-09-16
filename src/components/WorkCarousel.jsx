@@ -5,32 +5,44 @@ export default function WorkCarousel() {
 
   const projects = [
     {
+      title: 'music.k',
+      category: 'Interactive 3D Music Streaming Experience',
+      tools: 'React 19 · Vite · 3D Coverflow · Web Audio API · LRCLIB Lyrics · Audio Visualizer',
+      image: '/images/music-k.png',
+      link: 'https://shaikalthaf7060.github.io/music.k/',
+      displayUrl: 'shaikalthaf7060.github.io/music.k'
+    },
+    {
       title: 'Recipe-GPT',
       category: 'Conversational AI Recipe & Meal Assistant',
       tools: 'React · Vite · Tailwind CSS · Generative AI APIs · LocalStorage',
       image: '/images/recipe-gpt.png',
-      link: 'https://github.com/shaikalthaf7060/recipe-gpt'
+      link: 'https://github.com/shaikalthaf7060/recipe-gpt',
+      displayUrl: 'recipe-gpt.app'
     },
     {
       title: 'Fast Speed Checker',
       category: 'Real-Time Bandwidth & Latency Engine',
       tools: 'JavaScript · HTML5 · CSS3 · Web Streams API · 10 Languages · Dark Mode',
       image: '/images/fast-speed.png',
-      link: 'https://github.com/shaikalthaf7060/fast-speed-checker'
+      link: 'https://github.com/shaikalthaf7060/fast-speed-checker',
+      displayUrl: 'fastspeedchecker.com'
     },
     {
       title: 'Menu AI — Dietary Concierge',
       category: 'Multimodal Menu Scanner & Allergen Safety',
       tools: 'React · FastAPI · Python · Google Gemini Vision AI · Glassmorphism',
       image: '/images/menu-ai.png',
-      link: 'https://github.com/shaikalthaf7060/smart-menu-ai'
+      link: 'https://github.com/shaikalthaf7060/smart-menu-ai',
+      displayUrl: 'smartmenu-ai.io'
     },
     {
       title: 'SharkTank AI — Startup Evaluator',
       category: 'IEEE ICSSIT 2026 Research & Concept Scoring',
       tools: 'React · Node.js · LLM Agent Chains · Market Intelligence · Tailwind CSS',
       image: '/images/sharktank.png',
-      link: 'https://sharktank-green.vercel.app'
+      link: 'https://sharktank-green.vercel.app',
+      displayUrl: 'sharktank-green.vercel.app'
     }
   ];
 
@@ -71,12 +83,27 @@ export default function WorkCarousel() {
 
                     <div className="carousel-image-wrapper">
                       <div className="work-image">
-                        <div className="work-image-in">
-                          <img src={proj.image} alt={proj.title} />
-                          <a href={proj.link} target="_blank" rel="noreferrer" className="work-link" data-cursor="disable">
+                        <a 
+                          href={proj.link} 
+                          target="_blank" 
+                          rel="noreferrer" 
+                          className="work-image-in" 
+                          data-cursor="disable"
+                          title={`Visit ${proj.title}`}
+                        >
+                          <div className="browser-mockup-header">
+                            <span className="dot dot-red"></span>
+                            <span className="dot dot-yellow"></span>
+                            <span className="dot dot-green"></span>
+                            <span className="browser-url-bar">{proj.displayUrl}</span>
+                          </div>
+                          <div className="browser-mockup-body">
+                            <img src={proj.image} alt={proj.title} loading="eager" />
+                          </div>
+                          <div className="work-link">
                             ↗
-                          </a>
-                        </div>
+                          </div>
+                        </a>
                       </div>
                     </div>
                   </div>
