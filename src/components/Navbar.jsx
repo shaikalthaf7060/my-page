@@ -4,6 +4,8 @@ export default function Navbar() {
   const navItems = [
     { label: 'ABOUT', href: '#about' },
     { label: 'WORK', href: '#work' },
+    { label: 'SKILLS', href: '#skills' },
+    { label: 'CAREER', href: '#career' },
     { label: 'CONTACT', href: '#contact' },
   ];
 
@@ -15,15 +17,15 @@ export default function Navbar() {
 
       <div className="navbar-connect">
         <a 
-          href="https://www.linkedin.com/in" 
+          href="https://www.linkedin.com/in/shaik-althaf-5396123a6/" 
           target="_blank" 
           rel="noreferrer" 
           className="hover-link"
           data-cursor="disable"
         >
           <div className="hover-in">
-            <span>linkedin.com/in/shaikalthaf</span>
-            <div>linkedin.com/in/shaikalthaf</div>
+            <span>linkedin.com/in/shaik-althaf</span>
+            <div>linkedin.com/in/shaik-althaf</div>
           </div>
         </a>
       </div>

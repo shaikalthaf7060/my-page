@@ -58,13 +58,16 @@ export default function Character3D() {
       scene.environmentIntensity = 0.65;
     });
 
-    const dirLight = new THREE.DirectionalLight(0x5eead4, 1.2);
-    dirLight.position.set(-0.47, -0.32, -1);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+    scene.add(ambientLight);
+
+    const dirLight = new THREE.DirectionalLight(0x5eead4, 1.0);
+    dirLight.position.set(-2, 6, 6);
     dirLight.castShadow = true;
     scene.add(dirLight);
 
-    const pointLight = new THREE.PointLight(0x22d3ee, 2.5, 100, 3);
-    pointLight.position.set(3, 12, 4);
+    const pointLight = new THREE.PointLight(0x38bdf8, 1.8, 100, 2);
+    pointLight.position.set(3, 13, 6);
     scene.add(pointLight);
 
     let characterModel = null;

@@ -5,32 +5,32 @@ export default function WorkCarousel() {
 
   const projects = [
     {
-      title: 'CallHQ.ai Voice Engine',
-      category: 'Real-Time Voice AI Platform',
-      tools: 'React · WebRTC · Node.js · Tailwind CSS · AI APIs',
-      image: '/images/callhq.png',
-      link: 'https://callhq.ai'
+      title: 'Recipe-GPT',
+      category: 'Conversational AI Recipe & Meal Assistant',
+      tools: 'React · Vite · Tailwind CSS · Generative AI APIs · LocalStorage',
+      image: '/images/recipe-gpt.png',
+      link: 'https://github.com/shaikalthaf7060/recipe-gpt'
     },
     {
-      title: 'WhatsApp Bot & Lead Automation',
-      category: 'Smart Lead Capture & CRM',
-      tools: 'Node.js · Express · WhatsApp Cloud API · SheetDB',
-      image: '/images/whatsapp.png',
-      link: '#'
+      title: 'Fast Speed Checker',
+      category: 'Real-Time Bandwidth & Latency Engine',
+      tools: 'JavaScript · HTML5 · CSS3 · Web Streams API · 10 Languages · Dark Mode',
+      image: '/images/fast-speed.png',
+      link: 'https://github.com/shaikalthaf7060/fast-speed-checker'
     },
     {
-      title: 'Broki AI Real Estate Assistant',
-      category: 'AI Property Matchmaker',
-      tools: 'Next.js · Python · PostgreSQL · OpenAI · Tailwind',
-      image: '/images/broki.png',
-      link: '#'
+      title: 'Menu AI — Dietary Concierge',
+      category: 'Multimodal Menu Scanner & Allergen Safety',
+      tools: 'React · FastAPI · Python · Google Gemini Vision AI · Glassmorphism',
+      image: '/images/menu-ai.png',
+      link: 'https://github.com/shaikalthaf7060/smart-menu-ai'
     },
     {
-      title: 'Orrdr Digital Platform',
-      category: 'Contactless Order Orchestration',
-      tools: 'React · Supabase · Stripe API · Tailwind · Vercel',
-      image: '/images/orrdr.png',
-      link: '#'
+      title: 'SharkTank AI — Startup Evaluator',
+      category: 'IEEE ICSSIT 2026 Research & Concept Scoring',
+      tools: 'React · Node.js · LLM Agent Chains · Market Intelligence · Tailwind CSS',
+      image: '/images/sharktank.png',
+      link: 'https://sharktank-green.vercel.app'
     }
   ];
 

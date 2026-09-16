@@ -3,28 +3,28 @@ import React from 'react';
 export default function CareerSection() {
   const careers = [
     {
-      role: 'Lead Developer & Designer',
-      company: 'Freelance & Indie Projects',
-      time: 'NOW',
-      desc: 'Building modern responsive web applications, interactive 3D portfolios, and automated cloud workflows for global clients.'
+      role: 'IEEE Research Publication Author',
+      company: 'IEEE ICSSIT 2026 Conference',
+      time: '2026',
+      desc: 'Authored and published research paper “Leveraging Large Language Models and Real-Time Market Data for Entrepreneurial Concept Evaluation” (ISBN: 979-8-3315-8087-2). Built AI evaluation systems.'
     },
     {
-      role: 'Full Stack Web Developer',
-      company: 'Digital Solutions',
-      time: '2023–25',
-      desc: 'Engineered high-performance web platforms, REST APIs, dynamic databases, responsive interfaces, and automated integrations.'
+      role: 'Oracle & Salesforce Certified AI Specialist',
+      company: 'Oracle Foundations & Agentforce',
+      time: '2025–26',
+      desc: 'Earned Oracle Certified Foundations Associate (Agentic AI - Aug 2026) and Salesforce Certified Agentforce Specialist (Dec 2025). Certified in Cloud Computing (NPTEL).'
     },
     {
-      role: 'Frontend Developer',
-      company: 'Creative Studio',
-      time: '2021–23',
-      desc: 'Developed fluid interactive web apps, motion graphics, reusable component design systems, and cross-browser experiences.'
+      role: 'B.Tech in Computer Science & Engineering',
+      company: 'Santhiram Engineering College, Nandyal',
+      time: '2022–26',
+      desc: 'Final Year CSE Undergraduate (CGPA: 7.7). Specialized in Data Structures & Algorithms, Full-Stack Web Development, Database Management Systems, and Applied AI.'
     },
     {
-      role: 'Computer Science Graduate',
-      company: 'B.Tech CS Engineering',
-      time: '2019–23',
-      desc: 'Specialized in Software Engineering, Algorithms, Database Systems, Web Technologies, and Interactive User Interfaces.'
+      role: 'Diploma in Civil Engineering',
+      company: 'Dr. K.V. Subba Reddy Institute of Tech',
+      time: '2021–24',
+      desc: 'Graduated with Distinction (75.01%). Built foundational discipline in analytical problem-solving, structural mathematics, and engineering fundamentals.'
     }
   ];
 

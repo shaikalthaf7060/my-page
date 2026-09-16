@@ -6,7 +6,7 @@ export default function AboutSection() {
       <div className="about-me">
         <h3>ABOUT ME</h3>
         <p>
-          I am a Web Developer & UI/UX Designer dedicated to building high-performance, aesthetically stunning digital experiences. I enjoy going from product strategy to hands-on engineering, crafting scalable modern web applications end to end.
+          I am an aspiring Software & Full-Stack Web Developer and final-year Computer Science & Engineering undergraduate at Santhiram Engineering College, Nandyal. With a strong grounding in Data Structures & Algorithms (Java/Python) and Database Management Systems (MySQL/MongoDB), I specialize in building responsive web applications and cutting-edge AI architectures. I am an IEEE ICSSIT 2026 published author on LLM-driven market evaluation and certified in Oracle Agentic AI and Salesforce Agentforce.
         </p>
       </div>
     </section>

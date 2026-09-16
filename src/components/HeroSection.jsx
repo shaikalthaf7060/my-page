@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
 export default function HeroSection({ children, onAdminTrigger }) {
-  const titles = ['FULL STACK DEV', 'UI/UX DESIGNER', 'CREATIVE CODER', 'TECH ARCHITECT'];
+  const titles = [
+    'SOFTWARE DEVELOPER',
+    'FULL STACK DEVELOPER',
+    'AI APPS BUILDER',
+    'PROBLEM SOLVER (DSA)'
+  ];
   const [currTitle, setCurrTitle] = useState(0);
 
   useEffect(() => {
@@ -26,7 +31,7 @@ export default function HeroSection({ children, onAdminTrigger }) {
 
         {/* Right Side: Role */}
         <div className="landing-info" onDoubleClick={onAdminTrigger} title="Double click for Admin">
-          <h3>Web Developer &</h3>
+          <h3>Aspiring & Passionate</h3>
           <h2 className="landing-info-h2">
             <span className="role-accent">
               {titles[currTitle]}

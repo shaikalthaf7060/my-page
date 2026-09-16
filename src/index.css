@@ -401,19 +401,38 @@ a:hover {
 /* CUSTOM CURSOR                             */
 /* ========================================= */
 .cursor-main {
-  --size: 0px;
+  --size: 34px;
   position: fixed;
   top: calc(var(--size) / -2);
   left: calc(var(--size) / -2);
   width: var(--size);
   height: var(--size);
-  border-radius: 50px;
+  border-radius: 50%;
   pointer-events: none;
   z-index: 999999;
-  background-color: #e6c3ff;
-  box-shadow: 0 0 30px #af83ff;
-  mix-blend-mode: difference;
-  transition: width .3s ease-out, height .3s ease-out;
+  border: 1.5px solid rgba(94, 234, 212, 0.75);
+  background-color: rgba(94, 234, 212, 0.06);
+  box-shadow: 0 0 16px rgba(94, 234, 212, 0.35);
+  opacity: 0;
+  transition: width .25s cubic-bezier(0.16, 1, 0.3, 1), height .25s cubic-bezier(0.16, 1, 0.3, 1), opacity .25s ease, border-color .25s ease, background-color .25s ease;
+}
+
+.cursor-dot {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background-color: #5eead4;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 8px #5eead4;
+}
+
+.cursor-hover {
+  border-color: rgba(34, 211, 238, 0.95);
+  background-color: rgba(34, 211, 238, 0.14);
+  box-shadow: 0 0 24px rgba(34, 211, 238, 0.5);
 }
 
 .cursor-icons {
@@ -425,11 +444,12 @@ a:hover {
 
 .cursor-disable {
   --size: 0px !important;
+  opacity: 0 !important;
 }
 
-@media only screen and (min-width: 600px) {
+@media only screen and (max-width: 800px) {
   .cursor-main {
-    --size: 45px;
+    display: none !important;
   }
 }
 
@@ -548,32 +568,76 @@ a:hover {
   transform: scale(1.15);
 }
 
-.resume-button {
+.side-dock-container {
   position: absolute;
   z-index: 99;
   display: flex;
-  gap: 5px;
-  bottom: 35px;
+  align-items: center;
+  gap: 12px;
+  bottom: 30px;
   right: 0;
-  width: auto;
-  text-wrap: nowrap;
-  letter-spacing: 4px;
-  font-size: 15px;
-  line-height: 15px;
+}
+
+.resume-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  letter-spacing: 3px;
+  font-size: 14px;
+  line-height: 14px;
   font-weight: 600;
-  color: #888;
+  color: #94a3b8;
   cursor: pointer;
-  transition: .3s;
+  transition: all .3s ease;
+  padding: 9px 18px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .resume-button:hover {
   color: #fff;
+  border-color: rgba(94, 234, 212, 0.6);
+  background: rgba(94, 234, 212, 0.12);
+  box-shadow: 0 0 20px rgba(94, 234, 212, 0.28);
+  transform: translateY(-2px);
 }
 
-div.resume-button span {
+.resume-button span {
   color: var(--accentColor);
+  font-size: 16px;
+  transition: transform 0.3s ease;
+}
+
+.resume-button:hover span {
+  transform: translate(2px, -2px);
+}
+
+.dock-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #fff;
   font-size: 17px;
-  margin-top: -1px;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dock-action-btn:hover {
+  transform: translateY(-3px) scale(1.1);
+  border-color: rgba(94, 234, 212, 0.6);
+  background: rgba(94, 234, 212, 0.16);
+  box-shadow: 0 0 16px rgba(94, 234, 212, 0.4);
 }
 
 @media only screen and (min-width: 900px) {

@@ -14,24 +14,31 @@ export default function ContactSection({ onAdminTrigger }) {
                 shaikalthaf7060@gmail.com
               </a>
             </p>
-            <h4>Education</h4>
-            <p>B.Tech Computer Science & Engineering — 2019–2023</p>
-            <p>Web Development & UI/UX Certification</p>
+            <p>
+              <a href="tel:+919866969390" data-cursor="disable" style={{ color: '#8892a4', textDecoration: 'none' }}>
+                +91 98669 69390
+              </a>
+            </p>
+            <p style={{ color: '#8892a4', fontSize: '0.9rem' }}>Nandyal, Andhra Pradesh, India</p>
+
+            <h4 style={{ marginTop: '20px' }}>Education</h4>
+            <p>B.Tech Computer Science & Engineering (2022–2026)</p>
+            <p style={{ color: '#8892a4', fontSize: '0.85rem' }}>Santhiram Engineering College</p>
           </div>
 
           <div className="contact-box">
-            <h4>Social</h4>
-            <a href="https://www.instagram.com/_althuuz_" target="_blank" rel="noreferrer" className="contact-social" data-cursor="disable">
-              Instagram <span>↗</span>
+            <h4>Professional & Social</h4>
+            <a href="https://www.linkedin.com/in/shaik-althaf-5396123a6/" target="_blank" rel="noreferrer" className="contact-social" data-cursor="disable">
+              LinkedIn <span>↗</span>
+            </a>
+            <a href="https://github.com/shaikalthaf7060" target="_blank" rel="noreferrer" className="contact-social" data-cursor="disable">
+              GitHub <span>↗</span>
             </a>
             <a href="https://t.me/ShaikAlthu" target="_blank" rel="noreferrer" className="contact-social" data-cursor="disable">
               Telegram <span>↗</span>
             </a>
-            <a href="https://www.threads.net/@_althuuz_" target="_blank" rel="noreferrer" className="contact-social" data-cursor="disable">
-              Threads <span>↗</span>
-            </a>
-            <a href="https://www.facebook.com/althaf.ravan" target="_blank" rel="noreferrer" className="contact-social" data-cursor="disable">
-              Facebook <span>↗</span>
+            <a href="https://www.instagram.com/_althuuz_" target="_blank" rel="noreferrer" className="contact-social" data-cursor="disable">
+              Instagram <span>↗</span>
             </a>
           </div>
 

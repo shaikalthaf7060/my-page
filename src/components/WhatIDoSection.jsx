@@ -5,22 +5,22 @@ export default function WhatIDoSection() {
 
   const cards = [
     {
-      title: 'FULL STACK DEV',
-      subtitle: 'Modern Web Architectures',
-      desc: 'Building responsive, scalable full-stack web applications with blazing-fast render performance, clean component architecture, and secure API integrations.',
-      tags: ['React', 'Next.js', 'JavaScript', 'Node.js', 'Tailwind CSS', 'REST APIs']
+      title: 'FULL STACK WEB DEV',
+      subtitle: 'Modern Scalable Architectures',
+      desc: 'Engineering responsive, high-performance web platforms and dynamic full-stack experiences with clean component hierarchies, robust RESTful APIs, and secure database integrations.',
+      tags: ['React', 'JavaScript', 'HTML5 / CSS3', 'Tailwind CSS', 'Node.js', 'MySQL', 'MongoDB']
     },
     {
-      title: 'UI/UX & 3D INTERACTION',
-      subtitle: 'Creative Experience Design',
-      desc: 'Crafting fluid micro-interactions, responsive modern layouts, WebGL/Three.js 3D elements, and intuitive interfaces that elevate digital brands.',
-      tags: ['Figma', 'GSAP', 'Three.js', 'Framer', 'Modern CSS', 'Animations']
+      title: 'APPLIED AI & AGENTIC APPS',
+      subtitle: 'LLM Orchestration & Intelligent Systems',
+      desc: 'Designing multimodal AI workflows, dietary assistants, and intelligent evaluation engines powered by Google Gemini, OpenAI, and Agentic frameworks with prompt engineering and RAG.',
+      tags: ['Oracle Agentic AI', 'Salesforce Agentforce', 'Google Gemini', 'OpenAI APIs', 'Python', 'FastAPI']
     },
     {
-      title: 'CLOUD & AUTOMATION',
-      subtitle: 'Workflows & Security',
-      desc: 'Architecting dynamic 2FA authentication, automated cloud-synced databases, real-time analytics, and smooth continuous deployment pipelines.',
-      tags: ['Git', 'Vercel', 'SheetDB', 'TOTP 2FA', 'Supabase', 'Cloudflare']
+      title: 'CORE CS & PROBLEM SOLVING',
+      subtitle: 'Algorithmic Discipline & Clean Code',
+      desc: 'Strong foundation in Data Structures and Algorithms, Object-Oriented Programming, relational database schemas, and modern Git/GitHub team collaboration workflows.',
+      tags: ['Java', 'Python', 'DSA', 'DBMS / SQL', 'Git / GitHub', 'System Design']
     }
   ];
 

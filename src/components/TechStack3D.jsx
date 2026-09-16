@@ -2,14 +2,16 @@ import React from 'react';
 
 export default function TechStack3D() {
   const techs = [
+    { name: 'Java', icon: '/images/java.svg' },
+    { name: 'Python', icon: '/images/python.svg' },
     { name: 'React', icon: '/images/react2.webp' },
-    { name: 'Next.js', icon: '/images/next2.webp' },
-    { name: 'TypeScript', icon: '/images/typescript.webp' },
     { name: 'JavaScript', icon: '/images/javascript.webp' },
     { name: 'Node.js', icon: '/images/node2.webp' },
-    { name: 'Express', icon: '/images/express.webp' },
+    { name: 'Tailwind', icon: '/images/tailwind.svg' },
+    { name: 'MySQL', icon: '/images/mysql.webp' },
     { name: 'MongoDB', icon: '/images/mongo.webp' },
-    { name: 'MySQL', icon: '/images/mysql.webp' }
+    { name: 'Git / GitHub', icon: '/images/git.svg' },
+    { name: 'Next.js', icon: '/images/next2.webp' }
   ];
 
   return (
