@@ -40,7 +40,6 @@ export default function SideIcons() {
         rel="noopener noreferrer" 
         className="resume-button" 
         data-cursor="disable"
-        download="Shaik_Althaf_Resume.pdf"
         title="Resume"
       >
         RESUME

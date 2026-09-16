@@ -96,9 +96,9 @@ export default function TechStack3D() {
 
       mesh.position.set(spreadX, spreadY, spreadZ);
       mesh.rotation.set(
-        (i * 0.7) % (Math.PI * 2),
-        (i * 1.1) % (Math.PI * 2),
-        (i * 0.4) % (Math.PI * 2)
+        0,
+        (i * 0.4) % (Math.PI * 0.6) - 0.3,
+        0
       );
 
       scene.add(mesh);
@@ -110,9 +110,9 @@ export default function TechStack3D() {
         pos: mesh.position,
         vel: new THREE.Vector3(0, 0, 0),
         rotVel: new THREE.Vector3(
-          (Math.random() - 0.5) * 0.25,
-          (Math.random() - 0.5) * 0.25,
-          (Math.random() - 0.5) * 0.25
+          0,
+          (Math.random() * 0.12 + 0.05) * (i % 2 === 0 ? 1 : -1),
+          0
         )
       });
     }
@@ -159,7 +159,7 @@ export default function TechStack3D() {
       pointerTarget.set(0, -100, 0);
     };
 
-    window.addEventListener('pointermove', onPointerMove);
+    container.addEventListener('pointermove', onPointerMove);
     container.addEventListener('pointerleave', onPointerLeave);
     container.addEventListener('touchmove', onTouchMove, { passive: true });
     container.addEventListener('touchend', onPointerLeave);
@@ -180,9 +180,9 @@ export default function TechStack3D() {
       for (let i = 0; i < spheres.length; i++) {
         const s = spheres[i];
 
-        // Smooth elliptical center pull
+        // Smooth elliptical center pull (positioned cleanly below heading)
         const pullX = -s.pos.x * 20 * s.scale;
-        const pullY = -s.pos.y * 42 * s.scale;
+        const pullY = -(s.pos.y + 0.6) * 42 * s.scale;
         const pullZ = -s.pos.z * 20 * s.scale;
 
         s.vel.x += pullX * dt;
@@ -277,9 +277,10 @@ export default function TechStack3D() {
         s.pos.y += s.vel.y * dt;
         s.pos.z += s.vel.z * dt;
 
-        s.mesh.rotation.x += s.rotVel.x * dt;
         s.mesh.rotation.y += s.rotVel.y * dt;
-        s.mesh.rotation.z += s.rotVel.z * dt;
+        // Keep spheres strictly upright so logos are never inverted or tilted sideways
+        s.mesh.rotation.x *= Math.pow(0.85, dt * 60);
+        s.mesh.rotation.z *= Math.pow(0.85, dt * 60);
       }
 
       renderer.render(scene, camera);
@@ -303,7 +304,7 @@ export default function TechStack3D() {
 
     return () => {
       cancelAnimationFrame(animId);
-      window.removeEventListener('pointermove', onPointerMove);
+      container.removeEventListener('pointermove', onPointerMove);
       container.removeEventListener('pointerleave', onPointerLeave);
       resizeObserver.disconnect();
       renderer.dispose();
