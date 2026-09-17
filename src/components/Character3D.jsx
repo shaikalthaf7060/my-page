@@ -23,16 +23,26 @@ async function decryptModel(url, pass) {
   return crypto.subtle.decrypt({ name: 'AES-CBC', iv }, key, data);
 }
 
+function nameMatch(name, ...targets) {
+  if (!name) return false;
+  const cleanName = name.replace(/[\._]/g, '').toLowerCase();
+  for (const t of targets) {
+    if (name === t || cleanName === t.replace(/[\._]/g, '').toLowerCase()) {
+      return true;
+    }
+  }
+  return false;
+}
+
 function findNode(model, ...names) {
   if (!model) return null;
-  for (const name of names) {
-    let obj = model.getObjectByName(name);
-    if (!obj && name.includes('.')) {
-      obj = model.getObjectByName(name.replace('.', '')) || model.getObjectByName(name.replace('.', '_'));
+  let found = null;
+  model.traverse((child) => {
+    if (!found && nameMatch(child.name, ...names)) {
+      found = child;
     }
-    if (obj) return obj;
-  }
-  return null;
+  });
+  return found;
 }
 
 export default function Character3D() {
@@ -160,11 +170,10 @@ export default function Character3D() {
               tex.flipY = false;
               tex.colorSpace = THREE.SRGBColorSpace;
               eyeTexture = tex;
-              const eyeObj = findNode(characterModel, 'EYEs.001', 'EYEs001', 'EYEs');
+              const eyeObj = findNode(characterModel, 'EYEs.001', 'EYEs');
               if (eyeObj) {
                 eyesMesh = eyeObj;
-                // Nudge eyeballs slightly forward so no flat eyelid polygons ever clip across them
-                eyeObj.position.z += 0.04;
+                eyeObj.position.z += 0.035;
                 eyeObj.renderOrder = 2;
                 if (eyeObj.material) {
                   eyeObj.material = new THREE.MeshPhysicalMaterial({
@@ -185,7 +194,7 @@ export default function Character3D() {
               teethTex.flipY = false;
               teethTex.colorSpace = THREE.SRGBColorSpace;
               teethTexture = teethTex;
-              const teethObj = findNode(characterModel, 'Teeth.001', 'Teeth001', 'Teeth');
+              const teethObj = findNode(characterModel, 'Teeth.001', 'Teeth');
               if (teethObj && teethObj.material) {
                 teethObj.visible = true;
                 teethObj.material = new THREE.MeshStandardMaterial({
@@ -205,10 +214,11 @@ export default function Character3D() {
               if (child.isMesh) {
                 child.castShadow = true;
                 child.receiveShadow = true;
+                child.visible = true;
 
-                if (child.name === 'EYEs.001' || child.name === 'EYEs') {
+                if (nameMatch(child.name, 'EYEs.001', 'EYEs')) {
                   eyesMesh = child;
-                  child.position.z += 0.04;
+                  child.position.z += 0.035;
                   child.renderOrder = 2;
                   if (eyeTexture && child.material) {
                     child.material = new THREE.MeshPhysicalMaterial({
@@ -220,7 +230,7 @@ export default function Character3D() {
                     });
                     child.material.needsUpdate = true;
                   }
-                } else if (child.name === 'Teeth.001' || child.name === 'Teeth') {
+                } else if (nameMatch(child.name, 'Teeth.001', 'Teeth')) {
                   // Continuous white upper dental arch with dark maroon interior background
                   child.visible = true;
                   if (child.material) {
@@ -233,8 +243,9 @@ export default function Character3D() {
                       emissiveMap: teethTexture || null,
                       emissiveIntensity: 0.15,
                     });
+                    child.material.needsUpdate = true;
                   }
-                } else if (child.name === 'CAP.001') {
+                } else if (nameMatch(child.name, 'CAP.001')) {
                   // Two-tone cap: crisp white dome
                   if (child.material) {
                     const mat = child.material.clone();
@@ -243,7 +254,7 @@ export default function Character3D() {
                     mat.metalness = 0.02;
                     child.material = mat;
                   }
-                } else if (child.name === 'CAP.002') {
+                } else if (nameMatch(child.name, 'CAP.002')) {
                   // Two-tone cap: dark charcoal brim / visor
                   if (child.material) {
                     const mat = child.material.clone();
@@ -252,7 +263,7 @@ export default function Character3D() {
                     mat.metalness = 0.05;
                     child.material = mat;
                   }
-                } else if (child.name === 'BODY.SHIRT') {
+                } else if (nameMatch(child.name, 'BODY.SHIRT', 'BODYSHIRT')) {
                   // Deep charcoal/matte black shirt with defined collar sitting at lower base of neck
                   if (child.material) {
                     const mat = child.material.clone();
@@ -261,19 +272,14 @@ export default function Character3D() {
                     mat.metalness = 0.02;
                     child.material = mat;
                   }
-                } else if (child.name === 'Pant') {
+                } else if (nameMatch(child.name, 'Pant')) {
                   if (child.material) {
                     const mat = child.material.clone();
                     mat.color = new THREE.Color('#0d0d0d');
                     child.material = mat;
                   }
-                } else if (
-                  child.name === 'Face.002' ||
-                  child.name === 'Neck' ||
-                  child.name === 'Ear.001' ||
-                  child.name === 'Hand'
-                ) {
-                  if (child.name === 'Face.002') {
+                } else if (nameMatch(child.name, 'Face.002', 'Neck', 'Ear.001', 'Hand')) {
+                  if (nameMatch(child.name, 'Face.002')) {
                     faceMesh = child;
                   }
                   // Skin shader with delicate specular sheen on cheeks, forehead, and nose tip; remove flat clay shading
@@ -297,9 +303,9 @@ export default function Character3D() {
               }
             });
 
-            // Remove all stray objects, desk, keyboard, screenlight, planes from hero landing
+            // Remove all stray objects, desk, keyboard, screenlight, planes from hero landing, keep character visible!
             characterModel.children.forEach((c) => {
-              if (c.name !== 'metarig.002') {
+              if (!nameMatch(c.name, 'metarig.002', 'metarig')) {
                 c.visible = false;
                 c.traverse((l) => {
                   if (l.material) {
@@ -311,8 +317,10 @@ export default function Character3D() {
                     }
                   }
                 });
+              } else {
+                c.visible = true;
               }
-              if (c.name === 'screenlight' && c.material) {
+              if (nameMatch(c.name, 'screenlight')) {
                 screenLight = c;
               }
             });
