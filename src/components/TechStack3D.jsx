@@ -22,28 +22,32 @@ export default function TechStack3D() {
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.4;
+    renderer.toneMappingExposure = 1.95;
     container.appendChild(renderer.domElement);
 
     // 3. Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 2.2);
     scene.add(ambientLight);
 
-    const spotLight = new THREE.SpotLight(0xffffff, 2.0);
+    const spotLight = new THREE.SpotLight(0xffffff, 2.5);
     spotLight.position.set(20, 20, 25);
-    spotLight.angle = 0.35;
+    spotLight.angle = 0.4;
     spotLight.penumbra = 1;
     scene.add(spotLight);
 
-    const dirLight = new THREE.DirectionalLight(0xffffff, 1.8);
-    dirLight.position.set(0, 5, -4);
-    scene.add(dirLight);
+    const frontLight = new THREE.DirectionalLight(0xffffff, 2.8);
+    frontLight.position.set(0, 5, 20);
+    scene.add(frontLight);
+
+    const rimLight = new THREE.DirectionalLight(0xa5b4fc, 1.8);
+    rimLight.position.set(0, -5, -8);
+    scene.add(rimLight);
 
     // 4. Environment HDR
     new RGBELoader().setPath('/models/').load('char_enviorment.hdr?v=2', (texture) => {
       texture.mapping = THREE.EquirectangularReflectionMapping;
       scene.environment = texture;
-      scene.environmentIntensity = 0.55;
+      scene.environmentIntensity = 1.3;
       scene.environmentRotation.set(0, 4, 2);
     });
 
@@ -66,11 +70,11 @@ export default function TechStack3D() {
         map: tex,
         emissive: 0xffffff,
         emissiveMap: tex,
-        emissiveIntensity: 0.28,
-        metalness: 0.45,
-        roughness: 0.85,
-        clearcoat: 0.25,
-        clearcoatRoughness: 0.1
+        emissiveIntensity: 0.65,
+        metalness: 0.15,
+        roughness: 0.25,
+        clearcoat: 0.6,
+        clearcoatRoughness: 0.15
       });
     });
 

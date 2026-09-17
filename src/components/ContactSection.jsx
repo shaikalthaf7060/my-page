@@ -1,6 +1,46 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function ContactSection({ onAdminTrigger }) {
+  const [views, setViews] = useState(1482);
+
+  useEffect(() => {
+    try {
+      const STORAGE_KEY = 'althaf_portfolio_views_count';
+      const SESSION_KEY = 'althaf_portfolio_view_session';
+      const BASELINE = 1482;
+
+      let currentViews = parseInt(localStorage.getItem(STORAGE_KEY), 10);
+      if (isNaN(currentViews) || currentViews < BASELINE) {
+        currentViews = BASELINE;
+      }
+
+      // Increment view count on each visit session
+      const sessionLogged = sessionStorage.getItem(SESSION_KEY);
+      if (!sessionLogged) {
+        currentViews += 1;
+        localStorage.setItem(STORAGE_KEY, currentViews.toString());
+        sessionStorage.setItem(SESSION_KEY, 'true');
+      }
+
+      setViews(currentViews);
+
+      // Attempt live public API counter sync if online
+      fetch('https://api.counterapi.dev/v1/shaikalthaf-portfolio/visits/up')
+        .then((res) => res.json())
+        .then((data) => {
+          if (data && typeof data.count === 'number' && data.count > currentViews) {
+            setViews(data.count);
+            localStorage.setItem(STORAGE_KEY, data.count.toString());
+          }
+        })
+        .catch(() => {
+          // Gracefully fallback to localStorage counter
+        });
+    } catch (e) {
+      console.warn('Counter sync fallback', e);
+    }
+  }, []);
+
   return (
     <section className="contact-section section-container" id="contact">
       <div className="contact-container">
@@ -42,6 +82,11 @@ export default function ContactSection({ onAdminTrigger }) {
               Designed and Developed <br />
               by <span>Shaik Althaf</span>
             </h2>
+            <div className="visitor-counter-box" title="Live Profile Views">
+              <span className="visitor-pulse-dot" />
+              <span className="visitor-label">Profile Views:</span>
+              <span className="visitor-number">{views.toLocaleString()}</span>
+            </div>
             <h5>© 2026 All Rights Reserved</h5>
           </div>
         </div>

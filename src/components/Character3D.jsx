@@ -253,7 +253,7 @@ export default function Character3D() {
         .to(cam.position, { z: 75, y: 8.4, duration: 6, delay: 2, ease: 'power3.inOut' }, 0)
         .to('.about-section', { y: '30%', duration: 4 }, 0)
         .to('.about-section', { opacity: 0, delay: 0.8, duration: 1.5 }, 0)
-        .fromTo('.character-model', { pointerEvents: 'inherit' }, { pointerEvents: 'none', x: '-9%', delay: 2, duration: 5 }, 0)
+        .fromTo('.character-model', { pointerEvents: 'inherit' }, { pointerEvents: 'none', x: '-13%', delay: 2, duration: 5 }, 0)
         .to(model.rotation, { y: 0.92, x: 0.12, delay: 2.5, duration: 3 }, 0)
         .fromTo('.what-box-in', { display: 'none' }, { display: 'flex', duration: 0.1, delay: 5.5 }, 0);
 
@@ -381,10 +381,10 @@ export default function Character3D() {
   }, []);
 
   return (
-    <div className="character-model" data-cursor="disable">
+    <div className="character-model">
       <div className="character-rim" />
-      <div ref={hoverRef} className="character-hover" data-cursor="disable" />
-      <div ref={containerRef} data-cursor="disable" style={{ width: '100%', height: '100%', position: 'relative' }} />
+      <div ref={hoverRef} className="character-hover" />
+      <div ref={containerRef} style={{ width: '100%', height: '100%', position: 'relative' }} />
     </div>
   );
 }
