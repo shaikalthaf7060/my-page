@@ -407,12 +407,12 @@ a:hover {
   left: calc(var(--size) / -2);
   width: var(--size);
   height: var(--size);
-  border-radius: 50px;
+  border-radius: 50%;
   pointer-events: none;
   z-index: 99999;
-  background-color: #e6c3ff;
-  box-shadow: 0 0 30px #af83ff;
-  mix-blend-mode: difference;
+  background: radial-gradient(circle, rgba(230, 195, 255, 0.85) 0%, rgba(192, 132, 252, 0.6) 45%, rgba(168, 85, 247, 0.25) 75%, transparent 100%);
+  box-shadow: 0 0 25px rgba(192, 132, 252, 0.75), 0 0 50px rgba(168, 85, 247, 0.4);
+  mix-blend-mode: screen;
   transition: width .2s ease-out, height .2s ease-out, opacity .2s ease;
 }
 

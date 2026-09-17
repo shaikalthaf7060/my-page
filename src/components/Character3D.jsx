@@ -164,25 +164,25 @@ export default function Character3D() {
             // Character is positioned for natural neck & collar visibility
             characterModel.position.set(0, BASE_MODEL_Y, 0);
 
-            // Refined eye texture loader
+            // Eye texture loader with natural eye socket positioning
             const texLoader = new THREE.TextureLoader();
             let eyeTexture = null;
-            texLoader.load('/images/eyes_refined.png', (tex) => {
+            texLoader.load('/images/eyes_original.png', (tex) => {
               tex.flipY = false;
               tex.colorSpace = THREE.SRGBColorSpace;
               eyeTexture = tex;
               const eyeObj = findNode(characterModel, 'EYEs.001', 'EYEs');
               if (eyeObj) {
                 eyesMesh = eyeObj;
-                eyeObj.position.z = 0.045;
-                eyeObj.scale.set(1.04, 1.04, 1.04);
+                eyeObj.position.z = 0.02;
+                eyeObj.scale.set(1.0, 1.0, 1.0);
                 eyeObj.renderOrder = 2;
                 if (eyeObj.material) {
                   eyeObj.material = new THREE.MeshPhysicalMaterial({
                     map: tex,
                     roughness: 0.08,
                     metalness: 0.0,
-                    clearcoat: 0.5,
+                    clearcoat: 0.6,
                     clearcoatRoughness: 0.1,
                   });
                   eyeObj.material.needsUpdate = true;
@@ -220,15 +220,15 @@ export default function Character3D() {
 
                 if (nameMatch(child.name, 'EYEs.001', 'EYEs')) {
                   eyesMesh = child;
-                  child.position.z = 0.045;
-                  child.scale.set(1.04, 1.04, 1.04);
+                  child.position.z = 0.02;
+                  child.scale.set(1.0, 1.0, 1.0);
                   child.renderOrder = 2;
                   if (eyeTexture && child.material) {
                     child.material = new THREE.MeshPhysicalMaterial({
                       map: eyeTexture,
                       roughness: 0.08,
                       metalness: 0.0,
-                      clearcoat: 0.5,
+                      clearcoat: 0.6,
                       clearcoatRoughness: 0.1,
                     });
                     child.material.needsUpdate = true;
@@ -249,21 +249,23 @@ export default function Character3D() {
                     child.material.needsUpdate = true;
                   }
                 } else if (nameMatch(child.name, 'CAP.001')) {
-                  // Two-tone cap: crisp white dome
+                  // Metallic silver chrome dome reflecting studio environment (exact match to Image 4!)
                   if (child.material) {
                     const mat = child.material.clone();
-                    mat.color = new THREE.Color('#f8fafc');
-                    mat.roughness = 0.32;
-                    mat.metalness = 0.02;
+                    mat.color = new THREE.Color('#c5c8cc');
+                    mat.metalness = 0.85;
+                    mat.roughness = 0.25;
+                    mat.clearcoat = 0.35;
+                    mat.clearcoatRoughness = 0.15;
                     child.material = mat;
                   }
                 } else if (nameMatch(child.name, 'CAP.002')) {
-                  // Two-tone cap: dark charcoal brim / visor with specular highlights
+                  // Dark charcoal brim / visor with subtle specular edge (exact match to Image 4!)
                   if (child.material) {
                     const mat = child.material.clone();
                     mat.color = new THREE.Color('#141416');
-                    mat.roughness = 0.35;
-                    mat.metalness = 0.1;
+                    mat.roughness = 0.45;
+                    mat.metalness = 0.15;
                     child.material = mat;
                   }
                 } else if (nameMatch(child.name, 'BODY.SHIRT', 'BODYSHIRT')) {
@@ -287,19 +289,19 @@ export default function Character3D() {
                   if (nameMatch(child.name, 'Face.002')) {
                     faceMesh = child;
                   }
-                  // Skin shader with delicate specular highlights on cheeks, forehead, and nose tip (roughness 0.35, metalness 0.1, clearcoat 0.45)
+                  // Authentic caramel/tan skin shader preserving painted eye creases, lip definition, and pores (exact match to Image 4!)
                   if (child.material) {
                     const old = child.material;
                     const skinMat = new THREE.MeshPhysicalMaterial({
                       map: old.map || null,
                       normalMap: old.normalMap || null,
                       roughnessMap: old.roughnessMap || null,
-                      color: old.color ? old.color.clone() : new THREE.Color('#fcd5b8'),
-                      roughness: 0.35,
-                      metalness: 0.1,
-                      clearcoat: 0.45,
-                      clearcoatRoughness: 0.15,
-                      reflectivity: 0.8,
+                      color: new THREE.Color(1, 1, 1), // White tint multiplier lets authentic texture shine through without bleaching
+                      roughness: 0.38,
+                      metalness: 0.04,
+                      clearcoat: 0.35,
+                      clearcoatRoughness: 0.18,
+                      reflectivity: 0.75,
                       side: THREE.DoubleSide,
                     });
                     child.material = skinMat;
@@ -308,25 +310,73 @@ export default function Character3D() {
               }
             });
 
-            // Remove all stray objects, desk, keyboard, screenlight, planes from hero landing, keep character visible!
+            // Collect all workstation objects (desk, chair, keyboard, monitor, screenlight)
+            const deskObjects = [];
             characterModel.children.forEach((c) => {
-              if (!nameMatch(c.name, 'metarig.002', 'metarig')) {
-                c.visible = false;
+              if (
+                nameMatch(
+                  c.name,
+                  'Plane004',
+                  'Plane.004',
+                  'Plane002',
+                  'Plane.002',
+                  'Plane003',
+                  'Plane.003',
+                  'Plane',
+                  'Cube002',
+                  'Cube.002',
+                  'Keyboard',
+                  'screenlight'
+                )
+              ) {
+                deskObjects.push(c);
+                c.visible = true; // KEEP TRUE so Three.js renders when opacity fades in!
                 c.traverse((l) => {
-                  if (l.material) {
+                  if (l.isMesh && l.material) {
+                    l.material = l.material.clone();
                     l.material.transparent = true;
-                    l.material.opacity = 0;
-                    if (l.material.name === 'Material.018') {
-                      deskMaterial = l.material;
-                      deskMaterial.color.set('#FFFFFF');
+                    l.material.opacity = 0; // HIDE INITIALLY ON HERO LANDING
+                    l.material.depthWrite = true;
+
+                    // Polish materials to match reference Image 3
+                    if (nameMatch(l.material.name, 'Material.018')) {
+                      // Sleek white desk top
+                      l.material.color = new THREE.Color('#f5f5f7');
+                      l.material.roughness = 0.35;
+                    } else if (nameMatch(l.material.name, 'Material.020')) {
+                      // Dark matte steel desk legs
+                      l.material.color = new THREE.Color('#111215');
+                      l.material.metalness = 0.8;
+                      l.material.roughness = 0.25;
+                    } else if (nameMatch(l.material.name, 'Material.021')) {
+                      // Clean white chair shell
+                      l.material.color = new THREE.Color('#ffffff');
+                      l.material.roughness = 0.4;
+                    } else if (nameMatch(l.material.name, 'Wood')) {
+                      // Warm wooden chair legs
+                      l.material.color = new THREE.Color('#8d5b3a');
+                      l.material.roughness = 0.5;
+                    } else if (nameMatch(l.material.name, 'Material.016', 'Material.017')) {
+                      // Crisp light keyboard and keys
+                      l.material.color = new THREE.Color('#e5e7eb');
+                      l.material.roughness = 0.35;
+                    } else if (nameMatch(l.material.name, 'stand')) {
+                      // Metallic aluminum monitor stand
+                      l.material.color = new THREE.Color('#cbd5e1');
+                      l.material.metalness = 0.7;
+                      l.material.roughness = 0.25;
+                    } else if (nameMatch(c.name, 'screenlight') || nameMatch(l.material.name, 'screenlight')) {
+                      // Emissive neon pink computer screen!
+                      l.material.color = new THREE.Color('#ff2e93');
+                      l.material.emissive = new THREE.Color('#ff2e93');
+                      l.material.emissiveIntensity = 3.0;
                     }
                   }
                 });
+              } else if (nameMatch(c.name, 'ground')) {
+                c.visible = false;
               } else {
                 c.visible = true;
-              }
-              if (nameMatch(c.name, 'screenlight')) {
-                screenLight = c;
               }
             });
 
@@ -374,24 +424,17 @@ export default function Character3D() {
             }
 
             // Screen glow light casting vibrant screen reflection onto face & hands
-            const screenGlowLight = new THREE.PointLight(0xff69b4, 0, 10);
+            const screenGlowLight = new THREE.PointLight(0xff2e93, 0, 12);
             screenGlowLight.position.set(0.5, 10, 4.5);
             scene.add(screenGlowLight);
 
             // Setup GSAP Interactive Scroll Transitions
-            const deskTopMesh = characterModel.getObjectByName('Plane004')?.children.find(
-              (l) => l.material?.name === 'Material.018'
-            );
-            const deskParent = characterModel.children.find((c) => c.name === 'Plane004');
-
             setupScrollTransitions(
               characterModel,
               camera,
-              deskParent,
-              screenLight,
+              deskObjects,
               spine005,
-              screenGlowLight,
-              deskTopMesh
+              screenGlowLight
             );
 
             URL.revokeObjectURL(blobUrl);
@@ -407,8 +450,8 @@ export default function Character3D() {
         console.error('Failed to decrypt 3D model:', err);
       });
 
-    // GSAP ScrollTrigger Animations (Exact match to reference site & Image 1!)
-    function setupScrollTransitions(model, cam, deskParent, scrLight, spine, ptLight, deskTop) {
+    // GSAP ScrollTrigger Animations (Exact match to reference site & Image 3!)
+    function setupScrollTransitions(model, cam, deskObjs, spine, ptLight) {
       if (window.innerWidth <= 1024) return;
 
       // 1. Landing to About transition: Character moves to left (-25%)
@@ -430,7 +473,7 @@ export default function Character3D() {
         .to('.landing-container', { y: '40%', duration: 0.8 }, 0)
         .fromTo('.about-me', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.6, delay: 0.3 }, 0);
 
-      // 2. About to What I Do transition: Camera zooms out to (0, 8.4, 75), desk & computer appear, boy types at desk!
+      // 2. About to What I Do transition: Camera zooms out to (0, 8.4, 75), desk, chair, computer & keyboard appear!
       const aboutTl = gsap.timeline({
         scrollTrigger: {
           trigger: '.about-section',
@@ -453,24 +496,27 @@ export default function Character3D() {
         aboutTl.to(spine.rotation, { x: 0.6, delay: 2, duration: 3 }, 0);
       }
 
-      if (deskParent) {
-        deskParent.traverse((child) => {
-          if (child.isMesh && child.material) {
-            aboutTl.to(child.material, { opacity: 1, duration: 0.8, delay: 2.8 }, 0);
-          }
+      // Smoothly fade in ALL workstation elements (desk, chair, keyboard, monitor, screenlight)
+      if (deskObjs && deskObjs.length > 0) {
+        deskObjs.forEach((obj) => {
+          obj.traverse((child) => {
+            if (child.isMesh && child.material) {
+              aboutTl.to(child.material, { opacity: 1, duration: 1.2, delay: 2.8 }, 0);
+            }
+          });
         });
+
+        // Desk top rises into place smoothly
+        const deskTop = deskObjs.find((c) => nameMatch(c.name, 'Plane.004', 'Plane004'));
+        if (deskTop) {
+          aboutTl.fromTo(deskTop.position, { y: -8, z: 2 }, { y: 0, z: 0, delay: 1.8, duration: 3 }, 0);
+        }
       }
 
-      if (deskTop) {
-        aboutTl.fromTo(deskTop.position, { y: -10, z: 2 }, { y: 0, z: 0, delay: 1.8, duration: 3 }, 0);
-      }
-
-      if (scrLight && scrLight.material) {
-        aboutTl.to(scrLight.material, { opacity: 1, duration: 0.8, delay: 4.0 }, 0);
-      }
-
+      // Turn on vibrant hot pink screen reflection on boy's face, hands, and clothes (exact match to Image 3!)
       if (ptLight) {
-        aboutTl.to(ptLight, { intensity: 2.0, duration: 0.8, delay: 4.0 }, 0);
+        ptLight.color.set(0xff2e93);
+        aboutTl.to(ptLight, { intensity: 3.5, duration: 1.2, delay: 3.8 }, 0);
       }
 
       // 3. Move character out when reaching Work section
@@ -488,6 +534,16 @@ export default function Character3D() {
         .fromTo('.character-model', { y: '0%' }, { y: '-100%', duration: 4, ease: 'none', delay: 1 }, 0)
         .fromTo('.whatIDO', { y: 0 }, { y: '15%', duration: 2 }, 0)
         .to(model.rotation, { x: -0.04, duration: 2, delay: 1 }, 0);
+
+      if (deskObjs && deskObjs.length > 0) {
+        deskObjs.forEach((obj) => {
+          obj.traverse((child) => {
+            if (child.isMesh && child.material) {
+              whatTl.to(child.material, { opacity: 0, duration: 0.8 }, 0);
+            }
+          });
+        });
+      }
 
       if (ptLight) {
         whatTl.to(ptLight, { intensity: 0, duration: 1 }, 0);
@@ -536,26 +592,21 @@ export default function Character3D() {
       const delta = Math.min(clock.getDelta(), 0.1);
       if (mixer) mixer.update(delta);
 
-      // Reset eyelid morph targets / blend shapes: set eyesClosed or squint to 0.0, set eyeOpen to 1.0
+      // Confident, hooded gaze with natural 28% upper eyelid coverage (exact match to reference Image 4!)
       if (faceMesh && faceMesh.morphTargetDictionary && faceMesh.morphTargetInfluences) {
         for (const k in faceMesh.morphTargetDictionary) {
           const idx = faceMesh.morphTargetDictionary[k];
-          if (/closed|squint|eyel/i.test(k)) {
-            faceMesh.morphTargetInfluences[idx] = 0.0;
-          } else if (/open/i.test(k)) {
-            faceMesh.morphTargetInfluences[idx] = 1.0;
+          if (nameMatch(k, 'eyeL_60', 'eyeL60')) {
+            faceMesh.morphTargetInfluences[idx] = 0.28;
           } else {
             faceMesh.morphTargetInfluences[idx] = 0.0;
           }
         }
-      } else if (faceMesh && faceMesh.morphTargetInfluences) {
-        faceMesh.morphTargetInfluences.fill(0);
       }
 
-      // Upper eyelid curve clears pupil: iris and circular pupil catchlights fully visible
+      // Natural eye socket depth without bulging
       if (eyesMesh) {
-        eyesMesh.position.z = 0.045;
-        eyesMesh.scale.set(1.04, 1.04, 1.04);
+        eyesMesh.position.z = 0.02;
       }
 
       if (shirtMesh) {
@@ -579,14 +630,14 @@ export default function Character3D() {
       currRotX += (targetRotX - currRotX) * lerpFactor;
       currRotY += (targetRotY - currRotY) * lerpFactor;
 
-      // Arch eyebrows naturally above open eyes, eliminating flat squinting look
+      // Natural determined brow slanting slightly downward toward the nose (exact match to Image 4!)
       if (eyebrowL) {
-        eyebrowL.position.y = 1.73;
-        eyebrowL.rotation.z = -0.04;
+        eyebrowL.position.y = 1.62;
+        eyebrowL.rotation.z = 0.04;
       }
       if (eyebrowR) {
-        eyebrowR.position.y = 1.73;
-        eyebrowR.rotation.z = 0.04;
+        eyebrowR.position.y = 1.62;
+        eyebrowR.rotation.z = -0.04;
       }
 
       // Hero section interaction: organic neck & head articulation + breathing bob
@@ -648,9 +699,9 @@ export default function Character3D() {
   }, []);
 
   return (
-    <div className="character-model" data-cursor="disable">
+    <div className="character-model">
       <div className="character-rim" />
-      <div ref={hoverRef} className="character-hover" data-cursor="disable" />
+      <div ref={hoverRef} className="character-hover" />
       <div ref={containerRef} style={{ width: '100%', height: '100%', position: 'relative' }} />
     </div>
   );
