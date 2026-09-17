@@ -85,39 +85,39 @@ export default function Character3D() {
       scene.environmentRotation.set(5.76, 85.85, 1);
     });
 
-    // Soft warm ambient light (subdued to preserve deep anatomical jawline shadow)
-    const ambientLight = new THREE.AmbientLight(0xfff7ed, 0.28);
+    // Soft warm ambient light (subdued to preserve deep anatomical jawline shadow onto exposed neck)
+    const ambientLight = new THREE.AmbientLight(0xfff7ed, 0.20);
     scene.add(ambientLight);
 
-    // Sharp Cyan / Teal Backlight creating clear glowing outline separating dark clothes & head from background
-    const cyanBacklight = new THREE.DirectionalLight(0x00f5ff, 4.5);
-    cyanBacklight.position.set(0, 16, -14);
-    cyanBacklight.target.position.set(0, 12.5, 0);
-    scene.add(cyanBacklight);
-    scene.add(cyanBacklight.target);
+    // Sharp Cyan / Teal Backlight placed behind character pointing toward camera: Color #00e5ff, high intensity (5.8)
+    const cyanBackRimLight = new THREE.DirectionalLight(0x00e5ff, 5.8);
+    cyanBackRimLight.position.set(0, 16, -15);
+    cyanBackRimLight.target.position.set(0, 12, 10);
+    scene.add(cyanBackRimLight);
+    scene.add(cyanBackRimLight.target);
 
     // Dual Shoulder Rim Lights (behind shoulders) for sharp, crisp edge definition
-    const leftRimLight = new THREE.DirectionalLight(0x06b6d4, 3.8);
-    leftRimLight.position.set(-8, 14, -6);
-    leftRimLight.target.position.set(0, 12, 0);
+    const leftRimLight = new THREE.DirectionalLight(0x00e5ff, 4.2);
+    leftRimLight.position.set(-8, 14, -8);
+    leftRimLight.target.position.set(0, 12, 5);
     scene.add(leftRimLight);
     scene.add(leftRimLight.target);
 
-    const rightRimLight = new THREE.DirectionalLight(0x0891b2, 3.8);
-    rightRimLight.position.set(8, 14, -6);
-    rightRimLight.target.position.set(0, 12, 0);
+    const rightRimLight = new THREE.DirectionalLight(0x00e5ff, 4.2);
+    rightRimLight.position.set(8, 14, -8);
+    rightRimLight.target.position.set(0, 12, 5);
     scene.add(rightRimLight);
     scene.add(rightRimLight.target);
 
-    // Soft warm key light from front-left with crisp contact shadow / AO under jawline onto neck
+    // Steep front-left key light (y: 19, z: 14) with normalBias: 0.05 to cast a strong contact shadow/AO under the chin onto the exposed neck
     const warmKeyLight = new THREE.DirectionalLight(0xfff3e0, 2.2);
-    warmKeyLight.position.set(-5, 17, 14);
-    warmKeyLight.target.position.set(0, 12, 0);
+    warmKeyLight.position.set(-3.5, 19, 14);
+    warmKeyLight.target.position.set(0, 11.5, 0);
     warmKeyLight.castShadow = true;
     warmKeyLight.shadow.mapSize.width = 2048;
     warmKeyLight.shadow.mapSize.height = 2048;
-    warmKeyLight.shadow.bias = -0.0005;
-    warmKeyLight.shadow.normalBias = 0.04;
+    warmKeyLight.shadow.bias = -0.0003;
+    warmKeyLight.shadow.normalBias = 0.05;
     scene.add(warmKeyLight);
     scene.add(warmKeyLight.target);
 
@@ -139,10 +139,11 @@ export default function Character3D() {
     let eyebrowR = null;
     let faceMesh = null;
     let eyesMesh = null;
+    let shirtMesh = null;
 
-    // Resting head pose with slight upward tilt (+4° to +5° on X-axis) to keep chin clear of collar
+    // Resting head pose with slight upward tilt (+4° to +5° on X-axis) to lift chin off chest
     const BASE_NECK_PITCH = 0.44;
-    const BASE_HEAD_PITCH = -0.25;
+    const BASE_HEAD_PITCH = -0.21;
     const BASE_MODEL_Y = -0.45;
 
     // Load & Decrypt 3D Character
@@ -173,7 +174,8 @@ export default function Character3D() {
               const eyeObj = findNode(characterModel, 'EYEs.001', 'EYEs');
               if (eyeObj) {
                 eyesMesh = eyeObj;
-                eyeObj.position.z += 0.035;
+                eyeObj.position.z = 0.045;
+                eyeObj.scale.set(1.04, 1.04, 1.04);
                 eyeObj.renderOrder = 2;
                 if (eyeObj.material) {
                   eyeObj.material = new THREE.MeshPhysicalMaterial({
@@ -218,7 +220,8 @@ export default function Character3D() {
 
                 if (nameMatch(child.name, 'EYEs.001', 'EYEs')) {
                   eyesMesh = child;
-                  child.position.z += 0.035;
+                  child.position.z = 0.045;
+                  child.scale.set(1.04, 1.04, 1.04);
                   child.renderOrder = 2;
                   if (eyeTexture && child.material) {
                     child.material = new THREE.MeshPhysicalMaterial({
@@ -255,16 +258,18 @@ export default function Character3D() {
                     child.material = mat;
                   }
                 } else if (nameMatch(child.name, 'CAP.002')) {
-                  // Two-tone cap: dark charcoal brim / visor
+                  // Two-tone cap: dark charcoal brim / visor with specular highlights
                   if (child.material) {
                     const mat = child.material.clone();
                     mat.color = new THREE.Color('#141416');
-                    mat.roughness = 0.68;
-                    mat.metalness = 0.05;
+                    mat.roughness = 0.35;
+                    mat.metalness = 0.1;
                     child.material = mat;
                   }
                 } else if (nameMatch(child.name, 'BODY.SHIRT', 'BODYSHIRT')) {
-                  // Deep charcoal/matte black shirt with defined collar sitting at lower base of neck
+                  // Deep charcoal/matte black shirt with defined collar sitting flat across base of clavicle
+                  shirtMesh = child;
+                  child.position.y = -0.08;
                   if (child.material) {
                     const mat = child.material.clone();
                     mat.color = new THREE.Color('#111215');
@@ -282,7 +287,7 @@ export default function Character3D() {
                   if (nameMatch(child.name, 'Face.002')) {
                     faceMesh = child;
                   }
-                  // Skin shader with delicate specular sheen on cheeks, forehead, and nose tip; remove flat clay shading
+                  // Skin shader with delicate specular highlights on cheeks, forehead, and nose tip (roughness 0.35, metalness 0.1, clearcoat 0.45)
                   if (child.material) {
                     const old = child.material;
                     const skinMat = new THREE.MeshPhysicalMaterial({
@@ -290,11 +295,11 @@ export default function Character3D() {
                       normalMap: old.normalMap || null,
                       roughnessMap: old.roughnessMap || null,
                       color: old.color ? old.color.clone() : new THREE.Color('#fcd5b8'),
-                      roughness: 0.32,
-                      metalness: 0.02,
-                      clearcoat: 0.35,
-                      clearcoatRoughness: 0.18,
-                      reflectivity: 0.5,
+                      roughness: 0.35,
+                      metalness: 0.1,
+                      clearcoat: 0.45,
+                      clearcoatRoughness: 0.15,
+                      reflectivity: 0.8,
                       side: THREE.DoubleSide,
                     });
                     child.material = skinMat;
@@ -339,12 +344,17 @@ export default function Character3D() {
             eyebrowL = findNode(characterModel, 'eyebrow_L', 'eyebrowL');
             eyebrowR = findNode(characterModel, 'eyebrow_R', 'eyebrowR');
 
-            // Elongate neck cylinder and drop chest/torso proportion by 15%
+            // Shift chest/torso bone down by -0.25 units to drop collar line
+            if (spine003) {
+              spine003.position.y = 1.08;
+            }
+            // Elongate neck cylinder along Y-axis by 28% for >40px visible neck column
             if (spine005) {
+              spine005.scale.set(1.0, 1.28, 1.0);
               spine005.position.y = 1.48;
             }
-            if (spine003) {
-              spine003.position.y = 1.15;
+            if (shirtMesh) {
+              shirtMesh.position.y = -0.08;
             }
 
             scene.add(characterModel);
@@ -526,14 +536,30 @@ export default function Character3D() {
       const delta = Math.min(clock.getDelta(), 0.1);
       if (mixer) mixer.update(delta);
 
-      // Keep eyelids cleanly open and circular: reset any morph target influences on Face.002
-      if (faceMesh && faceMesh.morphTargetInfluences) {
+      // Reset eyelid morph targets / blend shapes: set eyesClosed or squint to 0.0, set eyeOpen to 1.0
+      if (faceMesh && faceMesh.morphTargetDictionary && faceMesh.morphTargetInfluences) {
+        for (const k in faceMesh.morphTargetDictionary) {
+          const idx = faceMesh.morphTargetDictionary[k];
+          if (/closed|squint|eyel/i.test(k)) {
+            faceMesh.morphTargetInfluences[idx] = 0.0;
+          } else if (/open/i.test(k)) {
+            faceMesh.morphTargetInfluences[idx] = 1.0;
+          } else {
+            faceMesh.morphTargetInfluences[idx] = 0.0;
+          }
+        }
+      } else if (faceMesh && faceMesh.morphTargetInfluences) {
         faceMesh.morphTargetInfluences.fill(0);
       }
 
-      // Keep eyeballs cleanly pushed forward
+      // Upper eyelid curve clears pupil: iris and circular pupil catchlights fully visible
       if (eyesMesh) {
-        eyesMesh.position.z = 0.04;
+        eyesMesh.position.z = 0.045;
+        eyesMesh.scale.set(1.04, 1.04, 1.04);
+      }
+
+      if (shirtMesh) {
+        shirtMesh.position.y = -0.08;
       }
 
       const t = clock.getElapsedTime();
@@ -569,20 +595,21 @@ export default function Character3D() {
           characterModel.position.y = BASE_MODEL_Y + breath * 0.016;
         }
 
-        // Lower chest/torso by 15% to drop collar line
+        // Translate torso mesh downwards: shift position.y of chest/torso by -0.25 units
         if (spine003) {
-          spine003.position.y = 1.15;
+          spine003.position.y = 1.08;
         }
 
-        // Elongate and fully expose neck cylinder
+        // Increase scale of neck bone along Y-axis by 28% for >40px visible neck column
         if (spine005) {
+          spine005.scale.set(1.0, 1.28, 1.0);
           spine005.position.y = 1.48;
           spine005.rotation.x = BASE_NECK_PITCH + currRotX * 0.35;
           spine005.rotation.y = currRotY * 0.38;
           spine005.rotation.z = -currRotY * 0.08;
         }
 
-        // Head bone pivot toward pointer with slight upward tilt (+4° to +5°) preventing chin-collar overlap
+        // Head bone pivot toward pointer with slight upward tilt (+4° to +5°) lifting chin off chest
         if (spine006) {
           spine006.rotation.x = BASE_HEAD_PITCH + currRotX * 0.65;
           spine006.rotation.y = currRotY * 0.62;

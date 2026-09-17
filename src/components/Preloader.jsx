@@ -61,11 +61,11 @@ export default function Preloader({ onComplete }) {
           <span>FULL STACK DEVELOPER</span>
           <span>AI APPS BUILDER</span>
           <span>SOFTWARE ENGINEER</span>
-          <span>WEB DEVELOPER</span>
+          <span>SHAIK ALTHAF</span>
           <span>FULL STACK DEVELOPER</span>
           <span>AI APPS BUILDER</span>
           <span>SOFTWARE ENGINEER</span>
-          <span>WEB DEVELOPER</span>
+          <span>SHAIK ALTHAF</span>
         </div>
       </div>
 
