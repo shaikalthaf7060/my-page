@@ -22,59 +22,61 @@ export default function TechStack3D() {
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.5;
+    renderer.toneMappingExposure = 1.35;
     container.appendChild(renderer.domElement);
 
-    // 3. Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.6);
+    // 3. Lighting (Clean key light + pink rim light precisely matching reference image)
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.4);
     scene.add(ambientLight);
 
-    const spotLight = new THREE.SpotLight(0xffffff, 2.5);
-    spotLight.position.set(20, 20, 25);
-    spotLight.angle = 0.4;
-    spotLight.penumbra = 1;
-    scene.add(spotLight);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 2.2);
+    keyLight.position.set(12, 16, 22);
+    scene.add(keyLight);
 
-    const frontLight = new THREE.DirectionalLight(0xffffff, 2.8);
-    frontLight.position.set(0, 5, 20);
-    scene.add(frontLight);
-
-    const rimLight = new THREE.DirectionalLight(0xa5b4fc, 1.8);
-    rimLight.position.set(0, -5, -8);
+    // Signature pink rim light matching media_1789627870970.png
+    const rimLight = new THREE.DirectionalLight(0xf472b6, 2.2);
+    rimLight.position.set(-14, 15, 10);
     scene.add(rimLight);
+
+    const fillLight = new THREE.DirectionalLight(0x93c5fd, 0.8);
+    fillLight.position.set(0, -12, 12);
+    scene.add(fillLight);
+
+    const backLight = new THREE.DirectionalLight(0xffffff, 1.0);
+    backLight.position.set(0, 8, -10);
+    scene.add(backLight);
 
     // 4. Environment HDR
     new RGBELoader().setPath('/models/').load('char_enviorment.hdr?v=2', (texture) => {
       texture.mapping = THREE.EquirectangularReflectionMapping;
       scene.environment = texture;
-      scene.environmentIntensity = 1.3;
+      scene.environmentIntensity = 0.65;
       scene.environmentRotation.set(0, 4, 2);
     });
 
-    // 5. Tech Textures & Materials
+    // 5. Tech Textures & Materials (Exact original textures from reference screenshot)
     const textureLoader = new THREE.TextureLoader();
-    const techConfigs = [
-      { path: '/images/tech_react.png', emissive: 0x0088cc, emissiveIntensity: 0.35, roughness: 0.2 },
-      { path: '/images/tech_next.png', emissive: 0x222226, emissiveIntensity: 0.25, roughness: 0.15 },
-      { path: '/images/tech_node.png', emissive: 0x15803d, emissiveIntensity: 0.35, roughness: 0.2 },
-      { path: '/images/tech_express.png', emissive: 0x334155, emissiveIntensity: 0.25, roughness: 0.2 },
-      { path: '/images/tech_mongo.png', emissive: 0x047857, emissiveIntensity: 0.35, roughness: 0.2 },
-      { path: '/images/tech_mysql.png', emissive: 0x0369a1, emissiveIntensity: 0.35, roughness: 0.2 },
-      { path: '/images/tech_typescript.png', emissive: 0x1d4ed8, emissiveIntensity: 0.35, roughness: 0.2 },
-      { path: '/images/tech_javascript.png', emissive: 0xb45309, emissiveIntensity: 0.35, roughness: 0.2 }
+    const texturePaths = [
+      '/images/react2.webp',
+      '/images/next2.webp',
+      '/images/node2.webp',
+      '/images/express.webp',
+      '/images/mongo.webp',
+      '/images/mysql.webp',
+      '/images/typescript.webp',
+      '/images/javascript.webp'
     ];
 
-    const materials = techConfigs.map((cfg) => {
-      const tex = textureLoader.load(cfg.path);
+    const materials = texturePaths.map((path) => {
+      const tex = textureLoader.load(path);
       return new THREE.MeshPhysicalMaterial({
         map: tex,
-        emissive: new THREE.Color(cfg.emissive),
-        emissiveMap: tex,
-        emissiveIntensity: cfg.emissiveIntensity,
-        metalness: 0.2,
-        roughness: cfg.roughness,
-        clearcoat: 0.8,
-        clearcoatRoughness: 0.12
+        color: 0xffffff,
+        roughness: 0.16,
+        metalness: 0.05,
+        clearcoat: 1.0,
+        clearcoatRoughness: 0.08,
+        reflectivity: 0.95
       });
     });
 
