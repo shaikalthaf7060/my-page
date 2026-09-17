@@ -22,11 +22,11 @@ export default function TechStack3D() {
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.95;
+    renderer.toneMappingExposure = 1.5;
     container.appendChild(renderer.domElement);
 
     // 3. Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 2.2);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.6);
     scene.add(ambientLight);
 
     const spotLight = new THREE.SpotLight(0xffffff, 2.5);
@@ -53,28 +53,28 @@ export default function TechStack3D() {
 
     // 5. Tech Textures & Materials
     const textureLoader = new THREE.TextureLoader();
-    const texturePaths = [
-      '/images/react2.webp',
-      '/images/next2.webp',
-      '/images/node2.webp',
-      '/images/express.webp',
-      '/images/mongo.webp',
-      '/images/mysql.webp',
-      '/images/typescript.webp',
-      '/images/javascript.webp'
+    const techConfigs = [
+      { path: '/images/tech_react.png', emissive: 0x0088cc, emissiveIntensity: 0.35, roughness: 0.2 },
+      { path: '/images/tech_next.png', emissive: 0x222226, emissiveIntensity: 0.25, roughness: 0.15 },
+      { path: '/images/tech_node.png', emissive: 0x15803d, emissiveIntensity: 0.35, roughness: 0.2 },
+      { path: '/images/tech_express.png', emissive: 0x334155, emissiveIntensity: 0.25, roughness: 0.2 },
+      { path: '/images/tech_mongo.png', emissive: 0x047857, emissiveIntensity: 0.35, roughness: 0.2 },
+      { path: '/images/tech_mysql.png', emissive: 0x0369a1, emissiveIntensity: 0.35, roughness: 0.2 },
+      { path: '/images/tech_typescript.png', emissive: 0x1d4ed8, emissiveIntensity: 0.35, roughness: 0.2 },
+      { path: '/images/tech_javascript.png', emissive: 0xb45309, emissiveIntensity: 0.35, roughness: 0.2 }
     ];
 
-    const materials = texturePaths.map((path) => {
-      const tex = textureLoader.load(path);
+    const materials = techConfigs.map((cfg) => {
+      const tex = textureLoader.load(cfg.path);
       return new THREE.MeshPhysicalMaterial({
         map: tex,
-        emissive: 0xffffff,
+        emissive: new THREE.Color(cfg.emissive),
         emissiveMap: tex,
-        emissiveIntensity: 0.65,
-        metalness: 0.15,
-        roughness: 0.25,
-        clearcoat: 0.6,
-        clearcoatRoughness: 0.15
+        emissiveIntensity: cfg.emissiveIntensity,
+        metalness: 0.2,
+        roughness: cfg.roughness,
+        clearcoat: 0.8,
+        clearcoatRoughness: 0.12
       });
     });
 

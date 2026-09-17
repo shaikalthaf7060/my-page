@@ -115,16 +115,29 @@ export default function WorkCarousel() {
                           href={proj.link} 
                           target="_blank" 
                           rel="noreferrer" 
-                          className="work-image-in" 
+                          className="work-browser-frame" 
                           data-cursor="disable"
                           title={`Visit ${proj.title}`}
                         >
-                          <div className="work-link">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-                              <path d="M6 6v2h8.59L5 17.59 6.41 19 16 9.41V18h2V6z" />
-                            </svg>
+                          <div className="work-browser-header">
+                            <div className="work-browser-dots">
+                              <span className="dot dot-red" />
+                              <span className="dot dot-yellow" />
+                              <span className="dot dot-green" />
+                            </div>
+                            <div className="work-browser-url">
+                              <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C9.243 2 7 4.243 7 7v3H6c-1.103 0-2 .897-2 2v8c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-8c0-1.103-.897-2-2-2h-1V7c0-2.757-2.243-5-5-5zm-3 7V7c0-1.654 1.346-3 3-3s3 1.346 3 3v2H9z" />
+                              </svg>
+                              <span>{proj.displayUrl}</span>
+                            </div>
+                            <div className="work-browser-actions">
+                              <span>↗</span>
+                            </div>
                           </div>
-                          <img src={proj.image} alt={proj.title} loading="eager" />
+                          <div className="work-browser-body">
+                            <img src={proj.image} alt={proj.title} loading="eager" />
+                          </div>
                         </a>
                       </div>
                     </div>
