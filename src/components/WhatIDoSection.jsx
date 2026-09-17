@@ -35,11 +35,25 @@ export default function WhatIDoSection() {
 
       <div className="what-box">
         <div className="what-box-in">
+          <div className="what-border1">
+            <svg width="100%" height="100%">
+              <line x1="0" y1="0" x2="100%" y2="0" stroke="white" strokeWidth="2" strokeDasharray="7,7" />
+              <line x1="0" y1="100%" x2="100%" y2="100%" stroke="white" strokeWidth="2" strokeDasharray="7,7" />
+            </svg>
+          </div>
+          <div className="what-border2">
+            <svg width="100%" height="100%">
+              <line x1="0" y1="0" x2="0" y2="100%" stroke="white" strokeWidth="2" strokeDasharray="7,7" />
+              <line x1="100%" y1="0" x2="100%" y2="100%" stroke="white" strokeWidth="2" strokeDasharray="7,7" />
+            </svg>
+          </div>
+
           {cards.map((card, idx) => (
             <div
               key={idx}
               className={`what-content ${activeIdx === idx ? 'what-content-active' : 'what-noTouch'}`}
               onMouseEnter={() => setActiveIdx(idx)}
+              onClick={() => setActiveIdx(idx)}
             >
               <div className="what-corner" />
               <div className="what-content-in">
@@ -53,7 +67,11 @@ export default function WhatIDoSection() {
                   ))}
                 </div>
               </div>
-              <div className="what-arrow" />
+              <div className="what-arrow">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
+              </div>
             </div>
           ))}
         </div>

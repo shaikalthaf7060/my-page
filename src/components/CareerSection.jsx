@@ -5,7 +5,7 @@ export default function CareerSection() {
     {
       role: 'IEEE Research Publication Author',
       company: 'IEEE ICSSIT 2026 Conference',
-      time: '2026',
+      time: 'NOW',
       desc: 'Authored and published research paper “Leveraging Large Language Models and Real-Time Market Data for Entrepreneurial Concept Evaluation” (ISBN: 979-8-3315-8087-2). Built AI evaluation systems.'
     },
     {
@@ -17,7 +17,7 @@ export default function CareerSection() {
     {
       role: 'B.Tech in Computer Science & Engineering',
       company: 'Santhiram Engineering College, Nandyal',
-      time: '2024–2027',
+      time: '2024–27',
       desc: 'CSE Undergraduate (CGPA: 7.7). Specialized in Data Structures & Algorithms, Full-Stack Web Development, Database Management Systems, and Applied AI.'
     },
     {

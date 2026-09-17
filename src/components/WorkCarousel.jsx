@@ -75,10 +75,14 @@ export default function WorkCarousel() {
 
         <div className="carousel-wrapper">
           <button className="carousel-arrow carousel-arrow-left" onClick={prevSlide} aria-label="Previous" data-cursor="disable">
-            ‹
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
           </button>
           <button className="carousel-arrow carousel-arrow-right" onClick={nextSlide} aria-label="Next" data-cursor="disable">
-            ›
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M9 18l6-6-6-6" />
+            </svg>
           </button>
 
           <div 

@@ -181,8 +181,26 @@ export default function Character3D() {
               }
             }
 
+            // Screen glow light casting vibrant screen reflection onto face & hands
+            const screenGlowLight = new THREE.PointLight(0xff69b4, 0, 10);
+            screenGlowLight.position.set(0.5, 10, 4.5);
+            scene.add(screenGlowLight);
+
             // Setup GSAP Interactive Scroll Transitions
-            setupScrollTransitions(characterModel, camera, deskMaterial, screenLight, spine005, pointLight);
+            const deskTopMesh = characterModel.getObjectByName('Plane004')?.children.find(
+              (l) => l.material?.name === 'Material.018'
+            );
+            const deskParent = characterModel.children.find((c) => c.name === 'Plane004');
+
+            setupScrollTransitions(
+              characterModel,
+              camera,
+              deskParent,
+              screenLight,
+              spine005,
+              screenGlowLight,
+              deskTopMesh
+            );
 
             URL.revokeObjectURL(blobUrl);
             dracoLoader.dispose();
@@ -197,11 +215,11 @@ export default function Character3D() {
         console.error('Failed to decrypt 3D model:', err);
       });
 
-    // GSAP ScrollTrigger Animations
-    function setupScrollTransitions(model, cam, deskMat, scrLight, spine, ptLight) {
+    // GSAP ScrollTrigger Animations (Exact match to reference site & Image 1!)
+    function setupScrollTransitions(model, cam, deskParent, scrLight, spine, ptLight, deskTop) {
       if (window.innerWidth <= 1024) return;
 
-      // 1. Landing to About transition: Character moves from Center (x: 0) to Left (x: -3.8)
+      // 1. Landing to About transition: Character moves to left (-25%)
       const landingTl = gsap.timeline({
         scrollTrigger: {
           trigger: '.landing-section',
@@ -213,14 +231,14 @@ export default function Character3D() {
       });
 
       landingTl
-        .fromTo(model.position, { x: 0 }, { x: -3.8, duration: 1 }, 0)
         .fromTo(model.rotation, { y: 0 }, { y: 0.7, duration: 1 }, 0)
         .to(cam.position, { z: 22 }, 0)
-        .to('.landing-intro', { opacity: 0, duration: 0.4 }, 0)
-        .to('.landing-info', { opacity: 0, duration: 0.4 }, 0)
-        .fromTo('.about-me', { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.8 }, 0.2);
+        .fromTo('.character-model', { x: 0 }, { x: '-25%', duration: 1 }, 0)
+        .to('.landing-container', { opacity: 0, duration: 0.4 }, 0)
+        .to('.landing-container', { y: '40%', duration: 0.8 }, 0)
+        .fromTo('.about-me', { y: '-50%' }, { y: '0%', duration: 0.8 }, 0);
 
-      // 2. About to What I Do transition: Desk appears, moves to left (x: -4.5) to give full room to cards on right!
+      // 2. About to What I Do transition: Camera zooms out to (0, 8.4, 75), desk & computer appear, boy types at desk!
       const aboutTl = gsap.timeline({
         scrollTrigger: {
           trigger: '.about-section',
@@ -232,17 +250,27 @@ export default function Character3D() {
       });
 
       aboutTl
-        .to(model.position, { x: -4.5, duration: 4 }, 0)
-        .to(cam.position, { z: 75, y: 8.4, duration: 6, ease: 'power3.inOut' }, 0)
-        .to('.about-section', { opacity: 0, duration: 2 }, 0)
-        .to(model.rotation, { y: 0.92, x: 0.12, duration: 3 }, 0);
+        .to(cam.position, { z: 75, y: 8.4, duration: 6, delay: 2, ease: 'power3.inOut' }, 0)
+        .to('.about-section', { y: '30%', duration: 6 }, 0)
+        .to('.about-section', { opacity: 0, delay: 3, duration: 2 }, 0)
+        .fromTo('.character-model', { pointerEvents: 'inherit' }, { pointerEvents: 'none', x: '-12%', delay: 2, duration: 5 }, 0)
+        .to(model.rotation, { y: 0.92, x: 0.12, delay: 3, duration: 3 }, 0)
+        .fromTo('.what-box-in', { display: 'none' }, { display: 'flex', duration: 0.1, delay: 6 }, 0);
 
       if (spine) {
-        aboutTl.to(spine.rotation, { x: 0.6, duration: 3 }, 0);
+        aboutTl.to(spine.rotation, { x: 0.6, delay: 2, duration: 3 }, 0);
       }
 
-      if (deskMat) {
-        aboutTl.to(deskMat, { opacity: 1, duration: 0.8, delay: 3.2 }, 0);
+      if (deskParent) {
+        deskParent.traverse((child) => {
+          if (child.isMesh && child.material) {
+            aboutTl.to(child.material, { opacity: 1, duration: 0.8, delay: 3.2 }, 0);
+          }
+        });
+      }
+
+      if (deskTop) {
+        aboutTl.fromTo(deskTop.position, { y: -10, z: 2 }, { y: 0, z: 0, delay: 1.5, duration: 3 }, 0);
       }
 
       if (scrLight && scrLight.material) {
@@ -250,7 +278,7 @@ export default function Character3D() {
       }
 
       if (ptLight) {
-        aboutTl.to(ptLight, { intensity: 0.8, duration: 0.8, delay: 4.5 }, 0);
+        aboutTl.to(ptLight, { intensity: 2.0, duration: 0.8, delay: 4.5 }, 0);
       }
 
       // 3. Move character out when reaching Work section
@@ -264,7 +292,11 @@ export default function Character3D() {
         },
       });
 
-      whatTl.to(model.position, { y: 25, duration: 4 }, 0);
+      whatTl
+        .fromTo('.character-model', { y: '0%' }, { y: '-100%', duration: 4, ease: 'none', delay: 1 }, 0)
+        .fromTo('.whatIDO', { y: 0 }, { y: '15%', duration: 2 }, 0)
+        .to(model.rotation, { x: -0.04, duration: 2, delay: 1 }, 0);
+
       if (ptLight) {
         whatTl.to(ptLight, { intensity: 0, duration: 1 }, 0);
       }
