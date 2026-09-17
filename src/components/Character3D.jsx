@@ -249,14 +249,14 @@ export default function Character3D() {
                     child.material.needsUpdate = true;
                   }
                 } else if (nameMatch(child.name, 'CAP.001')) {
-                  // Metallic silver chrome dome reflecting studio environment (exact match to Image 4!)
+                  // Brushed satin metallic silver cap dome (exact match to reference Image 4!)
                   if (child.material) {
                     const mat = child.material.clone();
-                    mat.color = new THREE.Color('#c5c8cc');
-                    mat.metalness = 0.85;
-                    mat.roughness = 0.25;
-                    mat.clearcoat = 0.35;
-                    mat.clearcoatRoughness = 0.15;
+                    mat.color = new THREE.Color('#cbd0d5');
+                    mat.metalness = 0.70;
+                    mat.roughness = 0.35;
+                    mat.clearcoat = 0.25;
+                    mat.clearcoatRoughness = 0.25;
                     child.material = mat;
                   }
                 } else if (nameMatch(child.name, 'CAP.002')) {
@@ -311,6 +311,7 @@ export default function Character3D() {
             });
 
             // Collect all workstation objects (desk, chair, keyboard, monitor, screenlight)
+            // Note: Plane.003 is excluded as it is a large stray slab geometry under the chair
             const deskObjects = [];
             characterModel.children.forEach((c) => {
               if (
@@ -320,14 +321,13 @@ export default function Character3D() {
                   'Plane.004',
                   'Plane002',
                   'Plane.002',
-                  'Plane003',
-                  'Plane.003',
                   'Plane',
                   'Cube002',
                   'Cube.002',
                   'Keyboard',
                   'screenlight'
-                )
+                ) &&
+                !nameMatch(c.name, 'Plane.003', 'Plane003')
               ) {
                 deskObjects.push(c);
                 c.visible = true; // KEEP TRUE so Three.js renders when opacity fades in!
@@ -360,20 +360,22 @@ export default function Character3D() {
                       // Crisp light keyboard and keys
                       l.material.color = new THREE.Color('#e5e7eb');
                       l.material.roughness = 0.35;
-                    } else if (nameMatch(l.material.name, 'stand')) {
-                      // Metallic aluminum monitor stand
-                      l.material.color = new THREE.Color('#cbd5e1');
-                      l.material.metalness = 0.7;
+                    } else if (nameMatch(c.name, 'Plane') && !nameMatch(c.name, 'Plane.004', 'Plane004', 'Plane.002', 'Plane002')) {
+                      // Computer monitor back casing / housing
+                      l.material.color = new THREE.Color('#e2e8f0');
                       l.material.roughness = 0.25;
+                      l.material.metalness = 0.2;
                     } else if (nameMatch(c.name, 'screenlight') || nameMatch(l.material.name, 'screenlight')) {
                       // Emissive neon pink computer screen!
                       l.material.color = new THREE.Color('#ff2e93');
                       l.material.emissive = new THREE.Color('#ff2e93');
-                      l.material.emissiveIntensity = 3.0;
+                      l.material.emissiveIntensity = 3.5;
+                      l.material.side = THREE.DoubleSide;
                     }
                   }
                 });
-              } else if (nameMatch(c.name, 'ground')) {
+              } else if (nameMatch(c.name, 'Plane.003', 'Plane003', 'ground')) {
+                // Permanently hide the stray slab and ground mesh
                 c.visible = false;
               } else {
                 c.visible = true;
@@ -489,8 +491,7 @@ export default function Character3D() {
         .to('.about-section', { y: '30%', duration: 4 }, 0)
         .to('.about-section', { opacity: 0, delay: 0.8, duration: 1.5 }, 0)
         .fromTo('.character-model', { pointerEvents: 'inherit' }, { pointerEvents: 'none', x: '-13%', delay: 2, duration: 5 }, 0)
-        .to(model.rotation, { y: 0.92, x: 0.12, delay: 2.5, duration: 3 }, 0)
-        .fromTo('.what-box-in', { display: 'none' }, { display: 'flex', duration: 0.1, delay: 5.5 }, 0);
+        .to(model.rotation, { y: 0.92, x: 0.12, delay: 2.5, duration: 3 }, 0);
 
       if (spine) {
         aboutTl.to(spine.rotation, { x: 0.6, delay: 2, duration: 3 }, 0);
@@ -505,12 +506,6 @@ export default function Character3D() {
             }
           });
         });
-
-        // Desk top rises into place smoothly
-        const deskTop = deskObjs.find((c) => nameMatch(c.name, 'Plane.004', 'Plane004'));
-        if (deskTop) {
-          aboutTl.fromTo(deskTop.position, { y: -8, z: 2 }, { y: 0, z: 0, delay: 1.8, duration: 3 }, 0);
-        }
       }
 
       // Turn on vibrant hot pink screen reflection on boy's face, hands, and clothes (exact match to Image 3!)
