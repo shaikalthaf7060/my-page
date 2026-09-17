@@ -236,7 +236,7 @@ export default function Character3D() {
         .fromTo('.character-model', { x: 0 }, { x: '-25%', duration: 1 }, 0)
         .to('.landing-container', { opacity: 0, duration: 0.4 }, 0)
         .to('.landing-container', { y: '40%', duration: 0.8 }, 0)
-        .fromTo('.about-me', { y: '-50%' }, { y: '0%', duration: 0.8 }, 0);
+        .fromTo('.about-me', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.6, delay: 0.3 }, 0);
 
       // 2. About to What I Do transition: Camera zooms out to (0, 8.4, 75), desk & computer appear, boy types at desk!
       const aboutTl = gsap.timeline({
@@ -251,11 +251,11 @@ export default function Character3D() {
 
       aboutTl
         .to(cam.position, { z: 75, y: 8.4, duration: 6, delay: 2, ease: 'power3.inOut' }, 0)
-        .to('.about-section', { y: '30%', duration: 6 }, 0)
-        .to('.about-section', { opacity: 0, delay: 3, duration: 2 }, 0)
-        .fromTo('.character-model', { pointerEvents: 'inherit' }, { pointerEvents: 'none', x: '-12%', delay: 2, duration: 5 }, 0)
-        .to(model.rotation, { y: 0.92, x: 0.12, delay: 3, duration: 3 }, 0)
-        .fromTo('.what-box-in', { display: 'none' }, { display: 'flex', duration: 0.1, delay: 6 }, 0);
+        .to('.about-section', { y: '30%', duration: 4 }, 0)
+        .to('.about-section', { opacity: 0, delay: 0.8, duration: 1.5 }, 0)
+        .fromTo('.character-model', { pointerEvents: 'inherit' }, { pointerEvents: 'none', x: '-9%', delay: 2, duration: 5 }, 0)
+        .to(model.rotation, { y: 0.92, x: 0.12, delay: 2.5, duration: 3 }, 0)
+        .fromTo('.what-box-in', { display: 'none' }, { display: 'flex', duration: 0.1, delay: 5.5 }, 0);
 
       if (spine) {
         aboutTl.to(spine.rotation, { x: 0.6, delay: 2, duration: 3 }, 0);
@@ -264,21 +264,21 @@ export default function Character3D() {
       if (deskParent) {
         deskParent.traverse((child) => {
           if (child.isMesh && child.material) {
-            aboutTl.to(child.material, { opacity: 1, duration: 0.8, delay: 3.2 }, 0);
+            aboutTl.to(child.material, { opacity: 1, duration: 0.8, delay: 2.8 }, 0);
           }
         });
       }
 
       if (deskTop) {
-        aboutTl.fromTo(deskTop.position, { y: -10, z: 2 }, { y: 0, z: 0, delay: 1.5, duration: 3 }, 0);
+        aboutTl.fromTo(deskTop.position, { y: -10, z: 2 }, { y: 0, z: 0, delay: 1.8, duration: 3 }, 0);
       }
 
       if (scrLight && scrLight.material) {
-        aboutTl.to(scrLight.material, { opacity: 1, duration: 0.8, delay: 4.5 }, 0);
+        aboutTl.to(scrLight.material, { opacity: 1, duration: 0.8, delay: 4.0 }, 0);
       }
 
       if (ptLight) {
-        aboutTl.to(ptLight, { intensity: 2.0, duration: 0.8, delay: 4.5 }, 0);
+        aboutTl.to(ptLight, { intensity: 2.0, duration: 0.8, delay: 4.0 }, 0);
       }
 
       // 3. Move character out when reaching Work section
@@ -381,10 +381,10 @@ export default function Character3D() {
   }, []);
 
   return (
-    <div className="character-model">
+    <div className="character-model" data-cursor="disable">
       <div className="character-rim" />
-      <div ref={hoverRef} className="character-hover" />
-      <div ref={containerRef} style={{ width: '100%', height: '100%', position: 'relative' }} />
+      <div ref={hoverRef} className="character-hover" data-cursor="disable" />
+      <div ref={containerRef} data-cursor="disable" style={{ width: '100%', height: '100%', position: 'relative' }} />
     </div>
   );
 }

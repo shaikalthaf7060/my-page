@@ -49,36 +49,41 @@ export default function CustomCursor() {
     document.addEventListener('mouseleave', handleMouseLeave);
     document.addEventListener('mouseenter', handleMouseEnter);
 
-    const setupListeners = () => {
-      document.querySelectorAll('[data-cursor]').forEach((el) => {
-        el.addEventListener('mouseover', (c) => {
-          const rect = c.currentTarget.getBoundingClientRect();
-          if (el.dataset.cursor === 'icons') {
-            cursor.classList.add('cursor-icons');
-            gsap.to(cursor, { x: rect.left, y: rect.top, duration: 0.1 });
-            cursor.style.setProperty('--cursorH', `${rect.height}px`);
-            locked = true;
-          }
-          if (el.dataset.cursor === 'disable') {
-            cursor.classList.add('cursor-disable');
-          }
-        });
-
-        el.addEventListener('mouseout', () => {
-          cursor.classList.remove('cursor-disable', 'cursor-icons');
-          locked = false;
-        });
-      });
+    const handleMouseOver = (e) => {
+      const target = e.target.closest('[data-cursor]');
+      if (!target) {
+        cursor.classList.remove('cursor-disable', 'cursor-icons');
+        locked = false;
+        return;
+      }
+      if (target.dataset.cursor === 'disable') {
+        cursor.classList.add('cursor-disable');
+      } else if (target.dataset.cursor === 'icons') {
+        const rect = target.getBoundingClientRect();
+        cursor.classList.add('cursor-icons');
+        gsap.to(cursor, { x: rect.left, y: rect.top, duration: 0.1 });
+        cursor.style.setProperty('--cursorH', `${rect.height}px`);
+        locked = true;
+      }
     };
 
-    // Small delay to ensure all DOM elements are mounted
-    const timer = setTimeout(setupListeners, 300);
+    const handleMouseOut = (e) => {
+      const target = e.target.closest('[data-cursor]');
+      if (target && !e.relatedTarget?.closest('[data-cursor]')) {
+        cursor.classList.remove('cursor-disable', 'cursor-icons');
+        locked = false;
+      }
+    };
+
+    document.addEventListener('mouseover', handleMouseOver);
+    document.addEventListener('mouseout', handleMouseOut);
 
     return () => {
-      clearTimeout(timer);
       window.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseleave', handleMouseLeave);
       document.removeEventListener('mouseenter', handleMouseEnter);
+      document.removeEventListener('mouseover', handleMouseOver);
+      document.removeEventListener('mouseout', handleMouseOut);
       cancelAnimationFrame(animId);
     };
   }, []);
