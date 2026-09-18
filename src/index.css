@@ -745,51 +745,90 @@ a:hover {
 }
 
 
-/* 3D Character Container (Full screen viewport, centered) */
+/* 3D Character Container (Reference Landing.css) */
+.character-rim {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  z-index: 1;
+  background-color: #22d3ee;
+  box-shadow: inset 66px 35px 85px 0px rgba(0, 180, 180, 0.65);
+  filter: blur(50px);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 100%) scale(1.4);
+  opacity: 0;
+}
+
 .character-model {
-  position: fixed;
-  top: 0;
-  left: 0;
+  height: 80vh;
+  position: absolute;
+  max-width: 1920px;
+  max-height: 1080px;
+  transform: translateX(-50%);
+  width: 100%;
+  left: 50%;
+  z-index: 0;
+  bottom: 50px;
+  pointer-events: inherit;
+}
+
+.character-model::after {
+  content: "";
   width: 100vw;
-  height: 100vh;
-  z-index: 5;
-  pointer-events: none;
-  overflow: hidden;
+  height: 250px;
+  background-image: linear-gradient(to bottom,
+      transparent,
+      var(--backgroundColor) 70%);
+  bottom: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9;
+  position: absolute;
+}
+
+.character-model::before {
+  content: "";
+  width: 100vw;
+  height: 700px;
+  background-color: var(--backgroundColor);
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9;
+  position: absolute;
 }
 
 .character-model canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw !important;
-  height: 100vh !important;
+  position: relative;
   pointer-events: none;
-}
-
-.character-rim {
-  position: absolute;
-  width: 500px;
-  height: 500px;
-  z-index: 1;
-  background: radial-gradient(circle, rgba(0, 229, 255, 0.40) 0%, rgba(0, 229, 255, 0.15) 45%, transparent 70%);
-  filter: blur(60px);
-  border-radius: 50%;
-  top: 65%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  opacity: 0.45;
-  pointer-events: none;
+  z-index: 2;
 }
 
 .character-hover {
   position: absolute;
   width: 280px;
   height: 280px;
-  top: 45%;
+  top: 50%;
   left: 50%;
   z-index: 3;
   transform: translate(-50%, -50%);
   border-radius: 50%;
+}
+
+@media screen and (min-width: 1025px) {
+  .character-model {
+    height: 100vh;
+    bottom: 0;
+    z-index: 11;
+    position: fixed;
+  }
+
+  .character-model::after,
+  .character-model::before {
+    display: none;
+  }
 }
 
 @media screen and (min-width: 1400px) {
@@ -1944,40 +1983,6 @@ a.contact-social:hover {
 
   .landing-info h2 .role-accent {
     color: var(--accentColor);
-  }
-
-  .character-model {
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    transform: none !important;
-    width: 100% !important;
-    height: 100% !important;
-    max-height: none !important;
-    pointer-events: none !important;
-    z-index: 1 !important;
-    overflow: hidden !important;
-  }
-
-  .character-model:after {
-    content: "" !important;
-    display: block !important;
-    position: absolute !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 180px !important;
-    background: linear-gradient(to top, var(--backgroundColor) 30%, transparent 100%) !important;
-    pointer-events: none !important;
-    z-index: 2 !important;
-  }
-
-  .character-model canvas {
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
   }
 
   /* About Section */
