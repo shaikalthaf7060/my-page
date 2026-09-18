@@ -61,11 +61,11 @@ export default function Character3D() {
 
     const isMobile = window.innerWidth <= 1024;
 
-    // Camera settings: angled so the neck column and collar are visible with clear vertical separation under the jawline
+    // Camera settings: perfectly framing broad shoulders and compact head matching reference
     const camera = new THREE.PerspectiveCamera(14.5, aspect, 0.1, 1000);
-    camera.position.set(0, isMobile ? 13.5 : 12.9, isMobile ? 25.5 : 24.2);
-    camera.zoom = isMobile ? 0.94 : 1.1;
-    camera.lookAt(0, 12.5, 0);
+    camera.position.set(0, isMobile ? 13.2 : 12.5, isMobile ? 24.5 : 22.8);
+    camera.zoom = isMobile ? 0.96 : 1.16;
+    camera.lookAt(0, 12.4, 0);
     camera.updateProjectionMatrix();
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
@@ -85,8 +85,8 @@ export default function Character3D() {
       scene.environmentRotation.set(5.76, 85.85, 1);
     });
 
-    // Soft warm ambient light (subdued to preserve deep anatomical jawline shadow onto exposed neck)
-    const ambientLight = new THREE.AmbientLight(0xfff7ed, 0.20);
+    // Soft warm ambient light (eliminates harsh shadow boundaries on chest)
+    const ambientLight = new THREE.AmbientLight(0xfff7ed, 0.42);
     scene.add(ambientLight);
 
     // Sharp Cyan / Teal Backlight placed behind character pointing toward camera: Color #00e5ff, high intensity (5.8)
@@ -109,17 +109,24 @@ export default function Character3D() {
     scene.add(rightRimLight);
     scene.add(rightRimLight.target);
 
-    // Steep front-left key light (y: 19, z: 14) with normalBias: 0.05 to cast a strong contact shadow/AO under the chin onto the exposed neck
-    const warmKeyLight = new THREE.DirectionalLight(0xfff3e0, 2.2);
-    warmKeyLight.position.set(-3.5, 19, 14);
-    warmKeyLight.target.position.set(0, 11.5, 0);
+    // Front-left warm key light with soft shadow gradient
+    const warmKeyLight = new THREE.DirectionalLight(0xfff3e0, 1.4);
+    warmKeyLight.position.set(-2.5, 16, 16);
+    warmKeyLight.target.position.set(0, 12, 0);
     warmKeyLight.castShadow = true;
     warmKeyLight.shadow.mapSize.width = 2048;
     warmKeyLight.shadow.mapSize.height = 2048;
-    warmKeyLight.shadow.bias = -0.0003;
-    warmKeyLight.shadow.normalBias = 0.05;
+    warmKeyLight.shadow.bias = -0.0008;
+    warmKeyLight.shadow.normalBias = 0.02;
     scene.add(warmKeyLight);
     scene.add(warmKeyLight.target);
+
+    // Front-right fill light for smooth, uniform chest illumination
+    const frontFillLight = new THREE.DirectionalLight(0xfff7ed, 0.5);
+    frontFillLight.position.set(2.5, 13, 15);
+    frontFillLight.target.position.set(0, 12, 0);
+    scene.add(frontFillLight);
+    scene.add(frontFillLight.target);
 
     // Subtle purple rim accent
     const purpleRimLight = new THREE.DirectionalLight(0xc084fc, 1.2);
@@ -161,7 +168,8 @@ export default function Character3D() {
           (gltf) => {
             characterModel = gltf.scene;
 
-            // Character is positioned for natural neck & collar visibility
+            // Character model proportion: broad shoulders & compact framing matching reference
+            characterModel.scale.set(1.04, 1.0, 1.0);
             characterModel.position.set(0, BASE_MODEL_Y, 0);
 
             // Eye texture loader with natural eye socket positioning
@@ -269,21 +277,51 @@ export default function Character3D() {
                     child.material = mat;
                   }
                 } else if (nameMatch(child.name, 'BODY.SHIRT', 'BODYSHIRT')) {
-                  // Deep charcoal/matte black shirt with defined collar sitting flat across base of clavicle
+                  // Rich uniform matte dark charcoal/black shirt with clean dark collar band (exact match to reference Image 2!)
                   shirtMesh = child;
-                  child.position.y = -0.08;
-                  if (child.material) {
+                  child.position.set(0, 0, 0);
+                  if (Array.isArray(child.material)) {
+                    child.material = child.material.map((m, idx) => {
+                      const mat = m.clone();
+                      if (idx === 0) {
+                        // Main shirt body fabric: smooth uniform matte charcoal
+                        mat.color = new THREE.Color('#16171a');
+                        mat.roughness = 0.82;
+                        mat.metalness = 0.02;
+                      } else {
+                        // Collar & cuffs trim: solid dark black ring
+                        mat.color = new THREE.Color('#0a0b0d');
+                        mat.roughness = 0.50;
+                        mat.metalness = 0.05;
+                      }
+                      mat.needsUpdate = true;
+                      return mat;
+                    });
+                  } else if (child.material) {
                     const mat = child.material.clone();
-                    mat.color = new THREE.Color('#111215');
-                    mat.roughness = 0.88;
+                    mat.color = new THREE.Color('#16171a');
+                    mat.roughness = 0.82;
                     mat.metalness = 0.02;
+                    mat.needsUpdate = true;
                     child.material = mat;
                   }
                 } else if (nameMatch(child.name, 'Pant')) {
                   if (child.material) {
-                    const mat = child.material.clone();
-                    mat.color = new THREE.Color('#0d0d0d');
-                    child.material = mat;
+                    if (Array.isArray(child.material)) {
+                      child.material = child.material.map((m) => {
+                        const mat = m.clone();
+                        mat.color = new THREE.Color('#1a1b20');
+                        mat.roughness = 0.80;
+                        mat.needsUpdate = true;
+                        return mat;
+                      });
+                    } else {
+                      const mat = child.material.clone();
+                      mat.color = new THREE.Color('#1a1b20');
+                      mat.roughness = 0.80;
+                      mat.needsUpdate = true;
+                      child.material = mat;
+                    }
                   }
                 } else if (nameMatch(child.name, 'Face.002', 'Neck', 'Ear.001', 'Hand')) {
                   if (nameMatch(child.name, 'Face.002')) {
@@ -396,17 +434,20 @@ export default function Character3D() {
             eyebrowL = findNode(characterModel, 'eyebrow_L', 'eyebrowL');
             eyebrowR = findNode(characterModel, 'eyebrow_R', 'eyebrowR');
 
-            // Shift chest/torso bone down by -0.25 units to drop collar line
+            // Authentic bone positioning matching reference proportions (natural compact neck & collar proximity)
             if (spine003) {
-              spine003.position.y = 1.08;
+              spine003.position.set(0, 1.33, 0);
             }
-            // Elongate neck cylinder along Y-axis by 28% for >40px visible neck column
             if (spine005) {
-              spine005.scale.set(1.0, 1.28, 1.0);
-              spine005.position.y = 1.48;
+              spine005.scale.set(1.0, 1.0, 1.0);
+              spine005.position.set(0, 1.30, 0.05);
+            }
+            if (spine006) {
+              spine006.scale.set(1.0, 1.0, 1.0);
+              spine006.position.set(0, 0.30, 0);
             }
             if (shirtMesh) {
-              shirtMesh.position.y = -0.08;
+              shirtMesh.position.set(0, 0, 0);
             }
 
             scene.add(characterModel);
@@ -514,34 +555,30 @@ export default function Character3D() {
         aboutTl.to(ptLight, { intensity: 3.5, duration: 1.2, delay: 3.8 }, 0);
       }
 
-      // 3. Move character out when reaching Work section
+      // 3. Smooth exit transition when scrolling into the Work section
+      // Character, desk, chair, keyboard, and screen glow remain 100% visible and anchored while user is inside What I Do!
       const whatTl = gsap.timeline({
         scrollTrigger: {
-          trigger: '.whatIDO',
-          start: 'top top',
-          end: 'bottom top',
+          trigger: '.work-section',
+          start: 'top bottom',
+          end: 'top 20%',
           scrub: true,
           invalidateOnRefresh: true,
         },
       });
 
       whatTl
-        .fromTo('.character-model', { y: '0%' }, { y: '-100%', duration: 4, ease: 'none', delay: 1 }, 0)
-        .fromTo('.whatIDO', { y: 0 }, { y: '15%', duration: 2 }, 0)
-        .to(model.rotation, { x: -0.04, duration: 2, delay: 1 }, 0);
+        .to('.character-model', { y: '-100%', duration: 3, ease: 'none' }, 0)
+        .to(ptLight, { intensity: 0, duration: 1.5 }, 0);
 
       if (deskObjs && deskObjs.length > 0) {
         deskObjs.forEach((obj) => {
           obj.traverse((child) => {
             if (child.isMesh && child.material) {
-              whatTl.to(child.material, { opacity: 0, duration: 0.8 }, 0);
+              whatTl.to(child.material, { opacity: 0, duration: 1.5 }, 0);
             }
           });
         });
-      }
-
-      if (ptLight) {
-        whatTl.to(ptLight, { intensity: 0, duration: 1 }, 0);
       }
     }
 
@@ -587,12 +624,12 @@ export default function Character3D() {
       const delta = Math.min(clock.getDelta(), 0.1);
       if (mixer) mixer.update(delta);
 
-      // Confident, hooded gaze with natural 28% upper eyelid coverage (exact match to reference Image 4!)
+      // Confident, relaxed gaze with natural 20% upper eyelid coverage (exact match to reference Image 2!)
       if (faceMesh && faceMesh.morphTargetDictionary && faceMesh.morphTargetInfluences) {
         for (const k in faceMesh.morphTargetDictionary) {
           const idx = faceMesh.morphTargetDictionary[k];
           if (nameMatch(k, 'eyeL_60', 'eyeL60')) {
-            faceMesh.morphTargetInfluences[idx] = 0.28;
+            faceMesh.morphTargetInfluences[idx] = 0.20;
           } else {
             faceMesh.morphTargetInfluences[idx] = 0.0;
           }
@@ -602,10 +639,6 @@ export default function Character3D() {
       // Natural eye socket depth without bulging
       if (eyesMesh) {
         eyesMesh.position.z = 0.02;
-      }
-
-      if (shirtMesh) {
-        shirtMesh.position.y = -0.08;
       }
 
       const t = clock.getElapsedTime();
@@ -641,25 +674,27 @@ export default function Character3D() {
           characterModel.position.y = BASE_MODEL_Y + breath * 0.016;
         }
 
-        // Translate torso mesh downwards: shift position.y of chest/torso by -0.25 units
+        // Keep chest bone stable at natural height
         if (spine003) {
-          spine003.position.y = 1.08;
+          spine003.position.set(0, 1.33, 0);
         }
 
-        // Increase scale of neck bone along Y-axis by 28% for >40px visible neck column
+        // Natural neck articulation without stretching (scale 1.0 maintains round, solid head proportion)
         if (spine005) {
-          spine005.scale.set(1.0, 1.28, 1.0);
-          spine005.position.y = 1.48;
-          spine005.rotation.x = BASE_NECK_PITCH + currRotX * 0.35;
-          spine005.rotation.y = currRotY * 0.38;
-          spine005.rotation.z = -currRotY * 0.08;
+          spine005.scale.set(1.0, 1.0, 1.0);
+          spine005.position.set(0, 1.30, 0.05);
+          spine005.rotation.x = BASE_NECK_PITCH + currRotX * 0.28;
+          spine005.rotation.y = currRotY * 0.32;
+          spine005.rotation.z = -currRotY * 0.06;
         }
 
-        // Head bone pivot toward pointer with slight upward tilt (+4° to +5°) lifting chin off chest
+        // Head bone pivot toward pointer with slight upward tilt lifting chin naturally
         if (spine006) {
-          spine006.rotation.x = BASE_HEAD_PITCH + currRotX * 0.65;
-          spine006.rotation.y = currRotY * 0.62;
-          spine006.rotation.z = -currRotY * 0.05;
+          spine006.scale.set(1.0, 1.0, 1.0);
+          spine006.position.set(0, 0.30, 0);
+          spine006.rotation.x = BASE_HEAD_PITCH + currRotX * 0.55;
+          spine006.rotation.y = currRotY * 0.55;
+          spine006.rotation.z = -currRotY * 0.04;
         }
       }
 
@@ -673,9 +708,9 @@ export default function Character3D() {
       const h = container.clientHeight || window.innerHeight;
       const mobile = window.innerWidth <= 1024;
       camera.aspect = w / h;
-      camera.position.set(0, mobile ? 13.5 : 13.0, mobile ? 25.5 : 24.2);
-      camera.zoom = mobile ? 0.94 : 1.1;
-      camera.lookAt(0, 12.6, 0);
+      camera.position.set(0, mobile ? 13.2 : 12.5, mobile ? 24.5 : 22.8);
+      camera.zoom = mobile ? 0.96 : 1.16;
+      camera.lookAt(0, 12.4, 0);
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
     };
