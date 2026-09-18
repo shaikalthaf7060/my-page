@@ -407,32 +407,33 @@ a:hover {
   left: calc(var(--size) / -2);
   width: var(--size);
   height: var(--size);
-  border-radius: 50%;
+  border-radius: 50px;
   pointer-events: none;
-  z-index: 99999;
-  background: radial-gradient(circle, rgba(230, 195, 255, 0.85) 0%, rgba(192, 132, 252, 0.6) 45%, rgba(168, 85, 247, 0.25) 75%, transparent 100%);
-  box-shadow: 0 0 25px rgba(192, 132, 252, 0.75), 0 0 50px rgba(168, 85, 247, 0.4);
-  mix-blend-mode: screen;
-  transition: width .2s ease-out, height .2s ease-out, opacity .2s ease;
+  z-index: 99;
+  background-color: #e6c3ff;
+  box-shadow: 0px 0px 30px 0px rgb(175, 131, 255);
+  mix-blend-mode: difference;
+  transition: top 0.3s ease-out, left 0.3s ease-out, width 0.3s ease-out,
+    height 0.3s ease-out;
 }
 
 .cursor-icons {
-  top: 10px !important;
-  left: 10px !important;
-  width: 50px !important;
-  height: calc(var(--cursorH) - 20px) !important;
-  border-radius: 50px !important;
-  transition: all .5s ease-out, height .5s ease-in-out !important;
+  top: 10px;
+  left: 10px;
+  height: calc(var(--cursorH) - 20px);
+  transition: all 0.5s ease-out, height 0.5s ease-in-out;
 }
 
 .cursor-disable {
-  --size: 0px !important;
-  opacity: 0 !important;
+  --size: 0px;
 }
 
 @media only screen and (min-width: 600px) {
   .cursor-main {
     --size: 50px;
+  }
+  .cursor-disable {
+    --size: 0px;
   }
 }
 
@@ -551,8 +552,8 @@ a:hover {
 
 .social-icons {
   position: absolute;
-  left: -15px;
-  bottom: 35px;
+  left: -20px;
+  bottom: 20px;
   display: none;
   flex-direction: column;
   gap: 8px;
@@ -621,7 +622,13 @@ a:hover {
 }
 
 @media only screen and (min-width: 900px) {
-  .social-icons { display: flex; }
+  .social-icons {
+    display: flex;
+    gap: 20px;
+  }
+  .social-icons a {
+    font-size: 28px;
+  }
 }
 
 /* ========================================= */
@@ -821,6 +828,10 @@ a:hover {
   .character-model {
     height: 100vh;
     bottom: 0;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    transform: none;
     z-index: 11;
     position: fixed;
   }
@@ -829,11 +840,42 @@ a:hover {
   .character-model::before {
     display: none;
   }
+
+  .landing-intro {
+    top: 50%;
+    left: auto;
+    right: 66%;
+    transform: translate(0%, -50%);
+  }
+
+  .landing-info {
+    bottom: auto;
+    top: 51%;
+    z-index: inherit;
+    text-align: left;
+    transform: translate(0%, -50%);
+    right: auto;
+    left: 66%;
+  }
 }
 
-@media screen and (min-width: 1400px) {
-  .landing-intro { left: 8%; }
-  .landing-info { right: 8%; }
+@media screen and (min-width: 1200px) {
+  .landing-intro {
+    top: 50%;
+    left: auto;
+    right: 70%;
+    transform: translate(0%, -50%);
+  }
+
+  .landing-info {
+    bottom: auto;
+    top: 51%;
+    z-index: inherit;
+    text-align: left;
+    transform: translate(0%, -50%);
+    right: auto;
+    left: 70%;
+  }
 }
 
 

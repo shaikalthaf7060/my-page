@@ -1,4 +1,4 @@
-﻿import * as THREE from "three";
+import * as THREE from "three";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -76,7 +76,7 @@ export function setCharTimeline(character, camera) {
       if (object.material) {
         object.material.transparent = true;
         object.material.opacity = 0;
-        object.material.emissive.set("#B0F5EA");
+        object.material.emissive.set("#ff2e93");
         gsap.timeline({ repeat: -1, repeatRefresh: true }).to(object.material, {
           emissiveIntensity: () => intensity * 8,
           duration: () => Math.random() * 0.6,
@@ -109,8 +109,8 @@ export function setCharTimeline(character, camera) {
         .to(".about-section", { opacity: 0, delay: 3, duration: 2 }, 0)
         .fromTo(
           ".character-model",
-          { pointerEvents: "inherit" },
-          { pointerEvents: "none", x: "-12%", delay: 2, duration: 5 },
+          { x: "-25%", pointerEvents: "inherit" },
+          { x: "-12%", pointerEvents: "none", delay: 2, duration: 5 },
           0
         )
         .to(character.rotation, { y: 0.92, x: 0.12, delay: 3, duration: 3 }, 0);
@@ -163,8 +163,8 @@ export function setCharTimeline(character, camera) {
       tl3
         .fromTo(
           ".character-model",
-          { y: "0%" },
-          { y: "-100%", duration: 4, ease: "none", delay: 1 },
+          { x: "-12%", y: "0%" },
+          { x: "-12%", y: "-100%", duration: 4, ease: "none", delay: 1 },
           0
         )
         .fromTo(".whatIDO", { y: 0 }, { y: "15%", duration: 2 }, 0)

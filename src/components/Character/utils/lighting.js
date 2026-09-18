@@ -1,4 +1,4 @@
-﻿import * as THREE from "three";
+import * as THREE from "three";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
 import { gsap } from "gsap";
 
@@ -29,6 +29,9 @@ const setLighting = (scene) => {
 
   function setPointLight(screenLight) {
     if (screenLight && screenLight.material && screenLight.material.opacity > 0.9) {
+      if (screenLight.material.emissive) {
+        pointLight.color.copy(screenLight.material.emissive);
+      }
       pointLight.intensity = (screenLight.material.emissiveIntensity || 1) * 20;
     } else {
       pointLight.intensity = 0;

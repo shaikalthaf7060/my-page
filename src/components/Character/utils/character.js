@@ -1,4 +1,4 @@
-﻿import * as THREE from "three";
+import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { setCharTimeline, setAllTimeline } from "../../../utils/GsapScroll";
@@ -32,7 +32,9 @@ const setCharacter = (renderer, scene, camera) => {
                 if (mesh.material) {
                   if (mesh.name === "BODY.SHIRT" || mesh.name.includes("SHIRT")) {
                     const newMat = mesh.material.clone();
-                    newMat.color = new THREE.Color("#8B4513");
+                    newMat.color = new THREE.Color("#161719");
+                    newMat.roughness = 0.88;
+                    newMat.metalness = 0.0;
                     mesh.material = newMat;
                   } else if (mesh.name === "Pant" || mesh.name.includes("Pant")) {
                     const newMat = mesh.material.clone();
