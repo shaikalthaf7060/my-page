@@ -61,11 +61,11 @@ export default function Character3D() {
 
     const isMobile = window.innerWidth <= 1024;
 
-    // Camera settings: perfectly framing broad shoulders and compact head matching reference
+    // Camera settings: perfectly framing broad shoulders and compact head matching reference Image 4
     const camera = new THREE.PerspectiveCamera(14.5, aspect, 0.1, 1000);
-    camera.position.set(0, isMobile ? 13.2 : 12.5, isMobile ? 24.5 : 22.8);
-    camera.zoom = isMobile ? 0.96 : 1.16;
-    camera.lookAt(0, 12.4, 0);
+    camera.position.set(0, isMobile ? 13.0 : 12.4, isMobile ? 24.5 : 22.8);
+    camera.zoom = isMobile ? 0.96 : 1.12;
+    camera.lookAt(0, 12.0, 0);
     camera.updateProjectionMatrix();
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
@@ -73,8 +73,8 @@ export default function Character3D() {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.0;
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    // Shadows disabled on renderer and lights: removes harsh horizontal cut shadows from face, cheeks, nose, and chest!
+    renderer.shadowMap.enabled = false;
     container.appendChild(renderer.domElement);
 
     // Environment Lighting
@@ -85,53 +85,55 @@ export default function Character3D() {
       scene.environmentRotation.set(5.76, 85.85, 1);
     });
 
-    // Soft warm ambient light (eliminates harsh shadow boundaries on chest)
-    const ambientLight = new THREE.AmbientLight(0xfff7ed, 0.42);
+    // Warm, flattering ambient light for smooth, shadowless skin and fabric
+    const ambientLight = new THREE.AmbientLight(0xfff7ed, 0.65);
     scene.add(ambientLight);
 
-    // Sharp Cyan / Teal Backlight placed behind character pointing toward camera: Color #00e5ff, high intensity (5.8)
-    const cyanBackRimLight = new THREE.DirectionalLight(0x00e5ff, 5.8);
-    cyanBackRimLight.position.set(0, 16, -15);
-    cyanBackRimLight.target.position.set(0, 12, 10);
+    // Vibrant Cyan / Teal Backlight placed behind character pointing toward camera: Color #00e5ff
+    const cyanBackRimLight = new THREE.DirectionalLight(0x00e5ff, 5.5);
+    cyanBackRimLight.position.set(0, 15, -15);
+    cyanBackRimLight.target.position.set(0, 12, 5);
     scene.add(cyanBackRimLight);
     scene.add(cyanBackRimLight.target);
 
-    // Dual Shoulder Rim Lights (behind shoulders) for sharp, crisp edge definition
-    const leftRimLight = new THREE.DirectionalLight(0x00e5ff, 4.2);
-    leftRimLight.position.set(-8, 14, -8);
-    leftRimLight.target.position.set(0, 12, 5);
+    // Dual Shoulder Rim Lights (behind shoulders) for crisp cyan rim glow
+    const leftRimLight = new THREE.DirectionalLight(0x00e5ff, 4.0);
+    leftRimLight.position.set(-8, 13, -8);
+    leftRimLight.target.position.set(0, 12, 3);
     scene.add(leftRimLight);
     scene.add(leftRimLight.target);
 
-    const rightRimLight = new THREE.DirectionalLight(0x00e5ff, 4.2);
-    rightRimLight.position.set(8, 14, -8);
-    rightRimLight.target.position.set(0, 12, 5);
+    const rightRimLight = new THREE.DirectionalLight(0x00e5ff, 4.0);
+    rightRimLight.position.set(8, 13, -8);
+    rightRimLight.target.position.set(0, 12, 3);
     scene.add(rightRimLight);
     scene.add(rightRimLight.target);
 
-    // Front-left warm key light with soft shadow gradient
-    const warmKeyLight = new THREE.DirectionalLight(0xfff3e0, 1.4);
-    warmKeyLight.position.set(-2.5, 16, 16);
+    // Front-left warm key light (shadowless) for clean, radiant facial skin
+    const warmKeyLight = new THREE.DirectionalLight(0xffecd2, 1.5);
+    warmKeyLight.position.set(-2, 14, 16);
     warmKeyLight.target.position.set(0, 12, 0);
-    warmKeyLight.castShadow = true;
-    warmKeyLight.shadow.mapSize.width = 2048;
-    warmKeyLight.shadow.mapSize.height = 2048;
-    warmKeyLight.shadow.bias = -0.0008;
-    warmKeyLight.shadow.normalBias = 0.02;
     scene.add(warmKeyLight);
     scene.add(warmKeyLight.target);
 
-    // Front-right fill light for smooth, uniform chest illumination
-    const frontFillLight = new THREE.DirectionalLight(0xfff7ed, 0.5);
-    frontFillLight.position.set(2.5, 13, 15);
+    // Front-right fill light for smooth, uniform illumination across face & chest
+    const frontFillLight = new THREE.DirectionalLight(0xfff5ea, 0.85);
+    frontFillLight.position.set(2.5, 12, 14);
     frontFillLight.target.position.set(0, 12, 0);
     scene.add(frontFillLight);
     scene.add(frontFillLight.target);
 
+    // Soft top-right pinkish highlight on cap dome (exact match to reference Image 4!)
+    const topPinkLight = new THREE.DirectionalLight(0xf472b6, 0.75);
+    topPinkLight.position.set(2, 18, 5);
+    topPinkLight.target.position.set(0, 13, 0);
+    scene.add(topPinkLight);
+    scene.add(topPinkLight.target);
+
     // Subtle purple rim accent
-    const purpleRimLight = new THREE.DirectionalLight(0xc084fc, 1.2);
-    purpleRimLight.position.set(5, 13, 8);
-    purpleRimLight.target.position.set(0, 12.2, 0);
+    const purpleRimLight = new THREE.DirectionalLight(0xc084fc, 0.8);
+    purpleRimLight.position.set(5, 12, 8);
+    purpleRimLight.target.position.set(0, 12, 0);
     scene.add(purpleRimLight);
     scene.add(purpleRimLight.target);
 
@@ -148,10 +150,10 @@ export default function Character3D() {
     let eyesMesh = null;
     let shirtMesh = null;
 
-    // Resting head pose with slight upward tilt (+4° to +5° on X-axis) to lift chin off chest
-    const BASE_NECK_PITCH = 0.44;
-    const BASE_HEAD_PITCH = -0.21;
-    const BASE_MODEL_Y = -0.45;
+    // Resting head pose with natural chin-to-collar distance matching reference Image 4
+    const BASE_NECK_PITCH = 0.42;
+    const BASE_HEAD_PITCH = -0.22;
+    const BASE_MODEL_Y = -1.02;
 
     // Load & Decrypt 3D Character
     const dracoLoader = new DRACOLoader();
@@ -168,8 +170,8 @@ export default function Character3D() {
           (gltf) => {
             characterModel = gltf.scene;
 
-            // Character model proportion: broad shoulders & compact framing matching reference
-            characterModel.scale.set(1.04, 1.0, 1.0);
+            // Character model proportion: round head & broad shoulders matching reference Image 4
+            characterModel.scale.set(1.0, 1.0, 1.0);
             characterModel.position.set(0, BASE_MODEL_Y, 0);
 
             // Eye texture loader with natural eye socket positioning
@@ -222,8 +224,8 @@ export default function Character3D() {
             // Traverse and configure materials
             characterModel.traverse((child) => {
               if (child.isMesh) {
-                child.castShadow = true;
-                child.receiveShadow = true;
+                child.castShadow = false;
+                child.receiveShadow = false;
                 child.visible = true;
 
                 if (nameMatch(child.name, 'EYEs.001', 'EYEs')) {
@@ -568,7 +570,7 @@ export default function Character3D() {
       });
 
       whatTl
-        .to('.character-model', { y: '-100%', duration: 3, ease: 'none' }, 0)
+        .to('.character-model', { y: '-160%', opacity: 0, duration: 3, ease: 'power2.in' }, 0)
         .to(ptLight, { intensity: 0, duration: 1.5 }, 0);
 
       if (deskObjs && deskObjs.length > 0) {
@@ -708,9 +710,9 @@ export default function Character3D() {
       const h = container.clientHeight || window.innerHeight;
       const mobile = window.innerWidth <= 1024;
       camera.aspect = w / h;
-      camera.position.set(0, mobile ? 13.2 : 12.5, mobile ? 24.5 : 22.8);
-      camera.zoom = mobile ? 0.96 : 1.16;
-      camera.lookAt(0, 12.4, 0);
+      camera.position.set(0, mobile ? 13.0 : 12.4, mobile ? 24.5 : 22.8);
+      camera.zoom = mobile ? 0.96 : 1.12;
+      camera.lookAt(0, 12.0, 0);
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
     };
