@@ -768,17 +768,16 @@ a:hover {
 
 .character-rim {
   position: absolute;
-  width: 320px;
-  height: 320px;
+  width: 500px;
+  height: 500px;
   z-index: 1;
-  background-color: #38bdf8;
-  box-shadow: inset 40px 25px 50px rgba(56, 189, 248, 0.25);
-  filter: blur(85px);
+  background: radial-gradient(circle, rgba(0, 229, 255, 0.40) 0%, rgba(0, 229, 255, 0.15) 45%, transparent 70%);
+  filter: blur(60px);
   border-radius: 50%;
-  top: 75%;
+  top: 65%;
   left: 50%;
-  transform: translate(-50%, 0%);
-  opacity: 0.15;
+  transform: translate(-50%, -50%);
+  opacity: 0.45;
   pointer-events: none;
 }
 

@@ -61,11 +61,11 @@ export default function Character3D() {
 
     const isMobile = window.innerWidth <= 1024;
 
-    // Camera settings: perfectly framing broad shoulders and compact head matching reference Image 4
+    // Camera settings: perfectly framing broad robust shoulders and compact head matching reference Image 4
     const camera = new THREE.PerspectiveCamera(14.5, aspect, 0.1, 1000);
-    camera.position.set(0, isMobile ? 13.0 : 12.4, isMobile ? 24.5 : 22.8);
-    camera.zoom = isMobile ? 0.96 : 1.12;
-    camera.lookAt(0, 12.0, 0);
+    camera.position.set(0, isMobile ? 12.8 : 12.2, isMobile ? 24.0 : 22.0);
+    camera.zoom = isMobile ? 0.98 : 1.15;
+    camera.lookAt(0, 11.8, 0);
     camera.updateProjectionMatrix();
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
@@ -73,7 +73,7 @@ export default function Character3D() {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.0;
-    // Shadows disabled on renderer and lights: removes harsh horizontal cut shadows from face, cheeks, nose, and chest!
+    // Shadows disabled on renderer and lights: removes harsh cut shadows from face, cheeks, nose, and chest
     renderer.shadowMap.enabled = false;
     container.appendChild(renderer.domElement);
 
@@ -81,12 +81,12 @@ export default function Character3D() {
     new RGBELoader().setPath('/models/').load('char_enviorment.hdr?v=2', (texture) => {
       texture.mapping = THREE.EquirectangularReflectionMapping;
       scene.environment = texture;
-      scene.environmentIntensity = 0.55;
+      scene.environmentIntensity = 0.50;
       scene.environmentRotation.set(5.76, 85.85, 1);
     });
 
-    // Warm, flattering ambient light for smooth, shadowless skin and fabric
-    const ambientLight = new THREE.AmbientLight(0xfff7ed, 0.65);
+    // Warm amber ambient light: rich, warm, prevents bleaching skin or washing black shirt to grey
+    const ambientLight = new THREE.AmbientLight(0xfff0e2, 0.45);
     scene.add(ambientLight);
 
     // Vibrant Cyan / Teal Backlight placed behind character pointing toward camera: Color #00e5ff
@@ -109,15 +109,15 @@ export default function Character3D() {
     scene.add(rightRimLight);
     scene.add(rightRimLight.target);
 
-    // Front-left warm key light (shadowless) for clean, radiant facial skin
-    const warmKeyLight = new THREE.DirectionalLight(0xffecd2, 1.5);
+    // Front-left warm key light for radiant, healthy golden-tan skin
+    const warmKeyLight = new THREE.DirectionalLight(0xffecd2, 1.4);
     warmKeyLight.position.set(-2, 14, 16);
     warmKeyLight.target.position.set(0, 12, 0);
     scene.add(warmKeyLight);
     scene.add(warmKeyLight.target);
 
-    // Front-right fill light for smooth, uniform illumination across face & chest
-    const frontFillLight = new THREE.DirectionalLight(0xfff5ea, 0.85);
+    // Soft front-right fill light (subdued to preserve solid jet-black shirt fabric)
+    const frontFillLight = new THREE.DirectionalLight(0xfff5ea, 0.45);
     frontFillLight.position.set(2.5, 12, 14);
     frontFillLight.target.position.set(0, 12, 0);
     scene.add(frontFillLight);
@@ -170,8 +170,8 @@ export default function Character3D() {
           (gltf) => {
             characterModel = gltf.scene;
 
-            // Character model proportion: round head & broad shoulders matching reference Image 4
-            characterModel.scale.set(1.0, 1.0, 1.0);
+            // Character model proportion: broad robust shoulders ("weight") matching reference Image 4
+            characterModel.scale.set(1.08, 1.0, 1.04);
             characterModel.position.set(0, BASE_MODEL_Y, 0);
 
             // Eye texture loader with natural eye socket positioning
@@ -279,31 +279,31 @@ export default function Character3D() {
                     child.material = mat;
                   }
                 } else if (nameMatch(child.name, 'BODY.SHIRT', 'BODYSHIRT')) {
-                  // Rich uniform matte dark charcoal/black shirt with clean dark collar band (exact match to reference Image 2!)
+                  // Solid deep matte jet-black shirt with crisp dark black collar band (exact match to reference Image 4!)
                   shirtMesh = child;
                   child.position.set(0, 0, 0);
                   if (Array.isArray(child.material)) {
                     child.material = child.material.map((m, idx) => {
                       const mat = m.clone();
                       if (idx === 0) {
-                        // Main shirt body fabric: smooth uniform matte charcoal
-                        mat.color = new THREE.Color('#16171a');
-                        mat.roughness = 0.82;
-                        mat.metalness = 0.02;
+                        // Main shirt body fabric: deep solid matte jet-black
+                        mat.color = new THREE.Color('#0c0d10');
+                        mat.roughness = 0.92;
+                        mat.metalness = 0.0;
                       } else {
-                        // Collar & cuffs trim: solid dark black ring
-                        mat.color = new THREE.Color('#0a0b0d');
-                        mat.roughness = 0.50;
-                        mat.metalness = 0.05;
+                        // Collar & cuffs trim: clean dark black ring
+                        mat.color = new THREE.Color('#040406');
+                        mat.roughness = 0.60;
+                        mat.metalness = 0.02;
                       }
                       mat.needsUpdate = true;
                       return mat;
                     });
                   } else if (child.material) {
                     const mat = child.material.clone();
-                    mat.color = new THREE.Color('#16171a');
-                    mat.roughness = 0.82;
-                    mat.metalness = 0.02;
+                    mat.color = new THREE.Color('#0c0d10');
+                    mat.roughness = 0.92;
+                    mat.metalness = 0.0;
                     mat.needsUpdate = true;
                     child.material = mat;
                   }
@@ -312,15 +312,15 @@ export default function Character3D() {
                     if (Array.isArray(child.material)) {
                       child.material = child.material.map((m) => {
                         const mat = m.clone();
-                        mat.color = new THREE.Color('#1a1b20');
-                        mat.roughness = 0.80;
+                        mat.color = new THREE.Color('#14151a');
+                        mat.roughness = 0.85;
                         mat.needsUpdate = true;
                         return mat;
                       });
                     } else {
                       const mat = child.material.clone();
-                      mat.color = new THREE.Color('#1a1b20');
-                      mat.roughness = 0.80;
+                      mat.color = new THREE.Color('#14151a');
+                      mat.roughness = 0.85;
                       mat.needsUpdate = true;
                       child.material = mat;
                     }
@@ -329,19 +329,19 @@ export default function Character3D() {
                   if (nameMatch(child.name, 'Face.002')) {
                     faceMesh = child;
                   }
-                  // Authentic caramel/tan skin shader preserving painted eye creases, lip definition, and pores (exact match to Image 4!)
+                  // Rich warm golden-tan / caramel skin shader (exact match to Akash Malhotra in reference Image 4!)
                   if (child.material) {
                     const old = child.material;
                     const skinMat = new THREE.MeshPhysicalMaterial({
                       map: old.map || null,
                       normalMap: old.normalMap || null,
                       roughnessMap: old.roughnessMap || null,
-                      color: new THREE.Color(1, 1, 1), // White tint multiplier lets authentic texture shine through without bleaching
+                      color: new THREE.Color('#f0c4a8'), // Warm golden-tan tint multiplier enriching melanin tone
                       roughness: 0.38,
-                      metalness: 0.04,
-                      clearcoat: 0.35,
-                      clearcoatRoughness: 0.18,
-                      reflectivity: 0.75,
+                      metalness: 0.02,
+                      clearcoat: 0.28,
+                      clearcoatRoughness: 0.20,
+                      reflectivity: 0.60,
                       side: THREE.DoubleSide,
                     });
                     child.material = skinMat;
@@ -557,31 +557,21 @@ export default function Character3D() {
         aboutTl.to(ptLight, { intensity: 3.5, duration: 1.2, delay: 3.8 }, 0);
       }
 
-      // 3. Smooth exit transition when scrolling into the Work section
-      // Character, desk, chair, keyboard, and screen glow remain 100% visible and anchored while user is inside What I Do!
+      // 3. Smooth unified exit transition when scrolling out of What I Do into Work section
+      // The boy, chair, desk, keyboard, monitor, and screen glow stay 100% visible together as a solid workstation until leaving!
       const whatTl = gsap.timeline({
         scrollTrigger: {
-          trigger: '.work-section',
-          start: 'top bottom',
-          end: 'top 20%',
+          trigger: '.whatIDO',
+          start: 'bottom 80%',
+          end: 'bottom 15%',
           scrub: true,
           invalidateOnRefresh: true,
         },
       });
 
       whatTl
-        .to('.character-model', { y: '-160%', opacity: 0, duration: 3, ease: 'power2.in' }, 0)
-        .to(ptLight, { intensity: 0, duration: 1.5 }, 0);
-
-      if (deskObjs && deskObjs.length > 0) {
-        deskObjs.forEach((obj) => {
-          obj.traverse((child) => {
-            if (child.isMesh && child.material) {
-              whatTl.to(child.material, { opacity: 0, duration: 1.5 }, 0);
-            }
-          });
-        });
-      }
+        .to('.character-model', { y: '-100%', opacity: 0, duration: 2, ease: 'power1.inOut' }, 0)
+        .to(ptLight, { intensity: 0, duration: 1 }, 0);
     }
 
     // Dynamic Pointer & Cursor Tracking with Clamping & Weighted Lerp Damping
@@ -710,9 +700,9 @@ export default function Character3D() {
       const h = container.clientHeight || window.innerHeight;
       const mobile = window.innerWidth <= 1024;
       camera.aspect = w / h;
-      camera.position.set(0, mobile ? 13.0 : 12.4, mobile ? 24.5 : 22.8);
-      camera.zoom = mobile ? 0.96 : 1.12;
-      camera.lookAt(0, 12.0, 0);
+      camera.position.set(0, mobile ? 12.8 : 12.2, mobile ? 24.0 : 22.0);
+      camera.zoom = mobile ? 0.98 : 1.15;
+      camera.lookAt(0, 11.8, 0);
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
     };
