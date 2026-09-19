@@ -1,4 +1,4 @@
-﻿import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { setCharTimeline, setAllTimeline } from "../../../utils/GsapScroll";
 
 export default function handleResize(
@@ -21,6 +21,10 @@ export default function handleResize(
     }
   });
   if (character) {
+    if (window.scrollY === 0) {
+      character.rotation.set(0, 0, 0);
+      camera.position.set(0, 13.3, 26.5);
+    }
     setCharTimeline(character, camera);
   }
   setAllTimeline();

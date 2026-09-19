@@ -12,6 +12,7 @@ import TechStack3D from './components/TechStack3D.jsx';
 import CareerSection from './components/CareerSection.jsx';
 import ContactSection from './components/ContactSection.jsx';
 import { AdminAuthModal, AdminPanelModal } from './components/AdminModals.jsx';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -20,10 +21,25 @@ export default function App() {
   const [adminOpen, setAdminOpen] = useState(false);
 
   useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
     const handleResize = () => setIsDesktop(window.innerWidth >= 900);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  useEffect(() => {
+    if (loading) {
+      document.body.style.overflow = 'hidden';
+      window.scrollTo(0, 0);
+    } else {
+      document.body.style.overflow = '';
+      window.scrollTo(0, 0);
+      ScrollTrigger.refresh(true);
+    }
+  }, [loading]);
 
   return (
     <>
