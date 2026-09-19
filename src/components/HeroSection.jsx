@@ -7,57 +7,30 @@ export default function HeroSection({ children, onAdminTrigger }) {
   useEffect(() => {
     const ctx = gsap.context(() => {
       const charsSoft = containerRef.current?.querySelectorAll('.landing-h2-1 .char');
-      const charsFull = containerRef.current?.querySelectorAll('.landing-h2-2 .char');
       const charsDev = containerRef.current?.querySelectorAll('.landing-h2-info .char');
-      const charsEng = containerRef.current?.querySelectorAll('.landing-h2-info-1 .char');
 
-      if (!charsSoft?.length || !charsFull?.length || !charsDev?.length || !charsEng?.length) return;
+      if (!charsSoft?.length || !charsDev?.length) return;
 
       gsap.set([charsSoft, charsDev], { yPercent: 0, opacity: 1 });
-      gsap.set([charsFull, charsEng], { yPercent: 120, opacity: 0 });
 
-      const tl = gsap.timeline({ repeat: -1 });
+      const tl = gsap.timeline({ repeat: -1, repeatDelay: 2 });
 
       tl.to([charsSoft, charsDev], {
         yPercent: -120,
         opacity: 0,
-        duration: 0.9,
-        ease: 'power3.inOut',
-        stagger: 0.03,
+        duration: 0.7,
+        ease: 'power3.in',
+        stagger: 0.025,
         delay: 3.5,
       })
-      .fromTo(
-        [charsFull, charsEng],
-        { yPercent: 120, opacity: 0 },
-        {
-          yPercent: 0,
-          opacity: 1,
-          duration: 0.9,
-          ease: 'power3.inOut',
-          stagger: 0.03,
-        },
-        '<0.1'
-      )
-      .to([charsFull, charsEng], {
-        yPercent: -120,
-        opacity: 0,
-        duration: 0.9,
-        ease: 'power3.inOut',
-        stagger: 0.03,
-        delay: 3.5,
-      })
-      .fromTo(
-        [charsSoft, charsDev],
-        { yPercent: 120, opacity: 0 },
-        {
-          yPercent: 0,
-          opacity: 1,
-          duration: 0.9,
-          ease: 'power3.inOut',
-          stagger: 0.03,
-        },
-        '<0.1'
-      );
+      .set([charsSoft, charsDev], { yPercent: 120, opacity: 0 })
+      .to([charsSoft, charsDev], {
+        yPercent: 0,
+        opacity: 1,
+        duration: 0.8,
+        ease: 'power3.out',
+        stagger: 0.025,
+      });
     }, containerRef);
 
     return () => ctx.revert();
@@ -86,11 +59,9 @@ export default function HeroSection({ children, onAdminTrigger }) {
           <h3>Aspiring & Passionate</h3>
           <h2 className="landing-info-h2">
             <div className="landing-h2-1 split-h2">{renderChars('SOFTWARE')}</div>
-            <div className="landing-h2-2 split-h2">{renderChars('FULL STACK')}</div>
           </h2>
           <h2 className="landing-info-h2-sub">
             <div className="landing-h2-info split-h2">{renderChars('DEVELOPER')}</div>
-            <div className="landing-h2-info-1 split-h2">{renderChars('ENGINEER')}</div>
           </h2>
         </div>
       </div>

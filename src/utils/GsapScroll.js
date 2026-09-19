@@ -89,7 +89,7 @@ export function setCharTimeline(character, camera) {
 
   let neckBone = character?.getObjectByName("spine005");
 
-  if (window.innerWidth > 1024) {
+  if (window.innerWidth >= 900) {
     if (character) {
       tl1
         .fromTo(character.rotation, { y: 0 }, { y: 0.7, duration: 1 }, 0)
@@ -229,7 +229,7 @@ export function setAllTimeline() {
       0
     );
 
-  if (window.innerWidth > 1024) {
+  if (window.innerWidth >= 900) {
     careerTimeline.fromTo(
       ".career-section",
       { y: 0 },

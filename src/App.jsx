@@ -15,12 +15,12 @@ import { AdminAuthModal, AdminPanelModal } from './components/AdminModals.jsx';
 
 export default function App() {
   const [loading, setLoading] = useState(true);
-  const [isDesktop, setIsDesktop] = useState(window.innerWidth > 1024);
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 900);
   const [authOpen, setAuthOpen] = useState(false);
   const [adminOpen, setAdminOpen] = useState(false);
 
   useEffect(() => {
-    const handleResize = () => setIsDesktop(window.innerWidth > 1024);
+    const handleResize = () => setIsDesktop(window.innerWidth >= 900);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);

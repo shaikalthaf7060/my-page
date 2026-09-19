@@ -1,4 +1,4 @@
-﻿export const handleMouseMove = (event, setMousePosition) => {
+export const handleMouseMove = (event, setMousePosition) => {
   const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
   const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
   setMousePosition(mouseX, mouseY);
@@ -60,7 +60,7 @@ export const handleHeadRotation = (
       );
     }
   } else {
-    if (window.innerWidth > 1024) {
+    if (window.innerWidth >= 900) {
       headBone.rotation.x = lerp(headBone.rotation.x, -0.4, 0.03);
       headBone.rotation.y = lerp(headBone.rotation.y, -0.3, 0.03);
     }

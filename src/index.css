@@ -533,7 +533,7 @@ a:hover {
   color: var(--accentColor);
 }
 
-@media only screen and (min-width: 1025px) {
+@media only screen and (min-width: 900px) {
   .navbar-connect { display: block; }
 }
 
@@ -750,6 +750,7 @@ h2.landing-info-h2 {
   text-transform: uppercase;
   letter-spacing: 2px;
   display: block;
+  width: max-content;
 }
 
 h2.landing-info-h2-sub {
@@ -765,6 +766,7 @@ h2.landing-info-h2-sub {
   text-transform: uppercase;
   letter-spacing: 2px;
   display: block;
+  width: max-content;
 }
 
 .split-h2 {
@@ -864,7 +866,7 @@ h2.landing-info-h2-sub {
   border-radius: 50%;
 }
 
-@media screen and (min-width: 1025px) {
+@media screen and (min-width: 900px) {
   .character-model {
     height: 100vh;
     bottom: 0;
@@ -884,7 +886,7 @@ h2.landing-info-h2-sub {
   .landing-intro {
     top: 50%;
     left: auto;
-    right: max(72%, calc(50% + 200px));
+    right: max(68%, calc(50% + 160px));
     transform: translate(0%, -50%);
     z-index: 12;
   }
@@ -896,27 +898,18 @@ h2.landing-info-h2-sub {
     text-align: left;
     transform: translate(0%, -50%);
     right: auto;
-    left: max(72%, calc(50% + 200px));
+    left: max(68%, calc(50% + 160px));
+    width: max-content;
   }
 }
 
 @media screen and (min-width: 1200px) {
   .landing-intro {
-    top: 50%;
-    left: auto;
-    right: max(72%, calc(50% + 220px));
-    transform: translate(0%, -50%);
-    z-index: 12;
+    right: max(70%, calc(50% + 200px));
   }
 
   .landing-info {
-    bottom: auto;
-    top: 50%;
-    z-index: 12;
-    text-align: left;
-    transform: translate(0%, -50%);
-    right: auto;
-    left: max(72%, calc(50% + 220px));
+    left: max(70%, calc(50% + 200px));
   }
 }
 
@@ -926,7 +919,7 @@ h2.landing-info-h2-sub {
   }
   h2.landing-info-h2,
   h2.landing-info-h2-sub {
-    font-size: 36px;
+    font-size: 34px;
   }
 }
 
@@ -939,11 +932,11 @@ h2.landing-info-h2-sub {
     line-height: 35px;
   }
   .landing-info h3 {
-    font-size: 25px;
+    font-size: 22px;
   }
   h2.landing-info-h2,
   h2.landing-info-h2-sub {
-    font-size: 48px;
+    font-size: 42px;
   }
 }
 
@@ -960,7 +953,7 @@ h2.landing-info-h2-sub {
   }
   h2.landing-info-h2,
   h2.landing-info-h2-sub {
-    font-size: 64px;
+    font-size: 60px;
   }
 }
 
@@ -1021,7 +1014,7 @@ h2.landing-info-h2-sub {
   }
 }
 
-@media only screen and (min-width: 1025px) {
+@media only screen and (min-width: 900px) {
   .about-section {
     width: var(--cWidth);
     justify-content: flex-end;
