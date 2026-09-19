@@ -120,7 +120,7 @@ export function setCharTimeline(character, camera) {
         .fromTo(
           ".character-model",
           { x: "-25%", pointerEvents: "inherit" },
-          { x: "-12%", pointerEvents: "none", delay: 2, duration: 5 },
+          { x: "-12%", pointerEvents: "none", delay: 2, duration: 5, immediateRender: false },
           0
         )
         .to(character.rotation, { y: 0.92, x: 0.12, delay: 3, duration: 3 }, 0);
@@ -176,7 +176,7 @@ export function setCharTimeline(character, camera) {
         .fromTo(
           ".character-model",
           { x: "-12%", y: "0%" },
-          { x: "-12%", y: "-100%", duration: 4, ease: "none", delay: 1 },
+          { x: "-12%", y: "-100%", duration: 4, ease: "none", delay: 1, immediateRender: false },
           0
         )
         .fromTo(".whatIDO", { y: 0 }, { y: "15%", duration: 2 }, 0)

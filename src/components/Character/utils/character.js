@@ -38,6 +38,12 @@ const setCharacter = (renderer, scene, camera) => {
                     const newMat = mesh.material.clone();
                     newMat.color = new THREE.Color("#000000");
                     mesh.material = newMat;
+                  } else if (mesh.name === "CAP.001") {
+                    const newMat = mesh.material.clone();
+                    newMat.color = new THREE.Color("#dcdcdc");
+                    newMat.roughness = 0.35;
+                    newMat.metalness = 0.45;
+                    mesh.material = newMat;
                   }
                 }
 

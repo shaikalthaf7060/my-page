@@ -23,7 +23,7 @@ export default function handleResize(
   if (character) {
     if (window.scrollY === 0) {
       character.rotation.set(0, 0, 0);
-      camera.position.set(0, 13.3, 26.5);
+      camera.position.set(0, 13.1, 24.7);
     }
     setCharTimeline(character, camera);
   }
