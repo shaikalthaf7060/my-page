@@ -1,0 +1,35 @@
+﻿name: Deploy Portfolio to cPanel FTP
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Project
+        run: npm run build
+
+      - name: Deploy via FTP
+        env:
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          FTP_HOST: ftpupload.net
+          FTP_USER: cpfr_42955704
+          FTP_PORT: 21
+          FTP_REMOTE_DIR: /htdocs/
+        run: node scripts/deploy.js

@@ -72,6 +72,7 @@ const Character3D = () => {
         scene.add(charScene);
         headBone = charScene.getObjectByName("spine006") || null;
         screenLight = charScene.getObjectByName("screenlight") || null;
+        if (screenLight) screenLight.visible = false;
 
         setTimeout(() => {
           light.turnOnLights();

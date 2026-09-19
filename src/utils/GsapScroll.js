@@ -73,10 +73,11 @@ export function setCharTimeline(character, camera) {
       }
     }
     if (object.name === "screenlight") {
+      object.visible = false;
       if (object.material) {
         object.material.transparent = true;
         object.material.opacity = 0;
-        object.material.emissive.set("#ff2e93");
+        object.material.emissive.set("#B0F5EA");
         gsap.timeline({ repeat: -1, repeatRefresh: true }).to(object.material, {
           emissiveIntensity: () => intensity * 8,
           duration: () => Math.random() * 0.6,
@@ -148,7 +149,9 @@ export function setCharTimeline(character, camera) {
       }
 
       if (screenLight && screenLight.material) {
-        tl2.to(screenLight.material, { opacity: 1, duration: 0.8, delay: 4.5 }, 0);
+        tl2
+          .set(screenLight, { visible: true, delay: 4 }, 0)
+          .to(screenLight.material, { opacity: 1, duration: 0.8, delay: 4.5 }, 0);
       }
 
       tl2

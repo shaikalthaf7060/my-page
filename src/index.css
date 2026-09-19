@@ -749,8 +749,7 @@ h2.landing-info-h2 {
   overflow: hidden;
   text-transform: uppercase;
   letter-spacing: 2px;
-  display: block;
-  width: max-content;
+  display: inline-block;
 }
 
 h2.landing-info-h2-sub {
@@ -765,18 +764,14 @@ h2.landing-info-h2-sub {
   overflow: hidden;
   text-transform: uppercase;
   letter-spacing: 2px;
-  display: block;
-  width: max-content;
+  display: inline-block;
 }
 
 .split-h2 {
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: relative;
   display: inline-flex;
   white-space: nowrap;
   line-height: 1.18em;
-  overflow: hidden;
 }
 
 .split-h2 .char {
