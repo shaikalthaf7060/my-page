@@ -27,8 +27,6 @@ const setCharacter = (renderer, scene, camera) => {
             character.traverse((child) => {
               if (child.isMesh) {
                 const mesh = child;
-
-                // Change clothing colors to match site theme
                 if (mesh.material) {
                   if (mesh.name === "BODY.SHIRT" || mesh.name.includes("SHIRT")) {
                     const newMat = mesh.material.clone();

@@ -77,9 +77,9 @@ a:hover {
   }
 }
 
-/* ========================================= */
-/* PRELOADER                                 */
-/* ========================================= */
+
+
+
 .loading-screen {
   position: fixed;
   width: 100vw;
@@ -397,9 +397,9 @@ a:hover {
   .loading-marquee { font-size: 100px; }
 }
 
-/* ========================================= */
-/* CUSTOM CURSOR                             */
-/* ========================================= */
+
+
+
 .cursor-main {
   --size: 0px;
   position: fixed;
@@ -443,9 +443,9 @@ a:hover {
   }
 }
 
-/* ========================================= */
-/* NAVBAR & HEADER                           */
-/* ========================================= */
+
+
+
 .header {
   display: flex;
   max-width: var(--cMaxWidth);
@@ -537,9 +537,9 @@ a:hover {
   .navbar-connect { display: block; }
 }
 
-/* ========================================= */
-/* SIDE ICONS & RESUME                       */
-/* ========================================= */
+
+
+
 .icons-section {
   position: fixed;
   max-width: var(--cMaxWidth);
@@ -631,9 +631,9 @@ a:hover {
   }
 }
 
-/* ========================================= */
-/* LANDING / HERO SECTION                    */
-/* ========================================= */
+
+
+
 .landing-section {
   width: 100%;
   max-width: var(--cMaxWidth);
@@ -693,7 +693,7 @@ a:hover {
   100% { transform: translate(50%, -50%) rotate(360deg); }
 }
 
-/* Left Hero Typography */
+
 .landing-intro {
   position: absolute;
   z-index: 10;
@@ -719,19 +719,18 @@ a:hover {
   font-weight: 700;
 }
 
-/* Right Hero Typography */
 .landing-info {
   position: absolute;
   z-index: 10;
-  top: 50%;
-  right: 4%;
-  transform: translateY(-50%);
+  right: 50%;
+  transform: translateX(50%);
+  bottom: 40px;
+  top: inherit;
   text-align: left;
-  max-width: 380px;
 }
 
 .landing-info h3 {
-  font-size: 20px;
+  font-size: 22px;
   letter-spacing: 2px;
   font-weight: 300;
   color: var(--accentColor);
@@ -739,20 +738,67 @@ a:hover {
 }
 
 .landing-info h2 {
-  margin: 8px 0 0;
-  font-size: 48px;
-  line-height: 52px;
-  font-weight: 700;
+  margin: 0;
+  margin-top: -20px;
+  margin-left: 20px;
+  font-family: "Geist", sans-serif;
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 40px;
+  position: relative;
+  display: flex;
+  flex-wrap: nowrap;
+  text-transform: uppercase;
   letter-spacing: 2px;
-  color: #fff;
+  color: #ffffff;
 }
 
-.landing-info h2 .role-accent {
-  color: var(--accentColor);
+.landing-h2-info-1 {
+  position: absolute;
+  top: 0;
+}
+
+h2.landing-info-h2 {
+  color: #14b8a6;
+  font-size: 42px;
+  width: 120%;
+  margin: 0;
+  font-family: "Geist", sans-serif;
+  font-weight: 600;
+  position: relative;
+  margin-left: -5px;
+}
+
+.landing-h2-2 {
+  position: absolute;
+  top: 0;
+}
+
+.landing-info-h2::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 120%;
+  z-index: 3;
+  background-image: linear-gradient(
+    0deg,
+    var(--backgroundColor) 40%,
+    rgba(0, 0, 0, 0) 110%
+  );
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.split-h2 {
+  overflow: hidden;
+  display: flex;
+  white-space: nowrap;
+  flex-wrap: nowrap;
 }
 
 
-/* 3D Character Container (Reference Landing.css) */
+
 .character-rim {
   position: absolute;
   width: 400px;
@@ -878,10 +924,63 @@ a:hover {
   }
 }
 
+@media screen and (min-width: 500px) {
+  .landing-info h3 {
+    font-size: 18px;
+  }
+  .landing-info h2 {
+    font-size: 35px;
+    line-height: 40px;
+  }
+  h2.landing-info-h2 {
+    font-size: 38px;
+  }
+}
 
-/* ========================================= */
-/* ABOUT SECTION (Matching Image 1)          */
-/* ========================================= */
+@media screen and (min-width: 768px) {
+  .landing-intro h2 {
+    font-size: 25px;
+  }
+  .landing-intro h1 {
+    font-size: 40px;
+    line-height: 35px;
+  }
+  .landing-info h3 {
+    font-size: 25px;
+  }
+  .landing-info h2 {
+    font-size: 45px;
+    line-height: 42px;
+  }
+  h2.landing-info-h2 {
+    font-size: 55px;
+  }
+}
+
+@media screen and (min-width: 1600px) {
+  .landing-intro h2 {
+    font-size: 35px;
+  }
+  .landing-intro h1 {
+    font-size: 60px;
+    line-height: 55px;
+  }
+  .landing-info h3 {
+    font-size: 35px;
+  }
+  .landing-info h2 {
+    font-size: 65px;
+    line-height: 62px;
+  }
+  h2.landing-info-h2 {
+    font-size: 75px;
+  }
+}
+
+
+
+
+
 .about-section {
   display: flex;
   align-items: center;
@@ -962,9 +1061,9 @@ a:hover {
   }
 }
 
-/* ========================================= */
-/* WHAT I DO SECTION                         */
-/* ========================================= */
+
+
+
 .whatIDO {
   display: flex;
   align-items: center;
@@ -1350,9 +1449,9 @@ a:hover {
   }
 }
 
-/* ========================================= */
-/* WORK / PROJECTS CAROUSEL SECTION          */
-/* ========================================= */
+
+
+
 .work-section {
   position: relative;
   z-index: 10;
@@ -1491,7 +1590,7 @@ a:hover {
   box-sizing: border-box;
 }
 
-/* Elegant Browser Window Frame for Original Screenshots */
+
 .work-browser-frame {
   width: 100%;
   border-radius: 12px;
@@ -1660,9 +1759,9 @@ a:hover {
   .carousel-arrow-right { right: 0; }
 }
 
-/* ========================================= */
-/* CAREER TIMELINE SECTION                   */
-/* ========================================= */
+
+
+
 .career-section {
   display: flex;
   flex-direction: column;
@@ -1808,9 +1907,9 @@ a:hover {
   .career-timeline { left: 0%; }
 }
 
-/* ========================================= */
-/* TECH STACK SECTION                        */
-/* ========================================= */
+
+
+
 .techstack {
   width: 100%;
   position: relative;
@@ -1853,9 +1952,9 @@ a:hover {
   }
 }
 
-/* ========================================= */
-/* CONTACT SECTION                           */
-/* ========================================= */
+
+
+
 .contact-section {
   margin: 80px auto auto;
   padding-bottom: 100px;
@@ -2030,9 +2129,9 @@ a.contact-social:hover {
   .contact-flex { flex-direction: column; gap: 40px; }
 }
 
-/* ========================================= */
-/* COMPREHENSIVE MOBILE RESPONSIVE TWEAKS   */
-/* ========================================= */
+
+
+
 @media screen and (max-width: 900px) {
   :root {
     --cWidth: 92%;
@@ -2045,7 +2144,7 @@ a.contact-social:hover {
     box-sizing: border-box;
   }
 
-  /* Header */
+  
   .header {
     width: 92%;
     padding: 16px 0;
@@ -2062,7 +2161,7 @@ a.contact-social:hover {
     font-weight: 500;
   }
 
-  /* Hero Section & 3D Character on Mobile */
+  
   .landing-section {
     position: relative;
     width: 100%;
@@ -2145,7 +2244,7 @@ a.contact-social:hover {
     color: var(--accentColor);
   }
 
-  /* About Section */
+  
   .about-section {
     padding: 60px 0;
     height: auto;
@@ -2162,7 +2261,7 @@ a.contact-social:hover {
     line-height: 1.65;
   }
 
-  /* What I Do Section */
+  
   .whatIDO {
     flex-direction: column;
     height: auto;
@@ -2194,7 +2293,7 @@ a.contact-social:hover {
     box-sizing: border-box;
   }
 
-  /* Work Carousel */
+  
   .work-section {
     padding: 50px 0;
   }
@@ -2238,7 +2337,7 @@ a.contact-social:hover {
   .work-image img {
     max-height: 260px;
     width: 100%;
-    object-fit: contain; /* Complete website preview, never sliced! */
+    object-fit: contain; 
   }
   .carousel-arrow {
     width: 38px;
@@ -2250,7 +2349,7 @@ a.contact-social:hover {
   .carousel-arrow-left { left: 4px; }
   .carousel-arrow-right { right: 4px; }
 
-  /* Tech Stack */
+  
   .techstack {
     height: 65vh;
     min-height: 440px;
@@ -2262,7 +2361,7 @@ a.contact-social:hover {
     letter-spacing: 2px;
   }
 
-  /* Career Section */
+  
   .career-section {
     padding: 50px 0;
   }
@@ -2305,7 +2404,7 @@ a.contact-social:hover {
     line-height: 1.5;
   }
 
-  /* Contact Section */
+  
   .contact-section {
     margin-top: 30px;
     padding-bottom: 60px;
@@ -2322,7 +2421,7 @@ a.contact-social:hover {
     font-size: 18px;
   }
 
-  /* Social Icons and Resume */
+  
   .social-icons {
     display: none !important;
   }
@@ -2341,7 +2440,7 @@ a.contact-social:hover {
   }
 }
 
-/* Modal overlays */
+
 .modal-overlay {
   position: fixed;
   inset: 0;

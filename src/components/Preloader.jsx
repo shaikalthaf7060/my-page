@@ -5,6 +5,7 @@ export default function Preloader({ onComplete }) {
   const [isReady, setIsReady] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
   const wrapRef = useRef(null);
+  const autoTimerRef = useRef(null);
 
   useEffect(() => {
     let curr = 0;
@@ -15,13 +16,23 @@ export default function Preloader({ onComplete }) {
         setPercent(100);
         setIsReady(true);
         clearInterval(interval);
+
+        autoTimerRef.current = setTimeout(() => {
+          setIsClicked(true);
+          setTimeout(() => {
+            onComplete();
+          }, 500);
+        }, 300);
       } else {
         setPercent(curr);
       }
-    }, 45);
+    }, 35);
 
-    return () => clearInterval(interval);
-  }, []);
+    return () => {
+      clearInterval(interval);
+      if (autoTimerRef.current) clearTimeout(autoTimerRef.current);
+    };
+  }, [onComplete]);
 
   const handleMouseMove = (e) => {
     if (!wrapRef.current) return;
@@ -33,11 +44,13 @@ export default function Preloader({ onComplete }) {
   };
 
   const handleClick = () => {
-    if (!isReady || isClicked) return;
+    if (isClicked) return;
+    if (autoTimerRef.current) clearTimeout(autoTimerRef.current);
+    setIsReady(true);
     setIsClicked(true);
     setTimeout(() => {
       onComplete();
-    }, 600);
+    }, 500);
   };
 
   return (

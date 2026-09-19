@@ -1,7 +1,9 @@
 {
-  "name": "althaf-portfolio",
+  "name": "shaik-althaf-portfolio",
   "private": true,
   "version": "1.0.0",
+  "description": "Shaik Althaf - Software & Full-Stack Web Developer 3D Interactive Portfolio",
+  "author": "Shaik Althaf",
   "type": "module",
   "scripts": {
     "dev": "vite",

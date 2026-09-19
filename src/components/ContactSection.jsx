@@ -8,7 +8,6 @@ export default function ContactSection({ onAdminTrigger }) {
       const STORAGE_KEY = 'althaf_portfolio_live_views_count';
       const BASELINE = 1485;
 
-      // Always read and increment on every page load/refresh
       let currentViews = parseInt(localStorage.getItem(STORAGE_KEY), 10);
       if (isNaN(currentViews) || currentViews < BASELINE) {
         currentViews = BASELINE;
@@ -17,7 +16,6 @@ export default function ContactSection({ onAdminTrigger }) {
       localStorage.setItem(STORAGE_KEY, currentViews.toString());
       setViews(currentViews);
 
-      // Also sync with live visitor badge increment API
       fetch('https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Falthu.vercel.app%2Fvisitors&countColor=%23263759')
         .then((res) => res.text())
         .then((svgText) => {
@@ -35,7 +33,6 @@ export default function ContactSection({ onAdminTrigger }) {
           }
         })
         .catch(() => {
-          // Graceful fallback to localStorage counter
         });
     } catch (e) {
       console.warn('Visitor counter sync', e);

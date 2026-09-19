@@ -12,12 +12,10 @@ export default function TechStack3D() {
     let width = container.clientWidth || window.innerWidth;
     let height = container.clientHeight || window.innerHeight;
 
-    // 1. Scene & Camera
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(32.5, width / height, 1, 100);
     camera.position.set(0, 0, 20);
 
-    // 2. Renderer
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -25,7 +23,6 @@ export default function TechStack3D() {
     renderer.toneMappingExposure = 1.5;
     container.appendChild(renderer.domElement);
 
-    // 3. Lighting (Matching reference TechStack.tsx)
     const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
     scene.add(ambientLight);
 
@@ -40,7 +37,6 @@ export default function TechStack3D() {
     dirLight.position.set(0, 5, -4);
     scene.add(dirLight);
 
-    // 4. Environment HDR
     new RGBELoader().setPath('/models/').load('char_enviorment.hdr?v=2', (texture) => {
       texture.mapping = THREE.EquirectangularReflectionMapping;
       scene.environment = texture;
@@ -48,7 +44,6 @@ export default function TechStack3D() {
       scene.environmentRotation.set(0, 4, 2);
     });
 
-    // 5. Tech Textures & Materials (Exact reference MeshPhysicalMaterial with emissiveMap)
     const textureLoader = new THREE.TextureLoader();
     const texturePaths = [
       '/images/react2.webp',
@@ -74,7 +69,6 @@ export default function TechStack3D() {
       });
     });
 
-    // 6. Spheres Setup (30 spheres with reference scale distribution)
     const sphereGeometry = new THREE.SphereGeometry(1, 28, 28);
     const scales = [0.7, 1, 0.8, 1, 1];
     const spheres = [];
@@ -86,7 +80,6 @@ export default function TechStack3D() {
       const mesh = new THREE.Mesh(sphereGeometry, mat);
       mesh.scale.set(scale, scale, scale);
 
-      // Neat golden-spiral ellipsoidal cluster around (0, 0, 0)
       const phi = Math.acos(-1 + (2 * i) / sphereCount);
       const theta = Math.sqrt(sphereCount * Math.PI) * phi;
       const r = 1.2 + (i % 6) * 0.4;
@@ -117,7 +110,6 @@ export default function TechStack3D() {
       });
     }
 
-    // 7. Glowing Lilac Pointer Ball
     const pointerVisual = new THREE.Mesh(
       new THREE.SphereGeometry(0.4, 24, 24),
       new THREE.MeshBasicMaterial({ color: 0xd8b4fe, transparent: true, opacity: 0.85 })
@@ -132,9 +124,8 @@ export default function TechStack3D() {
     const pointerPos = new THREE.Vector3(0, -100, 0);
     const prevPointerPos = new THREE.Vector3(0, -100, 0);
     const pointerVel = new THREE.Vector3();
-    const pointerRadius = 2.4; // Generous interactive collision radius
+    const pointerRadius = 2.4;
 
-    // 8. Mouse & Touch Pointer Tracking
     const raycaster = new THREE.Raycaster();
     const planeZ = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
     const mousePlanePos = new THREE.Vector3();
@@ -173,7 +164,6 @@ export default function TechStack3D() {
     container.addEventListener('touchmove', onTouchMove, { passive: true });
     container.addEventListener('touchend', onPointerLeave);
 
-    // 9. Physics Simulation & Render Loop
     let lastTime = performance.now();
     let animId = null;
 
@@ -181,7 +171,6 @@ export default function TechStack3D() {
       const dt = Math.min((now - lastTime) / 1000, 0.035);
       lastTime = now;
 
-      // Smooth pointer tracking
       const isPointerInScene = pointerTarget.y > -50;
       if (isPointerInScene) {
         pointerPos.lerp(pointerTarget, 0.28);
@@ -191,22 +180,18 @@ export default function TechStack3D() {
         pointerVisual.position.copy(pointerPos);
       }
 
-      // Pointer velocity (for momentum flicking)
       pointerVel.subVectors(pointerPos, prevPointerPos);
       prevPointerPos.copy(pointerPos);
 
-      // Center attraction pull & containment
       for (let i = 0; i < spheres.length; i++) {
         const s = spheres[i];
 
-        // Gentle, buoyant spring return toward center
         const targetY = -0.6;
         const pullStrength = 7.5;
         s.vel.x += (-s.pos.x * pullStrength) * dt;
         s.vel.y += (-(s.pos.y - targetY) * pullStrength * 1.25) * dt;
         s.vel.z += (-s.pos.z * pullStrength) * dt;
 
-        // Dynamic Pointer collision: scatter & push wherever hovered!
         if (isPointerInScene) {
           const dx = s.pos.x - pointerPos.x;
           const dy = s.pos.y - pointerPos.y;
@@ -221,24 +206,20 @@ export default function TechStack3D() {
             const ny = dy / dist;
             const nz = dz / dist;
 
-            // Direct displacement away from cursor:
             s.pos.x += nx * overlap * 0.4;
             s.pos.y += ny * overlap * 0.4;
             s.pos.z += nz * overlap * 0.4;
 
-            // Fluid repulsion impulse:
             const pushForce = (1 - normDist) * 38 + 10;
             s.vel.x += nx * pushForce * dt * 60;
             s.vel.y += ny * pushForce * dt * 60;
             s.vel.z += nz * pushForce * dt * 25;
 
-            // Momentum transfer from cursor flick/swirl:
             s.vel.x += pointerVel.x * 24;
             s.vel.y += pointerVel.y * 24;
           }
         }
 
-        // Soft elastic containment: allows wide free movement across canvas
         const radialDist = Math.sqrt(s.pos.x * s.pos.x + (s.pos.y - targetY) * (s.pos.y - targetY) * 1.2 + s.pos.z * s.pos.z);
         if (radialDist > 7.5) {
           const overflow = radialDist - 7.5;
@@ -248,7 +229,6 @@ export default function TechStack3D() {
         }
       }
 
-      // Sphere-to-Sphere collisions (bouncy, lively interaction)
       for (let i = 0; i < spheres.length; i++) {
         for (let j = i + 1; j < spheres.length; j++) {
           const s1 = spheres[i];
@@ -266,7 +246,6 @@ export default function TechStack3D() {
             const ny = dy / dist;
             const nz = dz / dist;
 
-            // Separate spheres
             const sep = overlap * 0.5;
             s1.pos.x += nx * sep;
             s1.pos.y += ny * sep;
@@ -276,14 +255,13 @@ export default function TechStack3D() {
             s2.pos.y -= ny * sep;
             s2.pos.z -= nz * sep;
 
-            // Lively bounce
             const rvx = s1.vel.x - s2.vel.x;
             const rvy = s1.vel.y - s2.vel.y;
             const rvz = s1.vel.z - s2.vel.z;
             const velAlongNormal = rvx * nx + rvy * ny + rvz * nz;
 
             if (velAlongNormal < 0) {
-              const restitution = 0.55; // lively bouncy collisions
+              const restitution = 0.55;
               const impulse = -(1 + restitution) * velAlongNormal * 0.5;
               s1.vel.x += nx * impulse;
               s1.vel.y += ny * impulse;
@@ -297,7 +275,6 @@ export default function TechStack3D() {
         }
       }
 
-      // Smooth floating damping & integration
       const damping = Math.pow(0.92, dt * 60);
       for (let i = 0; i < spheres.length; i++) {
         const s = spheres[i];
@@ -308,7 +285,6 @@ export default function TechStack3D() {
         s.pos.z += s.vel.z * dt;
 
         s.mesh.rotation.y += s.rotVel.y * dt;
-        // Maintain upright orientation for legible logos
         s.mesh.rotation.x *= Math.pow(0.85, dt * 60);
         s.mesh.rotation.z *= Math.pow(0.85, dt * 60);
       }
@@ -319,7 +295,6 @@ export default function TechStack3D() {
 
     animId = requestAnimationFrame(tick);
 
-    // 10. Resize Observer
     const handleResize = () => {
       if (!container) return;
       const w = container.clientWidth || window.innerWidth;

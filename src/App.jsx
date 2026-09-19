@@ -34,11 +34,9 @@ export default function App() {
         <Navbar />
         <SideIcons />
         
-        {/* Ambient Glow Lights */}
         <div className="landing-circle1"></div>
         <div className="landing-circle2"></div>
 
-        {/* 3D Character Model (Fixed full-screen canvas) */}
         {isDesktop && <Character3D />}
 
         <main className="container-main">
@@ -54,7 +52,6 @@ export default function App() {
           <ContactSection onAdminTrigger={() => setAuthOpen(true)} />
         </main>
 
-        {/* Admin Modals */}
         {authOpen && (
           <AdminAuthModal 
             onClose={() => setAuthOpen(false)} 
