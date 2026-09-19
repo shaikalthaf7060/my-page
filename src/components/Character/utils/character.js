@@ -14,7 +14,7 @@ const setCharacter = (renderer, scene, camera) => {
     return new Promise(async (resolve, reject) => {
       try {
         const encryptedBlob = await decryptFile(
-          "/models/character.enc?v=2",
+          "/models/character.bin?v=3",
           "MyCharacter12"
         );
         const blobUrl = URL.createObjectURL(new Blob([encryptedBlob]));
