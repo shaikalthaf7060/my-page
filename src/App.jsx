@@ -32,9 +32,31 @@ export default function App() {
 
   useEffect(() => {
     if (loading) {
+      document.documentElement.style.overflow = 'hidden';
       document.body.style.overflow = 'hidden';
       window.scrollTo(0, 0);
+
+      const blockScroll = (e) => {
+        e.preventDefault();
+      };
+
+      const blockKeys = (e) => {
+        if (['ArrowDown', 'ArrowUp', 'Space', 'PageDown', 'PageUp', 'Home', 'End'].includes(e.code)) {
+          e.preventDefault();
+        }
+      };
+
+      window.addEventListener('wheel', blockScroll, { passive: false });
+      window.addEventListener('touchmove', blockScroll, { passive: false });
+      window.addEventListener('keydown', blockKeys, { passive: false });
+
+      return () => {
+        window.removeEventListener('wheel', blockScroll);
+        window.removeEventListener('touchmove', blockScroll);
+        window.removeEventListener('keydown', blockKeys);
+      };
     } else {
+      document.documentElement.style.overflow = '';
       document.body.style.overflow = '';
       window.scrollTo(0, 0);
       ScrollTrigger.refresh(true);

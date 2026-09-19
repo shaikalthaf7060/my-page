@@ -92,6 +92,10 @@ export function setCharTimeline(character, camera) {
 
   if (window.innerWidth >= 900) {
     if (character) {
+      if (window.scrollY === 0) {
+        character.rotation.set(0, 0, 0);
+        gsap.set(".character-model", { x: 0 });
+      }
       tl1
         .fromTo(character.rotation, { y: 0 }, { y: 0.7, duration: 1 }, 0)
         .to(camera.position, { z: 22 }, 0)
