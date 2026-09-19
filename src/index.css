@@ -749,7 +749,8 @@ h2.landing-info-h2 {
   overflow: hidden;
   text-transform: uppercase;
   letter-spacing: 2px;
-  display: inline-block;
+  display: block;
+  width: fit-content;
 }
 
 h2.landing-info-h2-sub {
@@ -764,7 +765,8 @@ h2.landing-info-h2-sub {
   overflow: hidden;
   text-transform: uppercase;
   letter-spacing: 2px;
-  display: inline-block;
+  display: block;
+  width: fit-content;
 }
 
 .split-h2 {
@@ -881,7 +883,7 @@ h2.landing-info-h2-sub {
   .landing-intro {
     top: 50%;
     left: auto;
-    right: max(68%, calc(50% + 160px));
+    right: max(68%, calc(50% + 240px));
     transform: translate(0%, -50%);
     z-index: 12;
   }
@@ -893,18 +895,28 @@ h2.landing-info-h2-sub {
     text-align: left;
     transform: translate(0%, -50%);
     right: auto;
-    left: max(68%, calc(50% + 160px));
+    left: max(68%, calc(50% + 240px));
     width: max-content;
   }
 }
 
 @media screen and (min-width: 1200px) {
   .landing-intro {
-    right: max(70%, calc(50% + 200px));
+    right: max(70%, calc(50% + 270px));
   }
 
   .landing-info {
-    left: max(70%, calc(50% + 200px));
+    left: max(70%, calc(50% + 270px));
+  }
+}
+
+@media screen and (min-width: 1600px) {
+  .landing-intro {
+    right: max(72%, calc(50% + 320px));
+  }
+
+  .landing-info {
+    left: max(72%, calc(50% + 320px));
   }
 }
 
