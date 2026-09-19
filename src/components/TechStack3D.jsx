@@ -22,39 +22,33 @@ export default function TechStack3D() {
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.35;
+    renderer.toneMappingExposure = 1.5;
     container.appendChild(renderer.domElement);
 
-    // 3. Lighting (Clean key light + pink rim light precisely matching reference image)
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.4);
+    // 3. Lighting (Matching reference TechStack.tsx)
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xffffff, 2.2);
-    keyLight.position.set(12, 16, 22);
-    scene.add(keyLight);
+    const spotLight = new THREE.SpotLight(0xffffff, 1.0);
+    spotLight.position.set(20, 20, 25);
+    spotLight.penumbra = 1;
+    spotLight.angle = 0.2;
+    spotLight.castShadow = true;
+    scene.add(spotLight);
 
-    // Signature pink rim light matching media_1789627870970.png
-    const rimLight = new THREE.DirectionalLight(0xf472b6, 2.2);
-    rimLight.position.set(-14, 15, 10);
-    scene.add(rimLight);
-
-    const fillLight = new THREE.DirectionalLight(0x93c5fd, 0.8);
-    fillLight.position.set(0, -12, 12);
-    scene.add(fillLight);
-
-    const backLight = new THREE.DirectionalLight(0xffffff, 1.0);
-    backLight.position.set(0, 8, -10);
-    scene.add(backLight);
+    const dirLight = new THREE.DirectionalLight(0xffffff, 2.0);
+    dirLight.position.set(0, 5, -4);
+    scene.add(dirLight);
 
     // 4. Environment HDR
     new RGBELoader().setPath('/models/').load('char_enviorment.hdr?v=2', (texture) => {
       texture.mapping = THREE.EquirectangularReflectionMapping;
       scene.environment = texture;
-      scene.environmentIntensity = 0.65;
+      scene.environmentIntensity = 0.5;
       scene.environmentRotation.set(0, 4, 2);
     });
 
-    // 5. Tech Textures & Materials (Exact original textures from reference screenshot)
+    // 5. Tech Textures & Materials (Exact reference MeshPhysicalMaterial with emissiveMap)
     const textureLoader = new THREE.TextureLoader();
     const texturePaths = [
       '/images/react2.webp',
@@ -71,18 +65,18 @@ export default function TechStack3D() {
       const tex = textureLoader.load(path);
       return new THREE.MeshPhysicalMaterial({
         map: tex,
-        color: 0xffffff,
-        roughness: 0.16,
-        metalness: 0.05,
-        clearcoat: 1.0,
-        clearcoatRoughness: 0.08,
-        reflectivity: 0.95
+        emissive: "#ffffff",
+        emissiveMap: tex,
+        emissiveIntensity: 0.3,
+        metalness: 0.5,
+        roughness: 1,
+        clearcoat: 0.1,
       });
     });
 
-    // 6. Spheres Setup (30 spheres forming a neat, cohesive cluster matching reference image)
-    const sphereGeometry = new THREE.SphereGeometry(1, 32, 32);
-    const scales = [0.75, 1.0, 0.85, 1.0, 0.9];
+    // 6. Spheres Setup (30 spheres with reference scale distribution)
+    const sphereGeometry = new THREE.SphereGeometry(1, 28, 28);
+    const scales = [0.7, 1, 0.8, 1, 1];
     const spheres = [];
     const sphereCount = 30;
 
@@ -357,7 +351,7 @@ export default function TechStack3D() {
 
   return (
     <section className="techstack" id="skills">
-      <h2>MY TECHSTACK</h2>
+      <h2> My Techstack</h2>
       <div className="tech-canvas" ref={containerRef} />
     </section>
   );

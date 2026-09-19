@@ -48,9 +48,9 @@ export default function App() {
 
           <AboutSection />
           <WhatIDoSection />
-          <WorkCarousel />
-          <TechStack3D />
           <CareerSection />
+          <WorkCarousel />
+          {isDesktop && <TechStack3D />}
           <ContactSection onAdminTrigger={() => setAuthOpen(true)} />
         </main>
 
