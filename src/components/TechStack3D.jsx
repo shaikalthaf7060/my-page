@@ -37,7 +37,7 @@ export default function TechStack3D() {
     dirLight.position.set(0, 5, -4);
     scene.add(dirLight);
 
-    new RGBELoader().setPath('/models/').load('char_enviorment.hdr?v=2', (texture) => {
+    new RGBELoader().setPath('/models/').load('char_enviorment.data?v=3', (texture) => {
       texture.mapping = THREE.EquirectangularReflectionMapping;
       scene.environment = texture;
       scene.environmentIntensity = 0.5;

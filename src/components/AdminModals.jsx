@@ -84,10 +84,20 @@ export function AdminPanelModal({ onClose }) {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    fetch("https://althaf-portfolio.goatcounter.com/counter//.json")
-      .then(r => r.json())
-      .then(d => setViews(d.count || '0'))
-      .catch(() => setViews('Live'));
+    fetch("https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Falthaf.c0m.in%2Fprofile_v2&countColor=%23263759")
+      .then(res => res.text())
+      .then(svgText => {
+        const matches = svgText.match(/>(\d+)</g);
+        if (matches && matches.length > 0) {
+          const lastMatch = matches[matches.length - 1].replace(/[><]/g, '');
+          setViews(lastMatch);
+        } else {
+          setViews(localStorage.getItem('althaf_portfolio_views_v2') || '1');
+        }
+      })
+      .catch(() => {
+        setViews(localStorage.getItem('althaf_portfolio_views_v2') || '1');
+      });
 
     fetch(SHEETDB_URL)
       .then(r => r.json())

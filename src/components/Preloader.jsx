@@ -9,8 +9,21 @@ export default function Preloader({ onComplete }) {
 
   useEffect(() => {
     let curr = 0;
+    let characterDone = window.__characterLoaded || false;
+
+    const finish = () => {
+      characterDone = true;
+    };
+
+    window.addEventListener('characterReady', finish);
+
     const interval = setInterval(() => {
-      curr += Math.floor(Math.random() * 8) + 2;
+      if (characterDone) {
+        curr += 15;
+      } else if (curr < 90) {
+        curr += Math.floor(Math.random() * 6) + 3;
+      }
+
       if (curr >= 100) {
         curr = 100;
         setPercent(100);
@@ -26,10 +39,16 @@ export default function Preloader({ onComplete }) {
       } else {
         setPercent(curr);
       }
-    }, 35);
+    }, 30);
+
+    const fallbackTimeout = setTimeout(() => {
+      characterDone = true;
+    }, 3500);
 
     return () => {
       clearInterval(interval);
+      clearTimeout(fallbackTimeout);
+      window.removeEventListener('characterReady', finish);
       if (autoTimerRef.current) clearTimeout(autoTimerRef.current);
     };
   }, [onComplete]);

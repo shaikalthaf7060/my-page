@@ -9,3 +9,27 @@ RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 AddType application/octet-stream .enc
 AddType application/octet-stream .hdr
+AddType application/octet-stream .bin
+AddType application/octet-stream .data
+AddType application/wasm .wasm
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault "access plus 1 month"
+  ExpiresByType application/octet-stream "access plus 1 year"
+  ExpiresByType application/wasm "access plus 1 year"
+  ExpiresByType model/gltf-binary "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType audio/mpeg "access plus 1 year"
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(bin|data|wasm|js|css|webp|jpg|jpeg|png|svg|mp3)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+</IfModule>

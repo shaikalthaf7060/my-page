@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from 'react';
 
 export default function ContactSection({ onAdminTrigger }) {
-  const [views, setViews] = useState(1485);
+  const [views, setViews] = useState(0);
 
   useEffect(() => {
     try {
-      const STORAGE_KEY = 'althaf_portfolio_live_views_count';
-      const BASELINE = 1485;
+      const STORAGE_KEY = 'althaf_portfolio_views_v2';
+      localStorage.removeItem('althaf_portfolio_live_views_count');
 
       let currentViews = parseInt(localStorage.getItem(STORAGE_KEY), 10);
-      if (isNaN(currentViews) || currentViews < BASELINE) {
-        currentViews = BASELINE;
+      if (isNaN(currentViews) || currentViews < 0) {
+        currentViews = 0;
       }
       currentViews += 1;
       localStorage.setItem(STORAGE_KEY, currentViews.toString());
       setViews(currentViews);
 
-      fetch('https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Falthu.vercel.app%2Fvisitors&countColor=%23263759')
+      fetch('https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Falthaf.c0m.in%2Fprofile_v2&countColor=%23263759')
         .then((res) => res.text())
         .then((svgText) => {
           const matches = svgText.match(/>(\d+)</g);
@@ -24,10 +24,9 @@ export default function ContactSection({ onAdminTrigger }) {
             const lastMatch = matches[matches.length - 1].replace(/[><]/g, '');
             const badgeCount = parseInt(lastMatch, 10);
             if (!isNaN(badgeCount) && badgeCount > 0) {
-              const liveViews = BASELINE + badgeCount;
-              if (liveViews >= currentViews) {
-                setViews(liveViews);
-                localStorage.setItem(STORAGE_KEY, liveViews.toString());
+              if (badgeCount >= currentViews) {
+                setViews(badgeCount);
+                localStorage.setItem(STORAGE_KEY, badgeCount.toString());
               }
             }
           }

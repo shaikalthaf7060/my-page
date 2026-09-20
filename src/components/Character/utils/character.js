@@ -4,19 +4,29 @@ import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { setCharTimeline, setAllTimeline } from "../../../utils/GsapScroll";
 import { decryptFile } from "./decrypt";
 
+let cachedCharacterBlobPromise = null;
+export const preloadCharacterAsset = () => {
+  if (!cachedCharacterBlobPromise) {
+    cachedCharacterBlobPromise = decryptFile(
+      "/models/character.bin?v=4",
+      "MyCharacter12"
+    );
+  }
+  return cachedCharacterBlobPromise;
+};
+preloadCharacterAsset();
+
 const setCharacter = (renderer, scene, camera) => {
   const loader = new GLTFLoader();
   const dracoLoader = new DRACOLoader();
   dracoLoader.setDecoderPath("/draco/");
+  dracoLoader.preload();
   loader.setDRACOLoader(dracoLoader);
 
   const loadCharacter = () => {
     return new Promise(async (resolve, reject) => {
       try {
-        const encryptedBlob = await decryptFile(
-          "/models/character.bin?v=3",
-          "MyCharacter12"
-        );
+        const encryptedBlob = await preloadCharacterAsset();
         const blobUrl = URL.createObjectURL(new Blob([encryptedBlob]));
 
         loader.load(
@@ -61,6 +71,9 @@ const setCharacter = (renderer, scene, camera) => {
             if (footR) footR.position.y = 3.36;
             const footL = character.getObjectByName("footL");
             if (footL) footL.position.y = 3.36;
+
+            window.__characterLoaded = true;
+            window.dispatchEvent(new CustomEvent("characterReady"));
 
             dracoLoader.dispose();
             URL.revokeObjectURL(blobUrl);
