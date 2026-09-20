@@ -1,6 +1,5 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { setCharTimeline, setAllTimeline } from "../../../utils/GsapScroll";
 import { decryptFile } from "./decrypt";
 
@@ -8,9 +7,12 @@ let cachedCharacterBlobPromise = null;
 export const preloadCharacterAsset = () => {
   if (!cachedCharacterBlobPromise) {
     cachedCharacterBlobPromise = decryptFile(
-      "/models/character.bin?v=4",
+      "/models/character.bin?v=5",
       "MyCharacter12"
-    );
+    ).catch((err) => {
+      cachedCharacterBlobPromise = null;
+      throw err;
+    });
   }
   return cachedCharacterBlobPromise;
 };
@@ -18,10 +20,6 @@ preloadCharacterAsset();
 
 const setCharacter = (renderer, scene, camera) => {
   const loader = new GLTFLoader();
-  const dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath("/draco/");
-  dracoLoader.preload();
-  loader.setDRACOLoader(dracoLoader);
 
   const loadCharacter = () => {
     return new Promise(async (resolve, reject) => {
@@ -75,7 +73,6 @@ const setCharacter = (renderer, scene, camera) => {
             window.__characterLoaded = true;
             window.dispatchEvent(new CustomEvent("characterReady"));
 
-            dracoLoader.dispose();
             URL.revokeObjectURL(blobUrl);
           },
           undefined,
