@@ -2,7 +2,7 @@
 
 A dynamic, high-performance personal portfolio built with React, Three.js, and GSAP. Features an interactive 3D character with real-time pointer tracking, custom lighting, fluid scroll-driven animations, and an interactive 3D tech stack simulation.
 
-**Live Demo**: [althu.vercel.app](https://althu.vercel.app)  
+**Live Demo**: [althu.vercel.app](https://althu.vercel.app[)  [althaf.C0m.in](https://althaf.c0m.in/)
 **Author**: [Shaik Althaf](https://linkedin.com/in/shaik-althaf)
 
 ---
