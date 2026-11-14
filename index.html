@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
   <script>
     if (location.hostname.startsWith('www.')) {
       location.replace('https://' + location.hostname.replace(/^www\./, '') + location.pathname + location.search + location.hash);
