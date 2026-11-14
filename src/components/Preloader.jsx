@@ -19,9 +19,9 @@ export default function Preloader({ onComplete }) {
 
     const interval = setInterval(() => {
       if (characterDone) {
-        curr += 15;
+        curr = 100;
       } else if (curr < 90) {
-        curr += Math.floor(Math.random() * 6) + 3;
+        curr += Math.floor(Math.random() * 8) + 6;
       }
 
       if (curr >= 100) {
@@ -34,16 +34,16 @@ export default function Preloader({ onComplete }) {
           setIsClicked(true);
           setTimeout(() => {
             onComplete();
-          }, 500);
-        }, 300);
+          }, 250);
+        }, 100);
       } else {
         setPercent(curr);
       }
-    }, 30);
+    }, 16);
 
     const fallbackTimeout = setTimeout(() => {
       characterDone = true;
-    }, 3500);
+    }, 2200);
 
     return () => {
       clearInterval(interval);

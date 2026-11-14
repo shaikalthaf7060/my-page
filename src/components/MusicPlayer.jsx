@@ -20,7 +20,7 @@ export default function MusicPlayer() {
 
   return (
     <div className="music-dock" data-cursor="disable">
-      <audio ref={audioRef} src="/enna-sona.mp3" loop />
+      <audio ref={audioRef} src="/enna-sona.mp3" preload="none" loop />
       <button className="music-dock-play" onClick={togglePlay} aria-label="Toggle Music">
         {playing ? (
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">

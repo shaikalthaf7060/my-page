@@ -136,7 +136,7 @@ export default function WorkCarousel() {
                             </div>
                           </div>
                           <div className="work-browser-body">
-                            <img src={proj.image} alt={proj.title} loading="eager" />
+                            <img src={proj.image} alt={proj.title} loading="lazy" decoding="async" />
                           </div>
                         </a>
                       </div>

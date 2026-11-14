@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import Preloader from './components/Preloader.jsx';
 import CustomCursor from './components/CustomCursor.jsx';
 import Navbar from './components/Navbar.jsx';
@@ -8,11 +8,13 @@ import Character3D from './components/Character3D.jsx';
 import AboutSection from './components/AboutSection.jsx';
 import WhatIDoSection from './components/WhatIDoSection.jsx';
 import WorkCarousel from './components/WorkCarousel.jsx';
-import TechStack3D from './components/TechStack3D.jsx';
 import CareerSection from './components/CareerSection.jsx';
 import ContactSection from './components/ContactSection.jsx';
-import { AdminAuthModal, AdminPanelModal } from './components/AdminModals.jsx';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+const TechStack3D = lazy(() => import('./components/TechStack3D.jsx'));
+const AdminAuthModal = lazy(() => import('./components/AdminModals.jsx').then(m => ({ default: m.AdminAuthModal })));
+const AdminPanelModal = lazy(() => import('./components/AdminModals.jsx').then(m => ({ default: m.AdminPanelModal })));
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -86,17 +88,23 @@ export default function App() {
           <WhatIDoSection />
           <CareerSection />
           <WorkCarousel />
-          {isDesktop && <TechStack3D />}
+          {isDesktop && (
+            <Suspense fallback={null}>
+              <TechStack3D />
+            </Suspense>
+          )}
           <ContactSection onAdminTrigger={() => setAuthOpen(true)} />
         </main>
 
-        {authOpen && (
-          <AdminAuthModal 
-            onClose={() => setAuthOpen(false)} 
-            onSuccess={() => { setAuthOpen(false); setAdminOpen(true); }} 
-          />
-        )}
-        {adminOpen && <AdminPanelModal onClose={() => setAdminOpen(false)} />}
+        <Suspense fallback={null}>
+          {authOpen && (
+            <AdminAuthModal 
+              onClose={() => setAuthOpen(false)} 
+              onSuccess={() => { setAuthOpen(false); setAdminOpen(true); }} 
+            />
+          )}
+          {adminOpen && <AdminPanelModal onClose={() => setAdminOpen(false)} />}
+        </Suspense>
       </div>
     </>
   );
